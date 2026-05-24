@@ -1,0 +1,42 @@
+## C++ build artifacts
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dylib
+*.dll
+*.exe
+*.out
+*.app
+
+## Build directories
+build/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+Makefile
+compile_commands.json
+*.dir/
+
+## Generated files
+*.log
+*.tmp
+*.swp
+*.swo
+*.pch
+*.gch
+
+## IDE/editor files
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+## Package/tool caches
+.cache/
+.pytest_cache/
+.clangd/
+
+## GitHub configuration folder
+.github/
