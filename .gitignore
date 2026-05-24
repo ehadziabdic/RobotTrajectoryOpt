@@ -40,3 +40,7 @@ compile_commands.json
 
 ## GitHub configuration folder
 .github/
+
+## Custom ignore rules (uncomment if needed)
+docs/superpowers/
+
