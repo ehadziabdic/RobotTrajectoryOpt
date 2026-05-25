@@ -55,3 +55,4 @@ target_link_libraries(${MPCCORE_NAME}
 )
 
 setIDEPropertiesForExecutable(${MPCCORE_NAME})
+
