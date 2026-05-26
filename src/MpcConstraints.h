@@ -25,6 +25,8 @@ public:
         assemble();
     }
 
+        void setVerbose(bool verbose) { _verbose = verbose; }
+
     const MpcLayout& layout() const { return _layout; }
     sparse::IDblMatrix* matrix() { return _matrix.ptr(); }
     const sparse::IDblMatrix* matrix() const { return _matrix.ptr(); }
@@ -82,7 +84,9 @@ private:
             sparse::Symmetry::NonSymmetric);
 
         if (!_matrix.ptr()) {
-            std::cout << "MPC constraints: createDblMatrix returned null" << std::endl;
+            if (_verbose) {
+                std::cout << "MPC constraints: createDblMatrix returned null" << std::endl;
+            }
             return;
         }
 
@@ -140,11 +144,13 @@ private:
             ++row;
         }
 
-        std::cout << "MPC constraints: rows=" << rows
-                  << " cols=" << cols
-                  << " nz_est=" << nzEstimate
-                  << " nz_actual=" << _matrix->getNoOfNonZero()
-                  << "\n";
+        if (_verbose) {
+            std::cout << "MPC constraints: rows=" << rows
+                      << " cols=" << cols
+                      << " nz_est=" << nzEstimate
+                      << " nz_actual=" << _matrix->getNoOfNonZero()
+                      << "\n";
+        }
     }
 
     MpcLayout _layout;
@@ -153,6 +159,7 @@ private:
     std::vector<Triplet> _triplets;
     sparse::DblMatrixReleaser _matrix;
     dense::DblMatrix _rhs;
+    bool _verbose = false;
 };
 
 } // namespace mpc

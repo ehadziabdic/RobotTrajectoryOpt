@@ -30,7 +30,7 @@ int main(int argc, const char* argv[]) {
     cfg.maxIter = 5;
     cfg.tol = 1e-3;
     cfg.alpha = 1.0;
-    cfg.log = true;
+    cfg.verbose = false;
     engine.setSettings(cfg);
 
     const int steps = 40; // 30-60 steps

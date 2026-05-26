@@ -50,7 +50,7 @@ public:
         }
 
         dense::DblMatrix zWork = _zNom.makeCopy();
-        if (_settings.log) {
+        if (_settings.verbose) {
             const td::UINT4 nZ = static_cast<td::UINT4>(zWork.getNoOfRows());
             auto zw = zWork.getColumnManipulator();
             std::cout << "MpcEngine: launching SQP with zWork size=" << nZ << " first_vals=[";

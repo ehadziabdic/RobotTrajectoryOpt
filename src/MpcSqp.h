@@ -17,7 +17,7 @@ public:
         int maxIter = 10;
         double tol = 1e-3;
         double alpha = 1.0;
-        bool log = true;
+        bool verbose = false;
     };
 
     explicit MpcSqp(const MpcLayout& layout)
@@ -38,6 +38,7 @@ public:
         for (int iter = 0; iter < cfg.maxIter; ++iter) {
             cost.UpdateReferenceTrajectory(coeffs, target_v, initial_x, dt);
             MpcConstraints constraints(_layout);
+            constraints.setVerbose(cfg.verbose);
             constraints.UpdateNominalTrajectory(zNom);
 
             dense::DblMatrix init(4, 1, nullptr, true);
@@ -54,7 +55,7 @@ public:
             MpcKktSolver solver;
             auto res = solver.Solve(kkt);
             if (!res.ok) {
-                if (cfg.log) {
+                if (cfg.verbose) {
                     std::cout << "MpcSqp: solver.Solve returned !ok" << std::endl;
                     if (kkt.matrix()) {
                         std::cout << "  KKT nnz=" << kkt.matrix()->getNoOfNonZero() << std::endl;
@@ -65,12 +66,12 @@ public:
                 return false;
             }
 
-            if (cfg.log) {
+            if (cfg.verbose) {
                 std::cout << "MpcSqp: solver returned ok; res.z.size=" << res.z.size() << " expected=" << nZ << std::endl;
             }
 
             if (res.z.size() != static_cast<std::size_t>(nZ)) {
-                if (cfg.log) {
+                if (cfg.verbose) {
                     std::cout << "MpcSqp: solver produced invalid z size=" << res.z.size() << " expected=" << nZ << std::endl;
                 }
                 return false;
@@ -85,7 +86,7 @@ public:
                 zn(i) = zn(i) + cfg.alpha * dz;
             }
 
-            if (cfg.log) {
+            if (cfg.verbose) {
                 std::cout << "SQP iter=" << iter << " max|dZ|=" << maxAbs << std::endl;
             }
             if (maxAbs < cfg.tol) {
@@ -122,6 +123,7 @@ public:
         for (int iter = 0; iter < cfg.maxIter; ++iter) {
             cost.UpdateReferenceTrajectory(coeffs, target_v, initial_x, dt);
             MpcConstraints constraints(_layout);
+            constraints.setVerbose(cfg.verbose);
             constraints.UpdateNominalTrajectory(zNom);
 
             dense::DblMatrix init(4, 1, nullptr, true);
@@ -138,7 +140,7 @@ public:
             MpcKktSolver solver;
             auto res = solver.Solve(kkt);
             if (!res.ok) {
-                if (cfg.log) {
+                if (cfg.verbose) {
                     std::cout << "MpcSqp: solver.Solve returned !ok (hot-start)" << std::endl;
                     if (kkt.matrix()) {
                         std::cout << "  KKT nnz=" << kkt.matrix()->getNoOfNonZero() << std::endl;
@@ -149,12 +151,12 @@ public:
                 return false;
             }
 
-            if (cfg.log) {
+            if (cfg.verbose) {
                 std::cout << "MpcSqp: solver returned ok (hot-start); res.z.size=" << res.z.size() << " expected=" << nZ << std::endl;
             }
 
             if (res.z.size() != static_cast<std::size_t>(nZ)) {
-                if (cfg.log) {
+                if (cfg.verbose) {
                     std::cout << "MpcSqp: solver produced invalid z size (hot-start)=" << res.z.size() << " expected=" << nZ << std::endl;
                 }
                 return false;
@@ -169,7 +171,7 @@ public:
                 zn(i) = zn(i) + cfg.alpha * dz;
             }
 
-            if (cfg.log) {
+            if (cfg.verbose) {
                 std::cout << "SQP iter=" << iter << " max|dZ|=" << maxAbs << std::endl;
             }
             if (maxAbs < cfg.tol) {
