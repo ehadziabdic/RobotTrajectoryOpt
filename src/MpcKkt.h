@@ -24,6 +24,7 @@ public:
 
     void Assemble() {
         const std::size_t nZ = _layout.totalSize();
+        _nZ = static_cast<td::UINT4>(nZ);
         const std::size_t nC = 4 * _layout.N();
         const std::size_t kktSize = nZ + nC;
 
@@ -80,6 +81,9 @@ public:
         }
     }
 
+    // Number of primal variables (z) contained in the KKT system
+    td::UINT4 primalSize() const { return _nZ; }
+
     sparse::IDblMatrix* matrix() { return _kkt.ptr(); }
     const sparse::IDblMatrix* matrix() const { return _kkt.ptr(); }
     const dense::DblMatrix& rhs() const { return _rhs; }
@@ -92,6 +96,7 @@ private:
     std::vector<Triplet> _triplets;
     sparse::DblMatrixReleaser _kkt;
     dense::DblMatrix _rhs;
+    td::UINT4 _nZ = 0;
 };
 
 } // namespace mpc

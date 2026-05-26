@@ -25,6 +25,8 @@ public:
 
         const td::UINT4 n = static_cast<td::UINT4>(kktMat->getNoOfRows());
         const int nz = static_cast<int>(kktMat->getNoOfNonZero());
+        // Number of primal vars is provided by the KKT object (first nZ entries)
+        const td::UINT4 nZ = kkt.primalSize();
 
         sparse::DblSolverReleaser solver(sparse::createDblSolver(
             static_cast<int>(n),
@@ -57,8 +59,8 @@ public:
             return out;
         }
 
-        out.z.resize(n);
-        for (td::UINT4 i = 0; i < n; ++i) {
+        out.z.resize(nZ);
+        for (td::UINT4 i = 0; i < nZ; ++i) {
             out.z[i] = solver->x(static_cast<td::INT4>(i));
         }
         out.ok = true;

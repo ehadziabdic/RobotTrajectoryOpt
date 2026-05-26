@@ -88,6 +88,10 @@ cmake --build .
 
 Run an example scenario from `examples/` after building. See `docs/run.md` for platform-specific notes.
 
+### Closed-Loop MPC Simulation
+
+After building, run the `MpcCore` executable to execute a 30–60 step closed-loop simulation that exercises the hot-started `MpcEngine` controller and prints simple tracking errors to the console.
+
 ## NatID GUI Integration
 
 This project uses the natID framework for the interactive 2D visualization. See `docs/natid_integration.md` for development notes and the official natID repo: <https://github.com/idzafic/natID.git>
