@@ -1,0 +1,64 @@
+<?xml version='1.0'?>
+<DevRes>
+    <Translations>
+        <Res id="appTitle" tr="MPCリアルタイム軌道モニタ"/>
+        <Res id="settings" tr="設定"/>
+        <Res id="settingsTT" tr="視覚化設定、制限値、および言語を変更します。言語変更の反映にはアプリの再起動が必要です。"/>
+
+        <Res id="simControls" tr="シミュレーション制御"/>
+        <Res id="play" tr="再生"/>
+        <Res id="pause" tr="一時停止"/>
+        <Res id="step" tr="単一ステップ"/>
+        <Res id="followVehicle" tr="車両追従カメラ"/>
+
+        <Res id="liveMetrics" tr="リアルタイム計測"/>
+        <Res id="lblPosX" tr="位置 X:"/>
+        <Res id="lblPosY" tr="位置 Y:"/>
+        <Res id="lblHeading" tr="進行方向 (ψ):"/>
+        <Res id="lblVelocity" tr="速度 (v):"/>
+        <Res id="lblTrackingErr" tr="追従誤差:"/>
+
+        <Res id="solverStatus" tr="ソルバー状態"/>
+        <Res id="lblStatus" tr="状態:"/>
+        <Res id="lblSqpIter" tr="SQP反復/ステップ:"/>
+        <Res id="lblTimeSolve" tr="計算時間/終了:"/>
+        <Res id="statusConverged" tr="収束完了"/>
+        <Res id="statusFailed" tr="失敗 / エラー"/>
+
+        <Res id="engineSettings" tr="制御エンジン設定"/>
+        <Res id="lblMaxIter" tr="最大反復回数:"/>
+        <Res id="lblTolerance" tr="許容誤差:"/>
+        <Res id="lblTimeStep" tr="時間ステップ (dt):"/>
+        <Res id="lblHorizon" tr="ホライズンサイズ (N):"/>
+
+        <Res id="mainCanvasTitle" tr="メイン経路キャンバス (X-Y座標プロット)"/>
+        <Res id="axisX" tr="X (メートル)"/>
+        <Res id="axisY" tr="Y (メートル)"/>
+        <Res id="legendReference" tr="参照経路 (多項式)"/>
+        <Res id="legendPredicted" tr="予測ホライズン軌道"/>
+        <Res id="legendHistory" tr="走行履歴経路"/>
+        
+        <Res id="actuationTitle" tr="アクチュエーションプロファイル＆飽和制限"/>
+        <Res id="plotSteering" tr="操舵角 (δ) 対 時間"/>
+        <Res id="plotAcceleration" tr="加速度 (a) 対 時間"/>
+
+        <Res id="sidebarTitle" tr="MPC Controls"/>
+        <Res id="pathCanvasTitle" tr="Path Tracking"/>
+        <Res id="pathCanvasEmpty" tr="No trajectory available"/>
+        <Res id="pathCanvasTrackingErr" tr="Tracking err:"/>
+        <Res id="actuationCanvasEmpty" tr="No control data"/>
+
+        <Res id="language" tr="言語"/>
+        <Res id="langEnglish" tr="英語"/>
+        <Res id="langBosnian" tr="ボスニア語"/>
+        <Res id="langGerman" tr="ドイツ語"/>
+        <Res id="langSpanish" tr="スペイン語"/>
+        <Res id="langFrench" tr="フランス語"/>
+        <Res id="langJapanese" tr="日本語"/>  
+
+        <Res id="RestartRequired" tr="アプリの再起動"/>
+        <Res id="RestartRequiredInfo" tr="変更された設定の一部を有効にするには、アプリケーションを再起動する必要があります"/>
+        <Res id="Restart" tr="再起動"/>
+        <Res id="DoNoRestart" tr="再起動しない"/>
+    </Translations>
+</DevRes>

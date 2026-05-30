@@ -1,0 +1,64 @@
+<?xml version='1.0'?>
+<DevRes>
+    <Translations>
+        <Res id="appTitle" tr="MPC Monitor Trajektorije u Realnom Vremenu"/>
+        <Res id="settings" tr="Postavke"/>
+        <Res id="settingsTT" tr="Podesite opcije vizualizacije, limite i jezik interfejsa. Izmjena jezika zahtijeva ponovno pokretanje aplikacije."/>
+
+        <Res id="simControls" tr="Kontrole Simulacije"/>
+        <Res id="play" tr="Pokreni"/>
+        <Res id="pause" tr="Pauziraj"/>
+        <Res id="step" tr="Korak Naprijed"/>
+        <Res id="followVehicle" tr="Kamera Prati Vozilo"/>
+
+        <Res id="liveMetrics" tr="Trenutna Telemetrija"/>
+        <Res id="lblPosX" tr="Pozicija X:"/>
+        <Res id="lblPosY" tr="Pozicija Y:"/>
+        <Res id="lblHeading" tr="Orijentacija (ψ):"/>
+        <Res id="lblVelocity" tr="Brzina (v):"/>
+        <Res id="lblTrackingErr" tr="Greška Praćenja:"/>
+
+        <Res id="solverStatus" tr="Status Solver-a"/>
+        <Res id="lblStatus" tr="Status:"/>
+        <Res id="lblSqpIter" tr="SQP Iter/Korak:"/>
+        <Res id="lblTimeSolve" tr="Vrijeme Rješavanja:"/>
+        <Res id="statusConverged" tr="Konvergirano"/>
+        <Res id="statusFailed" tr="Neuspješno / Greška"/>
+
+        <Res id="engineSettings" tr="Postavke Kontrolera"/>
+        <Res id="lblMaxIter" tr="Maks. Iteracija:"/>
+        <Res id="lblTolerance" tr="Tolerancija:"/>
+        <Res id="lblTimeStep" tr="Vremenski Korak (dt):"/>
+        <Res id="lblHorizon" tr="Veličina Horizonta (N):"/>
+
+        <Res id="mainCanvasTitle" tr="GLAVNO PLATNO PUTANJE (X-Y Koordinatni Grafikon)"/>
+        <Res id="axisX" tr="X (metara)"/>
+        <Res id="axisY" tr="Y (metara)"/>
+        <Res id="legendReference" tr="Referentna Putanja (Polinom)"/>
+        <Res id="legendPredicted" tr="Predviđeni Horizont Trajektorije"/>
+        <Res id="legendHistory" tr="Pređena Istorija Putanje"/>
+        
+        <Res id="actuationTitle" tr="PROFILI AKTUACIJE I LIMITI ZASIĆENJA"/>
+        <Res id="plotSteering" tr="Ugao Upravljanja (δ) u Odnosu na Vrijeme"/>
+        <Res id="plotAcceleration" tr="Ubrzanje (a) u Odnosu na Vrijeme"/>
+
+        <Res id="sidebarTitle" tr="MPC Controls"/>
+        <Res id="pathCanvasTitle" tr="Path Tracking"/>
+        <Res id="pathCanvasEmpty" tr="No trajectory available"/>
+        <Res id="pathCanvasTrackingErr" tr="Tracking err:"/>
+        <Res id="actuationCanvasEmpty" tr="No control data"/>
+
+        <Res id="language" tr="Jezik"/>
+        <Res id="langEnglish" tr="Engleski"/>
+        <Res id="langBosnian" tr="Bosanski"/>
+        <Res id="langGerman" tr="Njemački"/>
+        <Res id="langSpanish" tr="Španski"/>
+        <Res id="langFrench" tr="Francuski"/>
+        <Res id="langJapanese" tr="Japanski"/>  
+
+        <Res id="RestartRequired" tr="Ponovno pokretanje aplikacije"/>
+        <Res id="RestartRequiredInfo" tr="Neke od izmijenjenih postavki zahtijevaju ponovno pokretanje aplikacije kako bi stupile na snagu"/>
+        <Res id="Restart" tr="Ponovno pokreni"/>
+        <Res id="DoNoRestart" tr="Nemoj ponovno pokrenuti"/>
+    </Translations>
+</DevRes>

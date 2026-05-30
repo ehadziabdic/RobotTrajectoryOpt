@@ -1,0 +1,64 @@
+<?xml version='1.0'?>
+<DevRes>
+    <Translations>
+        <Res id="appTitle" tr="Monitor de Trayectoria en Tiempo Real MPC"/>
+        <Res id="settings" tr="Ajustes"/>
+        <Res id="settingsTT" tr="Ajusta la configuración de visualización, los límites y el idioma de la interfaz. Los cambios de idioma requieren reiniciar la aplicación."/>
+
+        <Res id="simControls" tr="Controles de Simulación"/>
+        <Res id="play" tr="Reproducir"/>
+        <Res id="pause" tr="Pausar"/>
+        <Res id="step" tr="Paso Único"/>
+        <Res id="followVehicle" tr="Cámara Sigue al Vehículo"/>
+
+        <Res id="liveMetrics" tr="Métricas en Vivo"/>
+        <Res id="lblPosX" tr="Posición X:"/>
+        <Res id="lblPosY" tr="Posición Y:"/>
+        <Res id="lblHeading" tr="Orientación (ψ):"/>
+        <Res id="lblVelocity" tr="Velocidad (v):"/>
+        <Res id="lblTrackingErr" tr="Error de Seguimiento:"/>
+
+        <Res id="solverStatus" tr="Estado del Solucionador"/>
+        <Res id="lblStatus" tr="Estado:"/>
+        <Res id="lblSqpIter" tr="Iter SQP/Paso:"/>
+        <Res id="lblTimeSolve" tr="Tiempo/Solución:"/>
+        <Res id="statusConverged" tr="Convergido"/>
+        <Res id="statusFailed" tr="Fallido / Error"/>
+
+        <Res id="engineSettings" tr="Ajustes del Controlador"/>
+        <Res id="lblMaxIter" tr="Iteraciones Máx:"/>
+        <Res id="lblTolerance" tr="Tolerancia:"/>
+        <Res id="lblTimeStep" tr="Paso de Tiempo (dt):"/>
+        <Res id="lblHorizon" tr="Tamaño del Horizonte (N):"/>
+
+        <Res id="mainCanvasTitle" tr="LIENZO DE RUTA PRINCIPAL (Gráfico de Coordenadas X-Y)"/>
+        <Res id="axisX" tr="X (metros)"/>
+        <Res id="axisY" tr="Y (metros)"/>
+        <Res id="legendReference" tr="Ruta de Referencia (Polinómica)"/>
+        <Res id="legendPredicted" tr="Trayectoria de Horizonte Predicho"/>
+        <Res id="legendHistory" tr="Ruta de Historial Rastreado"/>
+        
+        <Res id="actuationTitle" tr="PERFILES DE ACTUACIÓN Y LÍMITES DE SATURACIÓN"/>
+        <Res id="plotSteering" tr="Ángulo de Giro (δ) vs Tiempo"/>
+        <Res id="plotAcceleration" tr="Aceleración (a) vs Tiempo"/>
+
+        <Res id="sidebarTitle" tr="MPC Controls"/>
+        <Res id="pathCanvasTitle" tr="Path Tracking"/>
+        <Res id="pathCanvasEmpty" tr="No trajectory available"/>
+        <Res id="pathCanvasTrackingErr" tr="Tracking err:"/>
+        <Res id="actuationCanvasEmpty" tr="No control data"/>
+
+        <Res id="language" tr="Idioma"/>
+        <Res id="langEnglish" tr="Inglés"/>
+        <Res id="langBosnian" tr="Bosnio"/>
+        <Res id="langGerman" tr="Alemán"/>
+        <Res id="langSpanish" tr="Español"/>
+        <Res id="langFrench" tr="Francés"/>
+        <Res id="langJapanese" tr="Japonés"/>  
+
+        <Res id="RestartRequired" tr="Reiniciar la aplicación"/>
+        <Res id="RestartRequiredInfo" tr="Algunos de los ajustes modificados requieren reiniciar la aplicación para aplicarse"/>
+        <Res id="Restart" tr="Reiniciar"/>
+        <Res id="DoNoRestart" tr="No reiniciar"/>
+    </Translations>
+</DevRes>

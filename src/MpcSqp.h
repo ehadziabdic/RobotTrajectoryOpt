@@ -23,7 +23,15 @@ public:
     explicit MpcSqp(const MpcLayout& layout)
         : _layout(layout) {}
 
+    int lastIterations() const { return _lastIterations; }
+    double lastMaxAbs() const { return _lastMaxAbs; }
+    bool lastConverged() const { return _lastConverged; }
+
     bool Solve(const dense::DblMatrix& coeffs, double target_v, double initial_x, double dt, const Settings& cfg) {
+        _lastIterations = 0;
+        _lastMaxAbs = 0.0;
+        _lastConverged = false;
+
         const td::UINT4 nZ = static_cast<td::UINT4>(_layout.totalSize());
         dense::DblMatrix zNom(nZ, 1, nullptr, true);
 
@@ -89,11 +97,15 @@ public:
             if (cfg.verbose) {
                 std::cout << "SQP iter=" << iter << " max|dZ|=" << maxAbs << std::endl;
             }
+            _lastIterations = iter + 1;
+            _lastMaxAbs = maxAbs;
             if (maxAbs < cfg.tol) {
+                _lastConverged = true;
                 return true;
             }
         }
 
+        _lastIterations = cfg.maxIter;
         return false;
     }
 
@@ -107,6 +119,10 @@ public:
                double init_y,
                double init_psi,
                double init_v) {
+        _lastIterations = 0;
+        _lastMaxAbs = 0.0;
+        _lastConverged = false;
+
         const td::UINT4 nZ = static_cast<td::UINT4>(_layout.totalSize());
         if (zNom.getNoOfRows() != nZ || zNom.getNoOfCols() != 1) {
             return false;
@@ -174,16 +190,23 @@ public:
             if (cfg.verbose) {
                 std::cout << "SQP iter=" << iter << " max|dZ|=" << maxAbs << std::endl;
             }
+            _lastIterations = iter + 1;
+            _lastMaxAbs = maxAbs;
             if (maxAbs < cfg.tol) {
+                _lastConverged = true;
                 return true;
             }
         }
 
+        _lastIterations = cfg.maxIter;
         return false;
     }
 
 private:
     const MpcLayout& _layout;
+    int _lastIterations = 0;
+    double _lastMaxAbs = 0.0;
+    bool _lastConverged = false;
 };
 
 } // namespace mpc

@@ -1,0 +1,64 @@
+<?xml version='1.0'?>
+<DevRes>
+    <Translations>
+        <Res id="appTitle" tr="MPC Echtzeit-Trajektorienüberwachung"/>
+        <Res id="settings" tr="Einstellungen"/>
+        <Res id="settingsTT" tr="Passen Sie Visualisierungseinstellungen, Grenzen und die Sprache an. Sprachänderungen erfordern einen Neustart der Anwendung."/>
+
+        <Res id="simControls" tr="Simulationssteuerung"/>
+        <Res id="play" tr="Abspielen"/>
+        <Res id="pause" tr="Pause"/>
+        <Res id="step" tr="Einzelschritt"/>
+        <Res id="followVehicle" tr="Kamera folgt Fahrzeug"/>
+
+        <Res id="liveMetrics" tr="Live-Metriken"/>
+        <Res id="lblPosX" tr="Position X:"/>
+        <Res id="lblPosY" tr="Position Y:"/>
+        <Res id="lblHeading" tr="Gierwinkel (ψ):"/>
+        <Res id="lblVelocity" tr="Geschwindigkeit (v):"/>
+        <Res id="lblTrackingErr" tr="Tracking-Fehler:"/>
+
+        <Res id="solverStatus" tr="Solver-Status"/>
+        <Res id="lblStatus" tr="Status:"/>
+        <Res id="lblSqpIter" tr="SQP Iter/Schritt:"/>
+        <Res id="lblTimeSolve" tr="Rechenzeit/Lösung:"/>
+        <Res id="statusConverged" tr="Konvergiert"/>
+        <Res id="statusFailed" tr="Fehlgeschlagen / Fehler"/>
+
+        <Res id="engineSettings" tr="Reglereinstellungen"/>
+        <Res id="lblMaxIter" tr="Max. Iterationen:"/>
+        <Res id="lblTolerance" tr="Toleranz:"/>
+        <Res id="lblTimeStep" tr="Zeitschritt (dt):"/>
+        <Res id="lblHorizon" tr="Horizonthöhe (N):"/>
+
+        <Res id="mainCanvasTitle" tr="HAUPTPFAD-LEINWAND (X-Y-Koordinatendiagramm)"/>
+        <Res id="axisX" tr="X (Meter)"/>
+        <Res id="axisY" tr="Y (Meter)"/>
+        <Res id="legendReference" tr="Referenzpfad (Polynom)"/>
+        <Res id="legendPredicted" tr="Prädizierte Horizonthöhe"/>
+        <Res id="legendHistory" tr="Gefahrener Pfadverlauf"/>
+        
+        <Res id="actuationTitle" tr="AKTUATORPROFILE &amp; SÄTTIGUNGSGRENZEN"/>
+        <Res id="plotSteering" tr="Lenkwinkel (δ) über der Zeit"/>
+        <Res id="plotAcceleration" tr="Beschleunigung (a) über der Zeit"/>
+
+        <Res id="sidebarTitle" tr="MPC Controls"/>
+        <Res id="pathCanvasTitle" tr="Path Tracking"/>
+        <Res id="pathCanvasEmpty" tr="No trajectory available"/>
+        <Res id="pathCanvasTrackingErr" tr="Tracking err:"/>
+        <Res id="actuationCanvasEmpty" tr="No control data"/>
+
+        <Res id="language" tr="Sprache"/>
+        <Res id="langEnglish" tr="Englisch"/>
+        <Res id="langBosnian" tr="Bosnisch"/>
+        <Res id="langGerman" tr="Deutsch"/>
+        <Res id="langSpanish" tr="Spanisch"/>
+        <Res id="langFrench" tr="Französisch"/>
+        <Res id="langJapanese" tr="Japanisch"/>  
+
+        <Res id="RestartRequired" tr="Anwendung neu starten"/>
+        <Res id="RestartRequiredInfo" tr="Einige der geänderten Einstellungen erfordern einen Neustart der Anwendung, um wirksam zu werden"/>
+        <Res id="Restart" tr="Neu starten"/>
+        <Res id="DoNoRestart" tr="Nicht neu starten"/>
+    </Translations>
+</DevRes>

@@ -1,0 +1,17 @@
+<?xml version='1.0'?>
+<DevRes>
+	<Images>
+		<!-- Title bar icons-->
+		<Res id="settings" path = "Common/Icons/SettingsBlue48.png"/>
+		<Res id="reset" path="Common/Icons/undo2.png"/>
+		<Res id="stop" path="Common/Icons/x.png"/>
+
+		<!-- Linux Icons -->
+		<Res id="lnxApp16" path=":appIcon/lnxApp16.png"/>
+		<Res id="lnxApp32" path=":appIcon/lnxApp32.png"/>
+		<Res id="lnxApp48" path=":appIcon/lnxApp48.png"/>
+		<Res id="lnxApp128" path=":appIcon/lnxApp128.png"/>
+		<Res id="lnxApp256" path=":appIcon/lnxApp256.png"/>
+	</Images>
+
+</DevRes>

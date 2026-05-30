@@ -24,12 +24,21 @@ struct Trajectory {
 
 class MpcEngine {
 public:
+    struct Diagnostics {
+        bool ok = false;
+        bool converged = false;
+        int iterations = 0;
+        double maxAbs = 0.0;
+    };
+
     explicit MpcEngine(const MpcLayout& layout)
         : _layout(layout),
           _sqp(_layout),
           _zNom(static_cast<td::UINT4>(_layout.totalSize()), 1, nullptr, true) {}
 
     void setSettings(const MpcSqp::Settings& settings) { _settings = settings; }
+
+    const Diagnostics& diagnostics() const { return _diag; }
 
     bool Solve(const Telemetry& current,
                const dense::DblMatrix& coeffs,
@@ -38,14 +47,17 @@ public:
                Trajectory& out) {
         if (dt <= 0.0) {
             std::cout << "MpcEngine: invalid dt" << std::endl;
+            _diag = Diagnostics{};
             return false;
         }
         if (coeffs.getNoOfRows() == 0 || coeffs.getNoOfCols() == 0) {
             std::cout << "MpcEngine: empty coeffs" << std::endl;
+            _diag = Diagnostics{};
             return false;
         }
         if (!ensureNominalInitialized(coeffs, target_v, current.x, dt)) {
             std::cout << "MpcEngine: nominal init failed" << std::endl;
+            _diag = Diagnostics{};
             return false;
         }
 
@@ -64,16 +76,22 @@ public:
             std::cout << "]" << std::endl;
         }
 
-        if (!_sqp.Solve(coeffs,
-                        target_v,
-                        current.x,
-                        dt,
-                        _settings,
-                        zWork,
-                        current.x,
-                        current.y,
-                        current.psi,
-                        current.v)) {
+        const bool ok = _sqp.Solve(coeffs,
+                                   target_v,
+                                   current.x,
+                                   dt,
+                                   _settings,
+                                   zWork,
+                                   current.x,
+                                   current.y,
+                                   current.psi,
+                                   current.v);
+        _diag.ok = ok;
+        _diag.converged = _sqp.lastConverged();
+        _diag.iterations = _sqp.lastIterations();
+        _diag.maxAbs = _sqp.lastMaxAbs();
+
+        if (!ok) {
             std::cout << "MpcEngine: SQP solve failed" << std::endl;
             return false;
         }
@@ -135,6 +153,7 @@ private:
     MpcSqp::Settings _settings{};
     dense::DblMatrix _zNom;
     bool _zNomInitialized = false;
+    Diagnostics _diag{};
 };
 
 } // namespace mpc

@@ -1,0 +1,64 @@
+<?xml version='1.0'?>
+<DevRes>
+    <Translations>
+        <Res id="appTitle" tr="Moniteur de Trajectoire en Temps Réel MPC"/>
+        <Res id="settings" tr="Paramètres"/>
+        <Res id="settingsTT" tr="Ajuster les paramètres de visualisation, les limites et la langue de l'interface. Les modifications de langue nécessitent un redémarrage de l'application."/>
+
+        <Res id="simControls" tr="Contrôles de Simulation"/>
+        <Res id="play" tr="Lire"/>
+        <Res id="pause" tr="Pause"/>
+        <Res id="step" tr="Pas à Pas"/>
+        <Res id="followVehicle" tr="Cœur de Caméra Suivi Véhicule"/>
+
+        <Res id="liveMetrics" tr="Métriques en Direct"/>
+        <Res id="lblPosX" tr="Position X :"/>
+        <Res id="lblPosY" tr="Position Y :"/>
+        <Res id="lblHeading" tr="Cap (ψ) :"/>
+        <Res id="lblVelocity" tr="Vitesse (v) :"/>
+        <Res id="lblTrackingErr" tr="Erreur de Suivi :"/>
+
+        <Res id="solverStatus" tr="Statut du Solveur"/>
+        <Res id="lblStatus" tr="Statut :"/>
+        <Res id="lblSqpIter" tr="Itér SQP/Pas :"/>
+        <Res id="lblTimeSolve" tr="Temps/Calcul :"/>
+        <Res id="statusConverged" tr="Convergé"/>
+        <Res id="statusFailed" tr="Échoué / Erreur"/>
+
+        <Res id="engineSettings" tr="Paramètres du Contrôleur"/>
+        <Res id="lblMaxIter" tr="Itérations Max :"/>
+        <Res id="lblTolerance" tr="Tolérance :"/>
+        <Res id="lblTimeStep" tr="Pas de Temps (dt) :"/>
+        <Res id="lblHorizon" tr="Taille de l'Horizon (N) :"/>
+
+        <Res id="mainCanvasTitle" tr="ZONE DE TRACÉ PRINCIPALE (Graphique Coordonnées X-Y)"/>
+        <Res id="axisX" tr="X (mètres)"/>
+        <Res id="axisY" tr="Y (mètres)"/>
+        <Res id="legendReference" tr="Trajectoire de Référence (Polynomiale)"/>
+        <Res id="legendPredicted" tr="Trajectoire d'Horizon Prédit"/>
+        <Res id="legendHistory" tr="Historique du Tracé"/>
+        
+        <Res id="actuationTitle" tr="PROFILS D'ACTIONNEMENT &amp; LIMITES DE SATURATION"/>
+        <Res id="plotSteering" tr="Angle de Braquage (δ) vs Temps"/>
+        <Res id="plotAcceleration" tr="Accélération (a) vs Temps"/>
+
+        <Res id="sidebarTitle" tr="MPC Controls"/>
+        <Res id="pathCanvasTitle" tr="Path Tracking"/>
+        <Res id="pathCanvasEmpty" tr="No trajectory available"/>
+        <Res id="pathCanvasTrackingErr" tr="Tracking err:"/>
+        <Res id="actuationCanvasEmpty" tr="No control data"/>
+
+        <Res id="language" tr="Langue"/>
+        <Res id="langEnglish" tr="Anglais"/>
+        <Res id="langBosnian" tr="Bosnien"/>
+        <Res id="langGerman" tr="Allemand"/>
+        <Res id="langSpanish" tr="Espagnol"/>
+        <Res id="langFrench" tr="Français"/>
+        <Res id="langJapanese" tr="Japonais"/>  
+
+        <Res id="RestartRequired" tr="Redémarrer l'application"/>
+        <Res id="RestartRequiredInfo" tr="Certains paramètres modifiés nécessitent un redémarrage de l'application pour prendre effet"/>
+        <Res id="Restart" tr="Redémarrer"/>
+        <Res id="DoNoRestart" tr="Ne pas redémarrer"/>
+    </Translations>
+</DevRes>

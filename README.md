@@ -1,6 +1,6 @@
 <div align="center">
 
-![Banner](res/images/banner.png)
+![Project Banner](res/images/logo.png)  
 
 # 2D Robot Path Planning using Trajectory Optimization (MPC)
 
@@ -55,7 +55,7 @@ Mathematical notation and derivations are kept in the `docs/` folder (see `docs/
  ├─ docs/                # All development notes and documentation related to project
  ├─ res/                 # All resources used in project
    ├─ images/            # README and GUI images
-   ├─ mpc/               # MPC tahematical implementation form (<https://github.com/jayshah19949596/Model-Predictive-Control-Project>)
+   ├─ mpc/               # MPC tahematical implementation form (https://github.com/jayshah19949596/Model-Predictive-Control-Project)
  ├─ src/                 # C++ sources and header files implemented for project
    ├─ MpcLayout.h        # Core layout definition for MPC variable grouping and indexing
    ├─ MpcCost.h          # Cost assembly (quadratic objective) using natID dense matrices

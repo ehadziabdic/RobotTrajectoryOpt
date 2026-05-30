@@ -1,0 +1,65 @@
+<?xml version='1.0'?>
+<DevRes>
+    <Translations>
+        <Res id="appTitle" tr="MPC Real-Time Trajectory Monitor"/>
+        <Res id="settings" tr="Settings"/>
+        <Res id="settingsTT" tr="Adjust visualization settings, limits, and interface language. Language modifications require app restart."/>
+
+        <Res id="simControls" tr="Simulation Controls"/>
+        <Res id="play" tr="Play"/>
+        <Res id="pause" tr="Pause"/>
+        <Res id="step" tr="Single Step"/>
+        <Res id="followVehicle" tr="Follow Vehicle Camera"/>
+
+        <Res id="sidebarTitle" tr="MPC Controls"/>
+
+        <Res id="liveMetrics" tr="Live Metrics"/>
+        <Res id="lblPosX" tr="Position X:"/>
+        <Res id="lblPosY" tr="Position Y:"/>
+        <Res id="lblHeading" tr="Heading (ψ):"/>
+        <Res id="lblVelocity" tr="Velocity (v):"/>
+        <Res id="lblTrackingErr" tr="Tracking Error:"/>
+
+        <Res id="solverStatus" tr="Solver Status"/>
+        <Res id="lblStatus" tr="Status:"/>
+        <Res id="lblSqpIter" tr="SQP Itr/Step:"/>
+        <Res id="lblTimeSolve" tr="Time/Solve:"/>
+        <Res id="statusConverged" tr="Converged"/>
+        <Res id="statusFailed" tr="Failed / Error"/>
+
+        <Res id="engineSettings" tr="Engine Settings"/>
+        <Res id="lblMaxIter" tr="Max Iterations:"/>
+        <Res id="lblTolerance" tr="Tolerance:"/>
+        <Res id="lblTimeStep" tr="Time Step (dt):"/>
+        <Res id="lblHorizon" tr="Horizon Size (N):"/>
+
+        <Res id="mainCanvasTitle" tr="MAIN PATH CANVAS (X-Y Coordinate Plot)"/>
+        <Res id="axisX" tr="X (meters)"/>
+        <Res id="axisY" tr="Y (meters)"/>
+        <Res id="legendReference" tr="Reference Path (Polynomial)"/>
+        <Res id="legendPredicted" tr="Predicted Horizon Trajectory"/>
+        <Res id="legendHistory" tr="Trailed History Path"/>
+        
+        <Res id="actuationTitle" tr="ACTUATION PROFILES &amp; SATURATION LIMITS"/>
+        <Res id="plotSteering" tr="Steering Angle (δ) vs Time"/>
+        <Res id="plotAcceleration" tr="Acceleration (a) vs Time"/>
+
+        <Res id="pathCanvasTitle" tr="Path Tracking"/>
+        <Res id="pathCanvasEmpty" tr="No trajectory available"/>
+        <Res id="pathCanvasTrackingErr" tr="Tracking err:"/>
+        <Res id="actuationCanvasEmpty" tr="No control data"/>
+
+        <Res id="language" tr="Language"/>
+        <Res id="langEnglish" tr="English"/>
+        <Res id="langBosnian" tr="Bosnian"/>
+        <Res id="langGerman" tr="German"/>
+        <Res id="langSpanish" tr="Spanish"/>
+        <Res id="langFrench" tr="French"/>
+        <Res id="langJapanese" tr="Japanese"/>  
+
+        <Res id="RestartRequired" tr="Restart the application"/>
+        <Res id="RestartRequiredInfo" tr="Some of the changed settings require restarting the application to take effect"/>
+        <Res id="Restart" tr="Restart"/>
+        <Res id="DoNoRestart" tr="Don't restart"/>
+    </Translations>
+</DevRes>
