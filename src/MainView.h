@@ -5,8 +5,9 @@
 #include <vector>
 
 #include <dense/Matrix.h>
-#include <gui/SplitterLayout.h>
+#include <gui/HorizontalLayout.h>
 #include <gui/Timer.h>
+#include <gui/VerticalLayout.h>
 #include <gui/View.h>
 
 #include "MpcActuationCanvas.h"
@@ -21,6 +22,7 @@ public:
 
     void startSimulation();
     void stopSimulation();
+    void resetSimulation();
 
 protected:
     bool onTimer(gui::Timer* pTimer) override;
@@ -31,8 +33,8 @@ private:
     void updateSidebar();
 
 private:
-    gui::SplitterLayout _mainSplit;
-    gui::SplitterLayout _rightSplit;
+    gui::HorizontalLayout _mainLayout;
+    gui::VerticalLayout _contentLayout;
 
     MpcSidebarView _sidebar;
     MpcPathCanvas _pathCanvas;
@@ -56,8 +58,8 @@ private:
 };
 
 inline MainView::MainView()
-    : _mainSplit(gui::SplitterLayout::Orientation::Horizontal, gui::SplitterLayout::AuxiliaryCell::Second)
-    , _rightSplit(gui::SplitterLayout::Orientation::Vertical, gui::SplitterLayout::AuxiliaryCell::Second)
+    : _mainLayout(2)
+    , _contentLayout(2)
     , _sidebar()
     , _pathCanvas()
     , _actuationCanvas()
@@ -90,14 +92,19 @@ inline MainView::MainView()
     _sidebar.setPlayHandler([this]() { startSimulation(); });
     _sidebar.setPauseHandler([this]() { stopSimulation(); });
     _sidebar.setStepHandler([this]() { advanceOneStep(); });
+    _sidebar.setResetHandler([this]() { resetSimulation(); });
     _sidebar.setFollowHandler([this](bool follow) {
         _followVehicle = follow;
         _pathCanvas.setFollowVehicle(_followVehicle);
     });
 
-    _mainSplit.setContent(_sidebar, _rightSplit);
-    _rightSplit.setContent(_pathCanvas, _actuationCanvas);
-    setLayout(&_mainSplit);
+    _contentLayout.setSpaceBetweenCells(6);
+    _contentLayout.append(_pathCanvas);
+    _contentLayout.append(_actuationCanvas);
+
+    _mainLayout.append(_sidebar, td::HAlignment::Left, td::VAlignment::Top);
+    _mainLayout.appendLayout(_contentLayout);
+    setLayout(&_mainLayout);
 
     _pathCanvas.setFrame(&_frame);
     _pathCanvas.setTelemetry(&_telemetry);
@@ -121,6 +128,25 @@ inline void MainView::stopSimulation() {
     if (_timer.isRunning()) {
         _timer.stop();
     }
+}
+
+inline void MainView::resetSimulation() {
+    stopSimulation();
+
+    _telemetry.x = 0.0;
+    _telemetry.y = 0.0;
+    _telemetry.psi = 0.0;
+    _telemetry.v = 1.0;
+
+    _trajectory = mpc::Trajectory{};
+    _history.clear();
+    _history.push_back({static_cast<float>(_telemetry.x), static_cast<float>(_telemetry.y)});
+
+    _trackingError = 0.0;
+    _targetVelocity = 1.0;
+
+    refreshVizFrame();
+    updateSidebar();
 }
 
 inline bool MainView::onTimer(gui::Timer* pTimer) {

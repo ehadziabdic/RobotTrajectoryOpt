@@ -9,6 +9,7 @@
         <Res id="play" tr="Reproducir"/>
         <Res id="pause" tr="Pausar"/>
         <Res id="step" tr="Paso Único"/>
+        <Res id="reset" tr="Restablecer"/>
         <Res id="followVehicle" tr="Cámara Sigue al Vehículo"/>
 
         <Res id="liveMetrics" tr="Métricas en Vivo"/>
@@ -22,6 +23,7 @@
         <Res id="lblStatus" tr="Estado:"/>
         <Res id="lblSqpIter" tr="Iter SQP/Paso:"/>
         <Res id="lblTimeSolve" tr="Tiempo/Solución:"/>
+        <Res id="lblMaxAbs" tr="Máx |dZ|:"/>
         <Res id="statusConverged" tr="Convergido"/>
         <Res id="statusFailed" tr="Fallido / Error"/>
 

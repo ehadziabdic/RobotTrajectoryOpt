@@ -9,6 +9,7 @@
         <Res id="play" tr="Play"/>
         <Res id="pause" tr="Pause"/>
         <Res id="step" tr="Single Step"/>
+        <Res id="reset" tr="Reset"/>
         <Res id="followVehicle" tr="Follow Vehicle Camera"/>
 
         <Res id="sidebarTitle" tr="MPC Controls"/>
@@ -24,6 +25,7 @@
         <Res id="lblStatus" tr="Status:"/>
         <Res id="lblSqpIter" tr="SQP Itr/Step:"/>
         <Res id="lblTimeSolve" tr="Time/Solve:"/>
+        <Res id="lblMaxAbs" tr="Max |dZ|:"/>
         <Res id="statusConverged" tr="Converged"/>
         <Res id="statusFailed" tr="Failed / Error"/>
 

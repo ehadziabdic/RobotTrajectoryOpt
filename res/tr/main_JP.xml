@@ -9,6 +9,7 @@
         <Res id="play" tr="再生"/>
         <Res id="pause" tr="一時停止"/>
         <Res id="step" tr="単一ステップ"/>
+        <Res id="reset" tr="リセット"/>
         <Res id="followVehicle" tr="車両追従カメラ"/>
 
         <Res id="liveMetrics" tr="リアルタイム計測"/>
@@ -22,6 +23,7 @@
         <Res id="lblStatus" tr="状態:"/>
         <Res id="lblSqpIter" tr="SQP反復/ステップ:"/>
         <Res id="lblTimeSolve" tr="計算時間/終了:"/>
+        <Res id="lblMaxAbs" tr="最大 |dZ|:"/>
         <Res id="statusConverged" tr="収束完了"/>
         <Res id="statusFailed" tr="失敗 / エラー"/>
 

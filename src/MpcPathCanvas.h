@@ -42,6 +42,8 @@ private:
                       const Viewport& view,
                       td::ColorID color,
                       float lineWidth) const;
+    void drawVehicle(const gui::Rect& rect, const Viewport& view) const;
+    void drawPreviewLine(const gui::Rect& rect, const Viewport& view) const;
 };
 
 inline MpcPathCanvas::MpcPathCanvas()
@@ -147,6 +149,53 @@ inline void MpcPathCanvas::drawPolyline(const std::vector<mpc::PlotPoint>& pts,
     }
 }
 
+inline void MpcPathCanvas::drawVehicle(const gui::Rect& rect, const Viewport& view) const {
+    if (!_telem) {
+        return;
+    }
+
+    const gui::Point center = worldToScreen(rect, _telem->x, _telem->y, view);
+    const double psi = _telem->psi;
+    const double size = std::max(12.0, 0.28 * view.scale);
+    const double halfLength = size * 0.75;
+    const double halfWidth = size * 0.45;
+
+    auto rotate = [&](double localX, double localY) {
+        const double worldX = localX * std::cos(psi) - localY * std::sin(psi);
+        const double worldY = localX * std::sin(psi) + localY * std::cos(psi);
+        gui::Point pt;
+        pt.x = center.x + static_cast<gui::CoordType>(worldX);
+        pt.y = center.y - static_cast<gui::CoordType>(worldY);
+        return pt;
+    };
+
+    const gui::Point frontLeft = rotate(halfLength, halfWidth);
+    const gui::Point frontRight = rotate(halfLength, -halfWidth);
+    const gui::Point rearRight = rotate(-halfLength, -halfWidth);
+    const gui::Point rearLeft = rotate(-halfLength, halfWidth);
+    const gui::Point nose = rotate(halfLength + 0.45 * size, 0.0);
+
+    gui::Shape::drawLine(frontLeft, frontRight, td::ColorID::SysText, 2.0f);
+    gui::Shape::drawLine(frontRight, rearRight, td::ColorID::SysText, 2.0f);
+    gui::Shape::drawLine(rearRight, rearLeft, td::ColorID::SysText, 2.0f);
+    gui::Shape::drawLine(rearLeft, frontLeft, td::ColorID::SysText, 2.0f);
+    gui::Shape::drawLine(center, nose, td::ColorID::DarkBlue, 2.0f);
+}
+
+inline void MpcPathCanvas::drawPreviewLine(const gui::Rect& rect, const Viewport& view) const {
+    if (!_telem) {
+        return;
+    }
+
+    const double previewLength = std::max(20.0, 15.0 * std::fabs(_telem->v));
+    const double dx = std::cos(_telem->psi) * previewLength;
+    const double dy = std::sin(_telem->psi) * previewLength;
+
+    const gui::Point start = worldToScreen(rect, _telem->x, _telem->y, view);
+    const gui::Point end = worldToScreen(rect, _telem->x + dx, _telem->y + dy, view);
+    gui::Shape::drawLine(start, end, td::ColorID::DarkBlue, 2.0f);
+}
+
 inline void MpcPathCanvas::onDraw(const gui::Rect& rect) {
     const Viewport view = computeViewport(rect);
 
@@ -159,6 +208,10 @@ inline void MpcPathCanvas::onDraw(const gui::Rect& rect) {
         gui::Size(rect.right - rect.left - 2 * padLeft, rect.bottom - rect.top - padTop - 24));
 
     gui::Shape::drawRect(plotRect, td::ColorID::DimGray, 1.0f);
+    gui::Shape::drawLine(gui::Point(plotRect.left, plotRect.top), gui::Point(plotRect.right, plotRect.top), td::ColorID::Gray, 1.0f);
+    gui::Shape::drawLine(gui::Point(plotRect.left, plotRect.bottom), gui::Point(plotRect.right, plotRect.bottom), td::ColorID::Gray, 1.0f);
+    gui::Shape::drawLine(gui::Point(plotRect.left, plotRect.top), gui::Point(plotRect.left, plotRect.bottom), td::ColorID::Gray, 1.0f);
+    gui::Shape::drawLine(gui::Point(plotRect.right, plotRect.top), gui::Point(plotRect.right, plotRect.bottom), td::ColorID::Gray, 1.0f);
 
     gui::DrawableString title(tr("pathCanvasTitle"));
     gui::Point titlePoint;
@@ -172,11 +225,10 @@ inline void MpcPathCanvas::onDraw(const gui::Rect& rect) {
         msgPoint.x = rect.left + 10;
         msgPoint.y = rect.top + 30;
         empty.draw(msgPoint, gui::Font::ID::SystemNormal, td::ColorID::SysText);
+        drawPreviewLine(plotRect, view);
+        drawVehicle(plotRect, view);
         return;
     }
-
-    gui::Shape::drawLine(gui::Point(plotRect.left, plotRect.bottom), gui::Point(plotRect.right, plotRect.bottom), td::ColorID::Gray, 1.0f);
-    gui::Shape::drawLine(gui::Point(plotRect.left, plotRect.top), gui::Point(plotRect.left, plotRect.bottom), td::ColorID::Gray, 1.0f);
 
     gui::DrawableString axisX(tr("axisX"));
     gui::Point axisXPoint;
@@ -214,31 +266,8 @@ inline void MpcPathCanvas::onDraw(const gui::Rect& rect) {
     drawPolyline(_frame->referencePath, plotRect, view, td::ColorID::DarkRed, 1.5f);
     drawPolyline(_frame->predictedPath, plotRect, view, td::ColorID::DarkBlue, 2.0f);
 
-    if (_telem) {
-        const gui::Point center = worldToScreen(plotRect, _telem->x, _telem->y, view);
-        const double psi = _telem->psi;
-        const double marker = std::max(8.0, 0.25 * view.scale);
-        const double noseX = std::cos(psi) * (1.25 * marker);
-        const double noseY = -std::sin(psi) * (1.25 * marker);
-        const double leftX = std::cos(psi + 2.45) * marker;
-        const double leftY = -std::sin(psi + 2.45) * marker;
-        const double rightX = std::cos(psi - 2.45) * marker;
-        const double rightY = -std::sin(psi - 2.45) * marker;
-
-        gui::Point nose;
-        nose.x = center.x + static_cast<gui::CoordType>(noseX);
-        nose.y = center.y + static_cast<gui::CoordType>(noseY);
-        gui::Point leftPt;
-        leftPt.x = center.x + static_cast<gui::CoordType>(leftX);
-        leftPt.y = center.y + static_cast<gui::CoordType>(leftY);
-        gui::Point rightPt;
-        rightPt.x = center.x + static_cast<gui::CoordType>(rightX);
-        rightPt.y = center.y + static_cast<gui::CoordType>(rightY);
-
-        gui::Shape::drawLine(nose, leftPt, td::ColorID::SysText, 2.0f);
-        gui::Shape::drawLine(leftPt, rightPt, td::ColorID::SysText, 2.0f);
-        gui::Shape::drawLine(rightPt, nose, td::ColorID::SysText, 2.0f);
-    }
+    drawPreviewLine(plotRect, view);
+    drawVehicle(plotRect, view);
 
     char buffer[128];
     std::snprintf(buffer, sizeof(buffer), "%s %.3f", tr("pathCanvasTrackingErr").c_str(), _trackingErr);

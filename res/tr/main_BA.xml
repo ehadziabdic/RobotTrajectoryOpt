@@ -9,6 +9,7 @@
         <Res id="play" tr="Pokreni"/>
         <Res id="pause" tr="Pauziraj"/>
         <Res id="step" tr="Korak Naprijed"/>
+        <Res id="reset" tr="Resetuj"/>
         <Res id="followVehicle" tr="Kamera Prati Vozilo"/>
 
         <Res id="liveMetrics" tr="Trenutna Telemetrija"/>
@@ -22,6 +23,7 @@
         <Res id="lblStatus" tr="Status:"/>
         <Res id="lblSqpIter" tr="SQP Iter/Korak:"/>
         <Res id="lblTimeSolve" tr="Vrijeme Rješavanja:"/>
+        <Res id="lblMaxAbs" tr="Maks |dZ|:"/>
         <Res id="statusConverged" tr="Konvergirano"/>
         <Res id="statusFailed" tr="Neuspješno / Greška"/>
 

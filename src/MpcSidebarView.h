@@ -17,6 +17,7 @@ public:
     void setPlayHandler(const std::function<void()>& fn) { _onPlay = fn; }
     void setPauseHandler(const std::function<void()>& fn) { _onPause = fn; }
     void setStepHandler(const std::function<void()>& fn) { _onStep = fn; }
+    void setResetHandler(const std::function<void()>& fn) { _onReset = fn; }
     void setFollowHandler(const std::function<void(bool)>& fn) { _onFollow = fn; }
 
     void setTelemetry(double x, double y, double psi, double v, double err);
@@ -43,6 +44,7 @@ private:
     gui::Button _btnPlay;
     gui::Button _btnPause;
     gui::Button _btnStep;
+    gui::Button _btnReset;
     gui::CheckBox _chkFollow;
 
     gui::Label _lblTelemetry;
@@ -67,12 +69,13 @@ private:
     std::function<void()> _onPlay;
     std::function<void()> _onPause;
     std::function<void()> _onStep;
+    std::function<void()> _onReset;
     std::function<void(bool)> _onFollow;
 };
 
 inline MpcSidebarView::MpcSidebarView()
     : _layout(16)
-    , _controls(3)
+    , _controls(4)
     , _rowTitle(1)
     , _rowFollow(1)
     , _rowTelemetry(1)
@@ -88,6 +91,7 @@ inline MpcSidebarView::MpcSidebarView()
     , _btnPlay(tr("play"))
     , _btnPause(tr("pause"))
     , _btnStep(tr("step"))
+    , _btnReset(tr("reset"))
     , _chkFollow(tr("followVehicle"))
     , _lblTelemetry(tr("liveMetrics"))
     , _lblPosX(tr("lblPosX"))
@@ -112,6 +116,7 @@ inline MpcSidebarView::MpcSidebarView()
     _controls.append(_btnPlay);
     _controls.append(_btnPause);
     _controls.append(_btnStep);
+    _controls.append(_btnReset);
 
     _rowTitle.append(_lblTitle);
     _rowFollow.append(_chkFollow);
@@ -161,6 +166,11 @@ inline MpcSidebarView::MpcSidebarView()
     _btnStep.onClick([this]() {
         if (_onStep) {
             _onStep();
+        }
+    });
+    _btnReset.onClick([this]() {
+        if (_onReset) {
+            _onReset();
         }
     });
     _chkFollow.onClick([this]() {

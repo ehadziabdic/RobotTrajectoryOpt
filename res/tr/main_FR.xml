@@ -9,6 +9,7 @@
         <Res id="play" tr="Lire"/>
         <Res id="pause" tr="Pause"/>
         <Res id="step" tr="Pas à Pas"/>
+        <Res id="reset" tr="Réinitialiser"/>
         <Res id="followVehicle" tr="Cœur de Caméra Suivi Véhicule"/>
 
         <Res id="liveMetrics" tr="Métriques en Direct"/>
@@ -22,6 +23,7 @@
         <Res id="lblStatus" tr="Statut :"/>
         <Res id="lblSqpIter" tr="Itér SQP/Pas :"/>
         <Res id="lblTimeSolve" tr="Temps/Calcul :"/>
+        <Res id="lblMaxAbs" tr="Max |dZ| :"/>
         <Res id="statusConverged" tr="Convergé"/>
         <Res id="statusFailed" tr="Échoué / Erreur"/>
 

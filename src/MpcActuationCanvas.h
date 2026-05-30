@@ -75,19 +75,30 @@ inline void MpcActuationCanvas::drawStepPlot(const gui::Rect& rect,
     titlePoint.y = rect.top + 8;
     titleText.draw(titlePoint, gui::Font::ID::SystemNormal, td::ColorID::SysText);
 
+    const double left = rect.left + 12;
+    const double right = rect.right - 12;
+    const double top = rect.top + 28;
+    const double bottom = rect.bottom - 14;
+
+    gui::Shape::drawLine(gui::Point(static_cast<gui::CoordType>(left), static_cast<gui::CoordType>(top)),
+                         gui::Point(static_cast<gui::CoordType>(right), static_cast<gui::CoordType>(top)),
+                         td::ColorID::Gray, 1.0f);
+    gui::Shape::drawLine(gui::Point(static_cast<gui::CoordType>(left), static_cast<gui::CoordType>(bottom)),
+                         gui::Point(static_cast<gui::CoordType>(right), static_cast<gui::CoordType>(bottom)),
+                         td::ColorID::Gray, 1.0f);
+
     if (timeS.size() < 2 || values.empty()) {
         gui::DrawableString empty(tr("actuationCanvasEmpty"));
         gui::Point msgPoint;
         msgPoint.x = rect.left + 10;
         msgPoint.y = rect.top + 28;
         empty.draw(msgPoint, gui::Font::ID::SystemNormal, td::ColorID::SysText);
+
+        const gui::Point centerLeft(static_cast<gui::CoordType>(left), static_cast<gui::CoordType>((top + bottom) * 0.5));
+        const gui::Point centerRight(static_cast<gui::CoordType>(right), static_cast<gui::CoordType>((top + bottom) * 0.5));
+        gui::Shape::drawLine(centerLeft, centerRight, td::ColorID::DarkBlue, 2.0f);
         return;
     }
-
-    const double left = rect.left + 12;
-    const double right = rect.right - 12;
-    const double top = rect.top + 28;
-    const double bottom = rect.bottom - 14;
 
     double minValue = minLine;
     double maxValue = maxLine;
@@ -147,12 +158,12 @@ inline void MpcActuationCanvas::onDraw(const gui::Rect& rect) {
     top.bottom = top.top + half;
     bottom.top = top.bottom + gap;
 
+    const std::vector<float> emptyTime;
+    const std::vector<float> emptyValues;
+
     if (!_frame) {
-        gui::DrawableString empty("No actuation data");
-        gui::Point msgPoint;
-        msgPoint.x = rect.left + 10;
-        msgPoint.y = rect.top + 10;
-        empty.draw(msgPoint, gui::Font::ID::SystemNormal, td::ColorID::SysText);
+        drawStepPlot(top, emptyTime, emptyValues, -0.5f, 0.5f, tr("plotSteering").c_str(), td::ColorID::DarkBlue);
+        drawStepPlot(bottom, emptyTime, emptyValues, -1.0f, 1.0f, tr("plotAcceleration").c_str(), td::ColorID::Yellow);
         return;
     }
 
