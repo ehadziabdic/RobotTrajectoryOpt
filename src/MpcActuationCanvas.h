@@ -67,6 +67,7 @@ inline void MpcActuationCanvas::drawStepPlot(const gui::Rect& rect,
                                              float maxLine,
                                              const td::String& title,
                                              td::ColorID color) const {
+    gui::Shape::drawRect(rect, td::ColorID::Black);
     gui::Shape::drawRect(rect, td::ColorID::DarkGray, 1.0f);
 
     gui::DrawableString titleText(title);
@@ -149,6 +150,7 @@ inline void MpcActuationCanvas::drawStepPlot(const gui::Rect& rect,
 }
 
 inline void MpcActuationCanvas::onDraw(const gui::Rect& rect) {
+    gui::Shape::drawRect(rect, td::ColorID::DarkGray);
     gui::Shape::drawRect(rect, td::ColorID::DarkGray, 1.0f);
 
     gui::Rect top = rect;

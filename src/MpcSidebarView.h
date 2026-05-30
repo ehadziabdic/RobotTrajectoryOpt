@@ -3,22 +3,23 @@
 #include <cstdio>
 #include <functional>
 
-#include <gui/Button.h>
-#include <gui/HorizontalLayout.h>
+#include <gui/ComboBox.h>
 #include <gui/CheckBox.h>
+#include <gui/HorizontalLayout.h>
 #include <gui/Label.h>
+#include <gui/Slider.h>
 #include <gui/VerticalLayout.h>
 #include <gui/View.h>
+
+#include "MpcScenario.h"
 
 class MpcSidebarView : public gui::View {
 public:
     MpcSidebarView();
 
-    void setPlayHandler(const std::function<void()>& fn) { _onPlay = fn; }
-    void setPauseHandler(const std::function<void()>& fn) { _onPause = fn; }
-    void setStepHandler(const std::function<void()>& fn) { _onStep = fn; }
-    void setResetHandler(const std::function<void()>& fn) { _onReset = fn; }
     void setFollowHandler(const std::function<void(bool)>& fn) { _onFollow = fn; }
+    void setScenarioHandler(const std::function<void(mpc::SimScenario)>& fn) { _onScenario = fn; }
+    void setSpeedHandler(const std::function<void(float)>& fn) { _onSpeed = fn; }
 
     void setTelemetry(double x, double y, double psi, double v, double err);
     void setSolverStatus(bool ok, bool converged, int iterations, double maxAbs);
@@ -27,10 +28,11 @@ public:
 
 private:
     gui::VerticalLayout _layout;
-    gui::HorizontalLayout _controls;
     gui::HorizontalLayout _rowTitle;
     gui::HorizontalLayout _rowFollow;
     gui::HorizontalLayout _rowTelemetry;
+    gui::HorizontalLayout _rowScenario;
+    gui::HorizontalLayout _rowSpeed;
     gui::HorizontalLayout _rowPosX;
     gui::HorizontalLayout _rowPosY;
     gui::HorizontalLayout _rowPsi;
@@ -41,13 +43,13 @@ private:
     gui::HorizontalLayout _rowMaxAbs;
 
     gui::Label _lblTitle;
-    gui::Button _btnPlay;
-    gui::Button _btnPause;
-    gui::Button _btnStep;
-    gui::Button _btnReset;
     gui::CheckBox _chkFollow;
+    gui::ComboBox _cmbScenario;
+    gui::Slider _slSpeed;
 
     gui::Label _lblTelemetry;
+    gui::Label _lblScenario;
+    gui::Label _lblSpeed;
     gui::Label _lblPosX;
     gui::Label _lblPosY;
     gui::Label _lblPsi;
@@ -66,19 +68,18 @@ private:
     gui::Label _lblMaxAbs;
     gui::Label _valMaxAbs;
 
-    std::function<void()> _onPlay;
-    std::function<void()> _onPause;
-    std::function<void()> _onStep;
-    std::function<void()> _onReset;
     std::function<void(bool)> _onFollow;
+    std::function<void(mpc::SimScenario)> _onScenario;
+    std::function<void(float)> _onSpeed;
 };
 
 inline MpcSidebarView::MpcSidebarView()
-    : _layout(16)
-    , _controls(4)
+    : _layout(13)
     , _rowTitle(1)
     , _rowFollow(1)
     , _rowTelemetry(1)
+    , _rowScenario(2)
+    , _rowSpeed(2)
     , _rowPosX(2)
     , _rowPosY(2)
     , _rowPsi(2)
@@ -88,12 +89,12 @@ inline MpcSidebarView::MpcSidebarView()
     , _rowIters(2)
     , _rowMaxAbs(2)
     , _lblTitle(tr("sidebarTitle"))
-    , _btnPlay(tr("play"))
-    , _btnPause(tr("pause"))
-    , _btnStep(tr("step"))
-    , _btnReset(tr("reset"))
     , _chkFollow(tr("followVehicle"))
+    , _cmbScenario()
+    , _slSpeed()
     , _lblTelemetry(tr("liveMetrics"))
+    , _lblScenario(tr("scenarioLabel"))
+    , _lblSpeed(tr("speedLabel"))
     , _lblPosX(tr("lblPosX"))
     , _lblPosY(tr("lblPosY"))
     , _lblPsi(tr("lblHeading"))
@@ -113,14 +114,13 @@ inline MpcSidebarView::MpcSidebarView()
 {
     setMargins(8, 8, 8, 8);
 
-    _controls.append(_btnPlay);
-    _controls.append(_btnPause);
-    _controls.append(_btnStep);
-    _controls.append(_btnReset);
-
     _rowTitle.append(_lblTitle);
     _rowFollow.append(_chkFollow);
     _rowTelemetry.append(_lblTelemetry);
+    _rowScenario.append(_lblScenario);
+    _rowScenario.append(_cmbScenario);
+    _rowSpeed.append(_lblSpeed);
+    _rowSpeed.append(_slSpeed);
 
     _rowPosX.append(_lblPosX);
     _rowPosX.append(_valPosX);
@@ -141,9 +141,10 @@ inline MpcSidebarView::MpcSidebarView()
     _rowMaxAbs.append(_valMaxAbs);
 
     _layout << _rowTitle;
-    _layout << _controls;
     _layout << _rowFollow;
     _layout << _rowTelemetry;
+    _layout << _rowScenario;
+    _layout << _rowSpeed;
     _layout << _rowPosX;
     _layout << _rowPosY;
     _layout << _rowPsi;
@@ -153,31 +154,34 @@ inline MpcSidebarView::MpcSidebarView()
     _layout << _rowIters;
     _layout << _rowMaxAbs;
 
-    _btnPlay.onClick([this]() {
-        if (_onPlay) {
-            _onPlay();
-        }
-    });
-    _btnPause.onClick([this]() {
-        if (_onPause) {
-            _onPause();
-        }
-    });
-    _btnStep.onClick([this]() {
-        if (_onStep) {
-            _onStep();
-        }
-    });
-    _btnReset.onClick([this]() {
-        if (_onReset) {
-            _onReset();
-        }
-    });
     _chkFollow.onClick([this]() {
         if (_onFollow) {
             _onFollow(_chkFollow.isChecked());
         }
     });
+
+    _cmbScenario.addItem(tr("scenarioStraightLine"));
+    _cmbScenario.addItem(tr("scenarioLaneChange"));
+    _cmbScenario.addItem(tr("scenarioSCurve"));
+    _cmbScenario.selectIndex(0);
+    _cmbScenario.onChangedSelection([this]() {
+        if (_onScenario) {
+            const int index = _cmbScenario.getSelectedIndex();
+            _onScenario(static_cast<mpc::SimScenario>(index));
+        }
+    });
+
+    _slSpeed.setRange(0, 200);
+    _slSpeed.setValue(100);
+    _slSpeed.onChangedValue([this]() {
+        if (_onSpeed) {
+            _onSpeed(static_cast<float>(_slSpeed.getValue()));
+        }
+    });
+
+    // limit slider width so it doesn't extend to the very border
+    _slSpeed.setSizeLimits(200, gui::Control::Limit::Fixed);
+
     _chkFollow.setChecked(true, false);
 
     setLayout(&_layout);

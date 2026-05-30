@@ -6,6 +6,7 @@
 #include <dense/Matrix.h>
 
 #include "MpcEngine.h"
+#include "MpcScenario.h"
 
 namespace mpc {
 
@@ -18,6 +19,7 @@ struct MpcVizFrame {
     std::vector<PlotPoint> historyPath;
     std::vector<PlotPoint> predictedPath;
     std::vector<PlotPoint> referencePath;
+    std::vector<Obstacle> obstacles;
 
     std::vector<float> predictedPsi;
     std::vector<float> predictedV;
@@ -37,6 +39,7 @@ public:
     static MpcVizFrame BuildFrame(const std::vector<PlotPoint>& history,
                                   const dense::DblMatrix& coeffs,
                                   const Trajectory& traj,
+                                  const std::vector<Obstacle>& obstacles,
                                   double dt,
                                   float deltaMin,
                                   float deltaMax,
@@ -44,6 +47,7 @@ public:
                                   float accelMax) {
         MpcVizFrame frame;
         frame.historyPath = history;
+        frame.obstacles = obstacles;
         frame.deltaMin = deltaMin;
         frame.deltaMax = deltaMax;
         frame.accelMin = accelMin;

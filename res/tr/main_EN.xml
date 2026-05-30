@@ -10,7 +10,16 @@
         <Res id="pause" tr="Pause"/>
         <Res id="step" tr="Single Step"/>
         <Res id="reset" tr="Reset"/>
+        <Res id="start" tr="Start"/>
+        <Res id="stop" tr="Stop"/>
+        <Res id="back" tr="Back"/>
+        <Res id="forward" tr="Forward"/>
+        <Res id="speedLabel" tr="Speed:"/>
         <Res id="followVehicle" tr="Follow Vehicle Camera"/>
+        <Res id="scenarioLabel" tr="Scenario:"/>
+        <Res id="scenarioStraightLine" tr="Straight Line"/>
+        <Res id="scenarioLaneChange" tr="Lane Change"/>
+        <Res id="scenarioSCurve" tr="S-Curve"/>
 
         <Res id="sidebarTitle" tr="MPC Controls"/>
 

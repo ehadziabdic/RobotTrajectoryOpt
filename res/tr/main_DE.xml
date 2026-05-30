@@ -10,7 +10,16 @@
         <Res id="pause" tr="Pause"/>
         <Res id="step" tr="Einzelschritt"/>
         <Res id="reset" tr="Zurücksetzen"/>
+        <Res id="start" tr="Start"/>
+        <Res id="stop" tr="Stopp"/>
+        <Res id="back" tr="Zurück"/>
+        <Res id="forward" tr="Vor"/>
+        <Res id="speedLabel" tr="Geschwindigkeit:"/>
         <Res id="followVehicle" tr="Kamera folgt Fahrzeug"/>
+        <Res id="scenarioLabel" tr="Szenario:"/>
+        <Res id="scenarioStraightLine" tr="Gerade"/>
+        <Res id="scenarioLaneChange" tr="Spurwechsel"/>
+        <Res id="scenarioSCurve" tr="S-Kurve"/>
 
         <Res id="liveMetrics" tr="Live-Metriken"/>
         <Res id="lblPosX" tr="Position X:"/>

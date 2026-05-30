@@ -199,15 +199,14 @@ inline void MpcPathCanvas::drawPreviewLine(const gui::Rect& rect, const Viewport
 inline void MpcPathCanvas::onDraw(const gui::Rect& rect) {
     const Viewport view = computeViewport(rect);
 
-    gui::Shape::drawRect(rect, td::ColorID::DarkGray, 1.0f);
-
     const gui::CoordType padLeft = 12;
     const gui::CoordType padTop = 28;
     const gui::Rect plotRect(
         gui::Point(rect.left + padLeft, rect.top + padTop),
         gui::Size(rect.right - rect.left - 2 * padLeft, rect.bottom - rect.top - padTop - 24));
 
-    gui::Shape::drawRect(plotRect, td::ColorID::DimGray, 1.0f);
+    gui::Shape::drawRect(plotRect, td::ColorID::Black);
+    gui::Shape::drawRect(plotRect, td::ColorID::Gray, 1.0f);
     gui::Shape::drawLine(gui::Point(plotRect.left, plotRect.top), gui::Point(plotRect.right, plotRect.top), td::ColorID::Gray, 1.0f);
     gui::Shape::drawLine(gui::Point(plotRect.left, plotRect.bottom), gui::Point(plotRect.right, plotRect.bottom), td::ColorID::Gray, 1.0f);
     gui::Shape::drawLine(gui::Point(plotRect.left, plotRect.top), gui::Point(plotRect.left, plotRect.bottom), td::ColorID::Gray, 1.0f);
@@ -263,8 +262,18 @@ inline void MpcPathCanvas::onDraw(const gui::Rect& rect) {
     legendPredicted.draw(legendTextPoint, gui::Font::ID::SystemNormal, td::ColorID::SysText);
 
     drawPolyline(_frame->historyPath, plotRect, view, td::ColorID::Yellow, 2.0f);
-    drawPolyline(_frame->referencePath, plotRect, view, td::ColorID::DarkRed, 1.5f);
+    drawPolyline(_frame->referencePath, plotRect, view, td::ColorID::DarkRed, 2.5f);
     drawPolyline(_frame->predictedPath, plotRect, view, td::ColorID::DarkBlue, 2.0f);
+
+    for (const mpc::Obstacle& obstacle : _frame->obstacles) {
+        const gui::Point obstacleCenter = worldToScreen(plotRect, obstacle.x, obstacle.y, view);
+        const gui::CoordType radius = static_cast<gui::CoordType>(std::max(6.0, obstacle.r * view.scale));
+        gui::Circle circle(obstacleCenter, radius);
+
+        gui::Shape shape;
+        shape.createCircle(circle, 2.0f);
+        shape.drawWire(td::ColorID::DarkRed);
+    }
 
     drawPreviewLine(plotRect, view);
     drawVehicle(plotRect, view);

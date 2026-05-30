@@ -2,16 +2,23 @@
 
 #include <algorithm>
 #include <cmath>
+#include <functional>
+#include <limits>
 #include <vector>
 
 #include <dense/Matrix.h>
+#include <gui/Alert.h>
+#include <gui/Application.h>
+#include <gui/SplitterLayout.h>
 #include <gui/HorizontalLayout.h>
 #include <gui/Timer.h>
 #include <gui/VerticalLayout.h>
 #include <gui/View.h>
 
+#include "DialogSettings.h"
 #include "MpcActuationCanvas.h"
 #include "MpcEngine.h"
+#include "MpcScenario.h"
 #include "MpcPathCanvas.h"
 #include "MpcSidebarView.h"
 #include "MpcVizAdapter.h"
@@ -23,6 +30,11 @@ public:
     void startSimulation();
     void stopSimulation();
     void resetSimulation();
+    void stepBackward();
+    void stepForward();
+    void openSettingsDialog();
+    bool isRunning() const { return _running; }
+    void setToolbarStateHandler(const std::function<void(bool, bool, bool)>& fn) { _onToolbarState = fn; }
 
 protected:
     bool onTimer(gui::Timer* pTimer) override;
@@ -31,10 +43,29 @@ private:
     void advanceOneStep();
     void refreshVizFrame();
     void updateSidebar();
+    double evaluateReferenceY(double x) const;
+    double computeTrackingError(const mpc::Telemetry& telem, const std::vector<mpc::PlotPoint>& referencePath) const;
+    void setPlaybackSpeed(float sliderValue);
+    void updatePlaybackButtons();
+    void clearHistoryRedo();
+    void notifyToolbarState();
+
+    struct StepSnapshot {
+        mpc::Telemetry telemetry;
+        mpc::Trajectory trajectory;
+        std::vector<mpc::PlotPoint> history;
+        mpc::MpcVizFrame frame;
+        mpc::MpcEngine::Diagnostics diag;
+        double trackingError = 0.0;
+    };
+
+    StepSnapshot captureSnapshot() const;
+    void restoreSnapshot(const StepSnapshot& snapshot);
 
 private:
-    gui::HorizontalLayout _mainLayout;
+    gui::SplitterLayout _splitter;
     gui::VerticalLayout _contentLayout;
+    gui::View _contentView;
 
     MpcSidebarView _sidebar;
     MpcPathCanvas _pathCanvas;
@@ -50,15 +81,22 @@ private:
 
     std::vector<mpc::PlotPoint> _history;
     mpc::MpcVizFrame _frame;
+    mpc::SimScenario _scenario = mpc::SimScenario::StraightLine;
+    mpc::ScenarioConfig _scenarioConfig;
 
     double _targetVelocity = 1.0;
     bool _running = false;
     bool _followVehicle = true;
     double _trackingError = 0.0;
+    float _baseTimerInterval = 0.05f;
+    float _speedPercent = 100.0f;
+    std::vector<StepSnapshot> _undoSnapshots;
+    std::vector<StepSnapshot> _redoSnapshots;
+    std::function<void(bool, bool, bool)> _onToolbarState;
 };
 
 inline MainView::MainView()
-    : _mainLayout(2)
+    : _splitter(gui::SplitterLayout::Orientation::Horizontal, gui::SplitterLayout::AuxiliaryCell::Second)
     , _contentLayout(2)
     , _sidebar()
     , _pathCanvas()
@@ -70,16 +108,17 @@ inline MainView::MainView()
 {
     setMargins(0, 0, 0, 0);
 
+    const auto straightLine = mpc::makeScenarioConfig(mpc::SimScenario::StraightLine);
+    _scenarioConfig = straightLine;
     auto coeffs = _coeffs.getColumnManipulator();
-    coeffs(0) = 0.0;
-    coeffs(1) = 0.0;
-    coeffs(2) = 0.0;
-    coeffs(3) = 0.0;
+    auto scenarioCoeffs = _scenarioConfig.coeffs.getColumnManipulator();
+    coeffs(0) = scenarioCoeffs(0);
+    coeffs(1) = scenarioCoeffs(1);
+    coeffs(2) = scenarioCoeffs(2);
+    coeffs(3) = scenarioCoeffs(3);
 
-    _telemetry.x = 0.0;
-    _telemetry.y = 0.0;
-    _telemetry.psi = 0.0;
-    _telemetry.v = 1.0;
+    _telemetry = _scenarioConfig.initialTelemetry;
+    _targetVelocity = _telemetry.v;
 
     _settings.maxIter = 6;
     _settings.tol = 1e-3;
@@ -89,22 +128,28 @@ inline MainView::MainView()
 
     _history.push_back({static_cast<float>(_telemetry.x), static_cast<float>(_telemetry.y)});
 
-    _sidebar.setPlayHandler([this]() { startSimulation(); });
-    _sidebar.setPauseHandler([this]() { stopSimulation(); });
-    _sidebar.setStepHandler([this]() { advanceOneStep(); });
-    _sidebar.setResetHandler([this]() { resetSimulation(); });
+    _sidebar.setScenarioHandler([this](mpc::SimScenario scenario) {
+        _scenario = scenario;
+        resetSimulation();
+    });
     _sidebar.setFollowHandler([this](bool follow) {
         _followVehicle = follow;
         _pathCanvas.setFollowVehicle(_followVehicle);
     });
+    _sidebar.setSpeedHandler([this](float value) { setPlaybackSpeed(value); });
 
     _contentLayout.setSpaceBetweenCells(6);
+    _contentLayout.setMargins(0, 0);
     _contentLayout.append(_pathCanvas);
     _contentLayout.append(_actuationCanvas);
 
-    _mainLayout.append(_sidebar, td::HAlignment::Left, td::VAlignment::Top);
-    _mainLayout.appendLayout(_contentLayout);
-    setLayout(&_mainLayout);
+    // host the content layout inside a View so Splitter receives two Controls/Views
+    _contentView.setLayout(&_contentLayout);
+    // Make main content the primary (first) view and sidebar the auxiliary (second)
+    _splitter.setContent(_contentView, _sidebar);
+    // enforce a reasonable default sidebar width so app opens with left column visible
+    _sidebar.setSizeLimits(320, gui::Control::Limit::Fixed);
+    setLayout(&_splitter);
 
     _pathCanvas.setFrame(&_frame);
     _pathCanvas.setTelemetry(&_telemetry);
@@ -114,13 +159,17 @@ inline MainView::MainView()
 
     refreshVizFrame();
     updateSidebar();
+    updatePlaybackButtons();
+    _undoSnapshots.push_back(captureSnapshot());
 }
 
 inline void MainView::startSimulation() {
     _running = true;
+    setPlaybackSpeed(_speedPercent);
     if (!_timer.isRunning()) {
         _timer.start();
     }
+    updatePlaybackButtons();
 }
 
 inline void MainView::stopSimulation() {
@@ -128,25 +177,34 @@ inline void MainView::stopSimulation() {
     if (_timer.isRunning()) {
         _timer.stop();
     }
+    updatePlaybackButtons();
 }
 
 inline void MainView::resetSimulation() {
     stopSimulation();
 
-    _telemetry.x = 0.0;
-    _telemetry.y = 0.0;
-    _telemetry.psi = 0.0;
-    _telemetry.v = 1.0;
+    _scenarioConfig = mpc::makeScenarioConfig(_scenario);
+    auto coeffs = _coeffs.getColumnManipulator();
+    auto scenarioCoeffs = _scenarioConfig.coeffs.getColumnManipulator();
+    coeffs(0) = scenarioCoeffs(0);
+    coeffs(1) = scenarioCoeffs(1);
+    coeffs(2) = scenarioCoeffs(2);
+    coeffs(3) = scenarioCoeffs(3);
+
+    _telemetry = _scenarioConfig.initialTelemetry;
 
     _trajectory = mpc::Trajectory{};
     _history.clear();
     _history.push_back({static_cast<float>(_telemetry.x), static_cast<float>(_telemetry.y)});
 
     _trackingError = 0.0;
-    _targetVelocity = 1.0;
 
     refreshVizFrame();
     updateSidebar();
+    clearHistoryRedo();
+    _undoSnapshots.clear();
+    _undoSnapshots.push_back(captureSnapshot());
+    updatePlaybackButtons();
 }
 
 inline bool MainView::onTimer(gui::Timer* pTimer) {
@@ -162,18 +220,13 @@ inline bool MainView::onTimer(gui::Timer* pTimer) {
 
 inline void MainView::advanceOneStep() {
     if (!_engine.Solve(_telemetry, _coeffs, _targetVelocity, _layout.dt(), _trajectory)) {
+        auto d = _engine.diagnostics();
+        std::fprintf(stderr, "[MPC] Solve failed: ok=%d converged=%d iter=%d maxAbs=%.6f\n", d.ok ? 1 : 0, d.converged ? 1 : 0, d.iterations, d.maxAbs);
         updateSidebar();
         return;
     }
 
     if (_trajectory.N > 0) {
-        auto states = _trajectory.states.getManipulator();
-        const double refX = states(0, 0);
-        const double refY = states(1, 0);
-        const double dx = _telemetry.x - refX;
-        const double dy = _telemetry.y - refY;
-        _trackingError = std::sqrt(dx * dx + dy * dy);
-
         double delta = 0.0;
         double accel = 0.0;
         if (_trajectory.controls.getNoOfCols() > 0) {
@@ -199,6 +252,9 @@ inline void MainView::advanceOneStep() {
 
     refreshVizFrame();
     updateSidebar();
+    clearHistoryRedo();
+    _undoSnapshots.push_back(captureSnapshot());
+    updatePlaybackButtons();
 }
 
 inline void MainView::refreshVizFrame() {
@@ -206,11 +262,14 @@ inline void MainView::refreshVizFrame() {
         _history,
         _coeffs,
         _trajectory,
+        _scenarioConfig.obstacles,
         _layout.dt(),
         -0.436332f,
         0.436332f,
         -1.0f,
         1.0f);
+
+    _trackingError = computeTrackingError(_telemetry, _frame.referencePath);
 
     _pathCanvas.setFrame(&_frame);
     _pathCanvas.setTelemetry(&_telemetry);
@@ -219,9 +278,149 @@ inline void MainView::refreshVizFrame() {
     _actuationCanvas.setFrame(&_frame);
 }
 
+inline MainView::StepSnapshot MainView::captureSnapshot() const {
+    StepSnapshot snapshot;
+    snapshot.telemetry = _telemetry;
+    snapshot.trajectory = _trajectory;
+    snapshot.history = _history;
+    snapshot.frame = _frame;
+    snapshot.diag = _engine.diagnostics();
+    snapshot.trackingError = _trackingError;
+    return snapshot;
+}
+
+inline void MainView::restoreSnapshot(const StepSnapshot& snapshot) {
+    _telemetry = snapshot.telemetry;
+    _trajectory = snapshot.trajectory;
+    _history = snapshot.history;
+    _frame = snapshot.frame;
+    _trackingError = snapshot.trackingError;
+
+    _pathCanvas.setFrame(&_frame);
+    _pathCanvas.setTelemetry(&_telemetry);
+    _pathCanvas.setFollowVehicle(_followVehicle);
+    _pathCanvas.setTrackingError(_trackingError);
+    _actuationCanvas.setFrame(&_frame);
+    _sidebar.setTelemetry(_telemetry.x, _telemetry.y, _telemetry.psi, _telemetry.v, _trackingError);
+    _sidebar.setSolverStatus(snapshot.diag.ok, snapshot.diag.converged, snapshot.diag.iterations, snapshot.diag.maxAbs);
+}
+
+inline void MainView::clearHistoryRedo() {
+    _redoSnapshots.clear();
+}
+
+inline void MainView::updatePlaybackButtons() {
+    notifyToolbarState();
+}
+
+inline void MainView::setPlaybackSpeed(float sliderValue) {
+    _speedPercent = std::max(1.0f, sliderValue);
+    const float factor = _speedPercent / 100.0f;
+    const float interval = std::clamp(_baseTimerInterval / factor, 0.015f, 0.2f);
+    _timer.setInterval(interval);
+}
+
+inline void MainView::stepBackward() {
+    if (_running || _undoSnapshots.size() < 2) {
+        return;
+    }
+
+    _redoSnapshots.push_back(_undoSnapshots.back());
+    _undoSnapshots.pop_back();
+    restoreSnapshot(_undoSnapshots.back());
+    updatePlaybackButtons();
+}
+
+inline void MainView::stepForward() {
+    if (_running) {
+        return;
+    }
+
+    if (!_redoSnapshots.empty()) {
+        _undoSnapshots.push_back(_redoSnapshots.back());
+        restoreSnapshot(_redoSnapshots.back());
+        _redoSnapshots.pop_back();
+        updatePlaybackButtons();
+        return;
+    }
+
+    advanceOneStep();
+}
+
+inline void MainView::openSettingsDialog() {
+    auto* app = gui::getApplication();
+    auto* props = app ? app->getProperties() : nullptr;
+    const td::String currentLanguage = props ? props->getValue("translation", td::String("EN")) : td::String("EN");
+
+    auto* dlg = new DialogSettings(this);
+    dlg->syncValues(_settings.maxIter, _settings.tol, currentLanguage);
+    dlg->setApplyHandler([this, app, props](int maxIter, double tolerance, const td::String& langExt, bool languageChanged) {
+        _settings.maxIter = std::max(1, maxIter);
+        _settings.tol = tolerance;
+        _engine.setSettings(_settings);
+
+        if (props) {
+            props->setValue("translation", langExt);
+        }
+
+        if (languageChanged) {
+            gui::Alert::showYesNoQuestion(
+                tr("RestartRequired"),
+                tr("RestartRequiredInfo"),
+                tr("Restart"),
+                tr("DoNoRestart"),
+                [app](gui::Alert::Answer answer) {
+                    if (answer == gui::Alert::Answer::Yes && app) {
+                        app->restart();
+                    }
+                });
+        }
+    });
+    dlg->openNonModal();
+}
+
+inline void MainView::notifyToolbarState() {
+    if (!_onToolbarState) {
+        return;
+    }
+
+    const bool canBack = (!_running && _undoSnapshots.size() > 1);
+    const bool canForward = !_running;
+    _onToolbarState(_running, canBack, canForward);
+}
+
+inline double MainView::evaluateReferenceY(double x) const {
+    auto coeffs = _coeffs.getColumnManipulator();
+    const double c0 = coeffs(0);
+    const double c1 = coeffs(1);
+    const double c2 = coeffs(2);
+    const double c3 = coeffs(3);
+    return c0 + c1 * x + c2 * x * x + c3 * x * x * x;
+}
+
+inline double MainView::computeTrackingError(const mpc::Telemetry& telem, const std::vector<mpc::PlotPoint>& referencePath) const {
+    if (!referencePath.empty()) {
+        double minDist2 = std::numeric_limits<double>::max();
+        for (const auto& point : referencePath) {
+            const double dx = telem.x - static_cast<double>(point.x);
+            const double dy = telem.y - static_cast<double>(point.y);
+            const double dist2 = dx * dx + dy * dy;
+            if (dist2 < minDist2) {
+                minDist2 = dist2;
+            }
+        }
+
+        if (std::isfinite(minDist2)) {
+            return std::sqrt(minDist2);
+        }
+    }
+
+    const double refY = evaluateReferenceY(telem.x);
+    return std::fabs(telem.y - refY);
+}
+
 inline void MainView::updateSidebar() {
     const auto& diag = _engine.diagnostics();
     _sidebar.setTelemetry(_telemetry.x, _telemetry.y, _telemetry.psi, _telemetry.v, _trackingError);
     _sidebar.setSolverStatus(diag.ok, diag.converged, diag.iterations, diag.maxAbs);
 }
-

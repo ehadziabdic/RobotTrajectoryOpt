@@ -10,7 +10,16 @@
         <Res id="pause" tr="一時停止"/>
         <Res id="step" tr="単一ステップ"/>
         <Res id="reset" tr="リセット"/>
+        <Res id="start" tr="開始"/>
+        <Res id="stop" tr="停止"/>
+        <Res id="back" tr="戻る"/>
+        <Res id="forward" tr="進む"/>
+        <Res id="speedLabel" tr="速度:"/>
         <Res id="followVehicle" tr="車両追従カメラ"/>
+        <Res id="scenarioLabel" tr="シナリオ:"/>
+        <Res id="scenarioStraightLine" tr="直線"/>
+        <Res id="scenarioLaneChange" tr="車線変更"/>
+        <Res id="scenarioSCurve" tr="S字カーブ"/>
 
         <Res id="liveMetrics" tr="リアルタイム計測"/>
         <Res id="lblPosX" tr="位置 X:"/>
