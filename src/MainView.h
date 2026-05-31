@@ -1,9 +1,12 @@
 #pragma once
 
 #include <algorithm>
+#include <atomic>
 #include <cmath>
 #include <functional>
 #include <limits>
+#include <mutex>
+#include <thread>
 #include <vector>
 
 #include <dense/Matrix.h>
@@ -26,6 +29,7 @@
 class MainView : public gui::View {
 public:
     MainView();
+    ~MainView();
 
     void startSimulation();
     void stopSimulation();
@@ -61,6 +65,7 @@ private:
     void updatePlaybackButtons();
     void clearHistoryRedo();
     void notifyToolbarState();
+    void finalizeStepOnGuiThread();
 
     struct StepSnapshot {
         mpc::Telemetry telemetry;
@@ -105,6 +110,9 @@ private:
     std::vector<StepSnapshot> _undoSnapshots;
     std::vector<StepSnapshot> _redoSnapshots;
     std::function<void(bool, bool, bool)> _onToolbarState;
+    std::mutex _simMutex;
+    std::atomic<bool> _solverRunning{false};
+    std::thread _solverThread;
 };
 
 inline MainView::MainView()
@@ -135,7 +143,7 @@ inline MainView::MainView()
 
     _settings.maxIter = 30;
     _settings.tol = 2e-3;
-    _settings.alpha = 0.8;
+    _settings.alpha = 0.3;
     _settings.verbose = true;
     _engine.setSettings(_settings);
 
@@ -176,6 +184,13 @@ inline MainView::MainView()
     _undoSnapshots.push_back(captureSnapshot());
 }
 
+inline MainView::~MainView() {
+    _running = false;
+    if (_solverThread.joinable()) {
+        _solverThread.join();
+    }
+}
+
 inline void MainView::startSimulation() {
     _running = true;
     setPlaybackSpeed(_speedPercent);
@@ -190,10 +205,16 @@ inline void MainView::stopSimulation() {
     if (_timer.isRunning()) {
         _timer.stop();
     }
+    if (_solverThread.joinable()) {
+        _solverThread.join();
+    }
     updatePlaybackButtons();
 }
 
 inline void MainView::resetSimulation() {
+    if (_solverThread.joinable()) {
+        _solverThread.join();
+    }
     stopSimulation();
 
     _scenarioConfig = mpc::makeScenarioConfig(_scenario);
@@ -208,6 +229,7 @@ inline void MainView::resetSimulation() {
     _telemetry.psi = normalizeAngle(_telemetry.psi);
 
     _trajectory = mpc::Trajectory{};
+    _engine.reset();
     _history.clear();
     _history.push_back({static_cast<float>(_telemetry.x), static_cast<float>(_telemetry.y)});
 
@@ -226,7 +248,24 @@ inline bool MainView::onTimer(gui::Timer* pTimer) {
         if (!_running) {
             return true;
         }
-        advanceOneStep();
+
+        if (_solverThread.joinable() && !_solverRunning.load()) {
+            _solverThread.join();
+            finalizeStepOnGuiThread();
+        }
+
+        if (_solverRunning.load()) {
+            return true;
+        }
+
+        _solverRunning.store(true);
+        _solverThread = std::thread([this]() {
+            {
+                std::lock_guard<std::mutex> lock(_simMutex);
+                advanceOneStep();
+            }
+            _solverRunning.store(false);
+        });
         return true;
     }
     return false;
@@ -252,9 +291,7 @@ inline void MainView::advanceOneStep() {
         static_cast<int>(_trajectory.N));
 
     if (!ok) {
-        // earlier behavior: print failure details and update UI
         std::fprintf(stderr, "[MPC] Solve FAILED at this step (see diagnostics above)\n");
-        updateSidebar();
         return;
     }
 
@@ -277,7 +314,7 @@ inline void MainView::advanceOneStep() {
         _telemetry.x = x + v * std::cos(psi) * dt;
         _telemetry.y = y + v * std::sin(psi) * dt;
         _telemetry.psi = normalizeAngle(psi + (v / lf) * delta * dt);
-        _telemetry.v = v + accel * dt;
+        _telemetry.v = std::clamp(v + accel * dt, 0.1, _targetVelocity * 2.0);
 
         _history.push_back({static_cast<float>(_telemetry.x), static_cast<float>(_telemetry.y)});
     } else {
@@ -288,6 +325,9 @@ inline void MainView::advanceOneStep() {
     std::fprintf(stderr, "[MPC] Telemetry after step: x=%.3f y=%.3f psi=%.3f v=%.3f trackingErr=%.6f\n",
         _telemetry.x, _telemetry.y, _telemetry.psi, _telemetry.v, _trackingError);
 
+}
+
+inline void MainView::finalizeStepOnGuiThread() {
     refreshVizFrame();
     updateSidebar();
     clearHistoryRedo();
@@ -298,6 +338,7 @@ inline void MainView::advanceOneStep() {
 inline void MainView::refreshVizFrame() {
     _frame = mpc::MpcVizAdapter::BuildFrame(
         _history,
+        _telemetry.x,
         _coeffs,
         _trajectory,
         _scenarioConfig.obstacles,
@@ -382,7 +423,11 @@ inline void MainView::stepForward() {
         return;
     }
 
-    advanceOneStep();
+    {
+        std::lock_guard<std::mutex> lock(_simMutex);
+        advanceOneStep();
+    }
+    finalizeStepOnGuiThread();
 }
 
 inline void MainView::openSettingsDialog() {

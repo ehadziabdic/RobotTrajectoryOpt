@@ -68,7 +68,6 @@ inline void MpcActuationCanvas::drawStepPlot(const gui::Rect& rect,
                                              const td::String& title,
                                              td::ColorID color) const {
     gui::Shape::drawRect(rect, td::ColorID::Black);
-    gui::Shape::drawRect(rect, td::ColorID::DarkGray, 1.0f);
 
     gui::DrawableString titleText(title);
     gui::Point titlePoint;
@@ -151,14 +150,18 @@ inline void MpcActuationCanvas::drawStepPlot(const gui::Rect& rect,
 
 inline void MpcActuationCanvas::onDraw(const gui::Rect& rect) {
     gui::Shape::drawRect(rect, td::ColorID::DarkGray);
-    gui::Shape::drawRect(rect, td::ColorID::DarkGray, 1.0f);
 
     gui::Rect top = rect;
     gui::Rect bottom = rect;
-    const gui::CoordType gap = 8;
+    const gui::CoordType gap = 5;
     const gui::CoordType half = static_cast<gui::CoordType>((rect.bottom - rect.top - gap) * 0.5);
     top.bottom = top.top + half;
     bottom.top = top.bottom + gap;
+
+    const gui::Rect separator(
+        gui::Point(rect.left, top.bottom),
+        gui::Size(rect.right - rect.left, gap));
+    gui::Shape::drawRect(separator, td::ColorID::Transparent);
 
     const std::vector<float> emptyTime;
     const std::vector<float> emptyValues;

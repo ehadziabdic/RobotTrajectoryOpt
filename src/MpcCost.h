@@ -19,12 +19,12 @@ public:
         auto q = Q.getColumnManipulator();
         q(0) = 1.0; // qx
         q(1) = 1.0; // qy
-        q(2) = 1.0; // qpsi
-        q(3) = 1.0; // qv
+                q(2) = 2.0; // qpsi
+                q(3) = 3.0; // qv
 
         auto r = R.getColumnManipulator();
         r(0) = 4.0; // r_delta
-        r(1) = 2.0; // r_a
+                r(1) = 1.0; // r_a
 
         buildHdiag();
     }

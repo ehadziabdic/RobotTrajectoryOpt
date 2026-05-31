@@ -40,6 +40,13 @@ public:
 
     void setSettings(const MpcSqp::Settings& settings) { _settings = settings; }
 
+    void reset() {
+        const td::UINT4 totalSize = static_cast<td::UINT4>(_layout.totalSize());
+        _zNom = dense::DblMatrix(totalSize, 1, nullptr, true);
+        _zNomInitialized = false;
+        _diag = Diagnostics{};
+    }
+
     const Diagnostics& diagnostics() const { return _diag; }
 
     bool Solve(const Telemetry& current,
@@ -101,7 +108,15 @@ public:
             return false;
         }
 
-        _zNom = zWork;
+        // Only accept the new warm-start if convergence was reasonable.
+        // If maxAbs is very large, the SQP diverged; fall back to a fresh
+        // reference-trajectory init on the next step to escape the bad basin.
+        if (_sqp.lastMaxAbs() < 15.0) {
+            _zNom = zWork;
+        } else {
+            // Force re-initialization from reference on next call
+            _zNomInitialized = false;
+        }
 
         extractTrajectory(out);
         return true;

@@ -37,6 +37,7 @@ struct MpcVizFrame {
 class MpcVizAdapter {
 public:
     static MpcVizFrame BuildFrame(const std::vector<PlotPoint>& history,
+                                  double initialX,
                                   const dense::DblMatrix& coeffs,
                                   const Trajectory& traj,
                                   const std::vector<Obstacle>& obstacles,
@@ -93,9 +94,19 @@ public:
             frame.predictedPsi[t] = static_cast<float>(psi);
             frame.predictedV[t] = static_cast<float>(v);
             frame.timeS[t] = static_cast<float>(static_cast<double>(t) * dt);
+        }
 
-            const double yRef = c0 + c1 * x + c2 * x * x + c3 * x * x * x;
-            frame.referencePath.push_back({static_cast<float>(x), static_cast<float>(yRef)});
+        // Generate reference path independently spanning the full track ahead
+        {
+            const double xStart = initialX - 5.0;
+            const double xEnd = initialX + 60.0;
+            const int nRef = 200;
+            frame.referencePath.reserve(nRef);
+            for (int i = 0; i < nRef; ++i) {
+                const double x = xStart + (xEnd - xStart) * i / (nRef - 1);
+                const double y = c0 + c1 * x + c2 * x * x + c3 * x * x * x;
+                frame.referencePath.push_back({static_cast<float>(x), static_cast<float>(y)});
+            }
         }
 
         for (std::size_t t = 0; t < controlCount; ++t) {
