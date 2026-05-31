@@ -33,7 +33,6 @@ public:
         addSpaceItem();
         addItem(tr("start"), &_imgStart, tr("start"), 20, 0, 0, 10);
         addItem(tr("stop"), &_imgStop, tr("stop"), 20, 0, 0, 11);
-        addSpaceItem();
         addItem(tr("reset"), &_imgReset, tr("reset"), 20, 0, 0, 12);
         addSpaceItem();
         addItem(tr("back"), &_imgBack, tr("back"), 20, 0, 0, 13);

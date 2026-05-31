@@ -1,8 +1,11 @@
 #pragma once
+#include <algorithm>
 #include <dense/Matrix.h>
 #include <td/Types.h>
 #include <cmath>
 #include <iostream>
+#include <limits>
+#include <vector>
 #include "MpcLayout.h"
 #include "MpcCost.h"
 #include "MpcConstraints.h"
@@ -14,9 +17,11 @@ namespace mpc {
 class MpcSqp {
 public:
     struct Settings {
-        int maxIter = 10;
-        double tol = 1e-3;
-        double alpha = 1.0;
+        int maxIter = 30;
+        double tol = 2e-3;
+        double alpha = 0.5;
+        double steerLimit = 0.6;
+        double accelLimit = 3.0;
         bool verbose = false;
     };
 
@@ -27,7 +32,13 @@ public:
     double lastMaxAbs() const { return _lastMaxAbs; }
     bool lastConverged() const { return _lastConverged; }
 
-    bool Solve(const dense::DblMatrix& coeffs, double target_v, double initial_x, double dt, const Settings& cfg) {
+    bool Solve(const dense::DblMatrix& coeffs,
+               double target_v,
+               double initial_x,
+               double initial_y,
+               double dt,
+               const Settings& cfg,
+               const std::vector<Obstacle>& obstacles) {
         _lastIterations = 0;
         _lastMaxAbs = 0.0;
         _lastConverged = false;
@@ -35,18 +46,24 @@ public:
         const td::UINT4 nZ = static_cast<td::UINT4>(_layout.totalSize());
         dense::DblMatrix zNom(nZ, 1, nullptr, true);
 
-        MpcCost cost(_layout);
-        cost.UpdateReferenceTrajectory(coeffs, target_v, initial_x, dt);
-        auto zref = cost.Ref().getColumnManipulator();
+        MpcCost solverCost(_layout);
+        solverCost.UpdateReferenceTrajectory(coeffs, target_v, initial_x, initial_y, dt);
+        auto zref = solverCost.Ref().getColumnManipulator();
         auto zn = zNom.getColumnManipulator();
         for (td::UINT4 i = 0; i < nZ; ++i) {
             zn(i) = zref(i);
         }
+        sanitizeTrajectory(zNom, cfg);
+
+        dense::DblMatrix bestZ = zNom.makeCopy();
+        double bestMaxAbs = std::numeric_limits<double>::max();
+        double bestObjective = std::numeric_limits<double>::max();
 
         for (int iter = 0; iter < cfg.maxIter; ++iter) {
-            cost.UpdateReferenceTrajectory(coeffs, target_v, initial_x, dt);
+            solverCost.UpdateReferenceTrajectory(coeffs, target_v, initial_x, initial_y, dt);
             MpcConstraints constraints(_layout);
             constraints.setVerbose(cfg.verbose);
+            constraints.setObstacles(obstacles);
             constraints.UpdateNominalTrajectory(zNom);
 
             dense::DblMatrix init(4, 1, nullptr, true);
@@ -57,7 +74,7 @@ public:
             initv(3) = zn(static_cast<td::UINT4>(_layout.idxV(0)));
             constraints.setInitialState(init);
 
-            MpcKkt kkt(_layout, cost, constraints);
+            MpcKkt kkt(_layout, solverCost, constraints);
             kkt.Assemble();
 
             MpcKktSolver solver;
@@ -85,20 +102,37 @@ public:
                 return false;
             }
 
+            sanitizeTrajectoryVector(res.z, cfg);
+
             double maxAbs = 0.0;
             for (td::UINT4 i = 0; i < nZ; ++i) {
-                const double dz = res.z[i] - zn(i);
+                double dz = res.z[i] - zn(i);
+                if (isPsiIndex(i)) {
+                    dz = wrapAngle(dz);
+                }
                 if (std::fabs(dz) > maxAbs) {
                     maxAbs = std::fabs(dz);
                 }
-                zn(i) = zn(i) + cfg.alpha * dz;
+                if (isPsiIndex(i)) {
+                    zn(i) = wrapAngle(zn(i) + cfg.alpha * dz);
+                } else {
+                    zn(i) = zn(i) + cfg.alpha * dz;
+                }
             }
+
+            sanitizeTrajectory(zNom, cfg);
 
             if (cfg.verbose) {
                 std::cout << "SQP iter=" << iter << " max|dZ|=" << maxAbs << std::endl;
             }
             _lastIterations = iter + 1;
             _lastMaxAbs = maxAbs;
+            const double objective = evaluateObjective(solverCost, zNom);
+            if (objective < bestObjective) {
+                bestObjective = objective;
+                bestMaxAbs = maxAbs;
+                bestZ = zNom.makeCopy();
+            }
             if (maxAbs < cfg.tol) {
                 _lastConverged = true;
                 return true;
@@ -106,14 +140,23 @@ public:
         }
 
         _lastIterations = cfg.maxIter;
-        return false;
+        zNom = bestZ.makeCopy();
+        sanitizeTrajectory(zNom, cfg);
+        _lastMaxAbs = bestMaxAbs;
+        if (cfg.verbose) {
+            std::cout << "[MPC Failsafe] maxIter reached. Rolling back to iteration with lowest objective; min max|dZ| = " << bestMaxAbs << "." << std::endl;
+        }
+        _lastConverged = false;
+        return true;
     }
 
     bool Solve(const dense::DblMatrix& coeffs,
                double target_v,
                double initial_x,
+               double initial_y,
                double dt,
                const Settings& cfg,
+               const std::vector<Obstacle>& obstacles,
                dense::DblMatrix& zNom,
                double init_x,
                double init_y,
@@ -133,13 +176,18 @@ public:
                 return false;
             }
         }
+        sanitizeTrajectory(zNom, cfg);
 
-        MpcCost cost(_layout);
+        MpcCost solverCost(_layout);
+        dense::DblMatrix bestZ = zNom.makeCopy();
+        double bestMaxAbs = std::numeric_limits<double>::max();
+        double bestObjective = std::numeric_limits<double>::max();
 
         for (int iter = 0; iter < cfg.maxIter; ++iter) {
-            cost.UpdateReferenceTrajectory(coeffs, target_v, initial_x, dt);
+            solverCost.UpdateReferenceTrajectory(coeffs, target_v, initial_x, initial_y, dt);
             MpcConstraints constraints(_layout);
             constraints.setVerbose(cfg.verbose);
+            constraints.setObstacles(obstacles);
             constraints.UpdateNominalTrajectory(zNom);
 
             dense::DblMatrix init(4, 1, nullptr, true);
@@ -150,7 +198,7 @@ public:
             initv(3) = init_v;
             constraints.setInitialState(init);
 
-            MpcKkt kkt(_layout, cost, constraints);
+            MpcKkt kkt(_layout, solverCost, constraints);
             kkt.Assemble();
 
             MpcKktSolver solver;
@@ -178,20 +226,37 @@ public:
                 return false;
             }
 
+            sanitizeTrajectoryVector(res.z, cfg);
+
             double maxAbs = 0.0;
             for (td::UINT4 i = 0; i < nZ; ++i) {
-                const double dz = res.z[i] - zn(i);
+                double dz = res.z[i] - zn(i);
+                if (isPsiIndex(i)) {
+                    dz = wrapAngle(dz);
+                }
                 if (std::fabs(dz) > maxAbs) {
                     maxAbs = std::fabs(dz);
                 }
-                zn(i) = zn(i) + cfg.alpha * dz;
+                if (isPsiIndex(i)) {
+                    zn(i) = wrapAngle(zn(i) + cfg.alpha * dz);
+                } else {
+                    zn(i) = zn(i) + cfg.alpha * dz;
+                }
             }
+
+            sanitizeTrajectory(zNom, cfg);
 
             if (cfg.verbose) {
                 std::cout << "SQP iter=" << iter << " max|dZ|=" << maxAbs << std::endl;
             }
             _lastIterations = iter + 1;
             _lastMaxAbs = maxAbs;
+            const double objective = evaluateObjective(solverCost, zNom);
+            if (objective < bestObjective) {
+                bestObjective = objective;
+                bestMaxAbs = maxAbs;
+                bestZ = zNom.makeCopy();
+            }
             if (maxAbs < cfg.tol) {
                 _lastConverged = true;
                 return true;
@@ -199,10 +264,88 @@ public:
         }
 
         _lastIterations = cfg.maxIter;
-        return false;
+        zNom = bestZ.makeCopy();
+        sanitizeTrajectory(zNom, cfg);
+        _lastMaxAbs = bestMaxAbs;
+        if (cfg.verbose) {
+            std::cout << "[MPC Failsafe] maxIter reached. Rolling back to iteration with lowest objective; min max|dZ| = " << bestMaxAbs << "." << std::endl;
+        }
+        _lastConverged = false;
+        return true;
     }
 
 private:
+    static double wrapAngle(double angle) {
+        constexpr double kPi = 3.1415926535897932384626433832795;
+        constexpr double kTwoPi = 6.2831853071795864769252867665590;
+        while (angle > kPi) {
+            angle -= kTwoPi;
+        }
+        while (angle < -kPi) {
+            angle += kTwoPi;
+        }
+        return angle;
+    }
+
+    bool isPsiIndex(td::UINT4 idx) const {
+        const td::UINT4 start = static_cast<td::UINT4>(_layout.psiStart());
+        const td::UINT4 end = static_cast<td::UINT4>(_layout.vStart());
+        return idx >= start && idx < end;
+    }
+
+    void sanitizeTrajectoryVector(std::vector<double>& z, const Settings& cfg) const {
+        const td::UINT4 nZ = static_cast<td::UINT4>(_layout.totalSize());
+        const td::UINT4 deltaStart = static_cast<td::UINT4>(_layout.deltaStart());
+        const td::UINT4 aStart = static_cast<td::UINT4>(_layout.aStart());
+        const td::UINT4 slackStart = static_cast<td::UINT4>(_layout.slackStart());
+        for (td::UINT4 i = 0; i < nZ; ++i) {
+            if (isPsiIndex(i)) {
+                z[i] = wrapAngle(z[i]);
+            } else if (i >= slackStart) {
+                z[i] = std::max(0.0, z[i]);
+            } else if (i >= deltaStart && i < aStart) {
+                z[i] = std::clamp(z[i], -cfg.steerLimit, cfg.steerLimit);
+            } else if (i >= aStart) {
+                z[i] = std::clamp(z[i], -cfg.accelLimit, cfg.accelLimit);
+            }
+        }
+    }
+
+    void sanitizeTrajectory(dense::DblMatrix& z, const Settings& cfg) const {
+        if (z.getNoOfRows() * z.getNoOfCols() == 0) {
+            return;
+        }
+        auto v = z.getColumnManipulator();
+        const td::UINT4 nZ = static_cast<td::UINT4>(_layout.totalSize());
+        const td::UINT4 deltaStart = static_cast<td::UINT4>(_layout.deltaStart());
+        const td::UINT4 aStart = static_cast<td::UINT4>(_layout.aStart());
+        const td::UINT4 slackStart = static_cast<td::UINT4>(_layout.slackStart());
+        for (td::UINT4 i = 0; i < nZ; ++i) {
+            if (isPsiIndex(i)) {
+                v(i) = wrapAngle(v(i));
+            } else if (i >= slackStart) {
+                v(i) = std::max(0.0, v(i));
+            } else if (i >= deltaStart && i < aStart) {
+                v(i) = std::clamp(v(i), -cfg.steerLimit, cfg.steerLimit);
+            } else if (i >= aStart) {
+                v(i) = std::clamp(v(i), -cfg.accelLimit, cfg.accelLimit);
+            }
+        }
+    }
+
+    double evaluateObjective(const MpcCost& cost, const dense::DblMatrix& z) const {
+        auto h = cost.H().getColumnManipulator();
+        auto g = cost.G().getColumnManipulator();
+        auto v = z.getColumnManipulator();
+        const td::UINT4 total = static_cast<td::UINT4>(_layout.totalSize());
+        double objective = 0.0;
+        for (td::UINT4 i = 0; i < total; ++i) {
+            const double zi = v(i);
+            objective += 0.5 * h(i) * zi * zi + g(i) * zi;
+        }
+        return objective;
+    }
+
     const MpcLayout& _layout;
     int _lastIterations = 0;
     double _lastMaxAbs = 0.0;

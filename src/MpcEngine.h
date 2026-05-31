@@ -3,9 +3,11 @@
 #include <td/Types.h>
 #include <cstddef>
 #include <iostream>
+#include <vector>
 #include "MpcLayout.h"
 #include "MpcCost.h"
 #include "MpcSqp.h"
+#include "MpcObstacle.h"
 
 namespace mpc {
 
@@ -44,6 +46,7 @@ public:
                const dense::DblMatrix& coeffs,
                double target_v,
                double dt,
+               const std::vector<Obstacle>& obstacles,
                Trajectory& out) {
         if (dt <= 0.0) {
             std::cout << "MpcEngine: invalid dt" << std::endl;
@@ -55,7 +58,7 @@ public:
             _diag = Diagnostics{};
             return false;
         }
-        if (!ensureNominalInitialized(coeffs, target_v, current.x, dt)) {
+        if (!ensureNominalInitialized(coeffs, target_v, current.x, current.y, dt)) {
             std::cout << "MpcEngine: nominal init failed" << std::endl;
             _diag = Diagnostics{};
             return false;
@@ -77,15 +80,17 @@ public:
         }
 
         const bool ok = _sqp.Solve(coeffs,
-                                   target_v,
-                                   current.x,
-                                   dt,
-                                   _settings,
-                                   zWork,
-                                   current.x,
-                                   current.y,
-                                   current.psi,
-                                   current.v);
+                       target_v,
+                       current.x,
+                       current.y,
+                       dt,
+                       _settings,
+                       obstacles,
+                       zWork,
+                       current.x,
+                       current.y,
+                       current.psi,
+                       current.v);
         _diag.ok = ok;
         _diag.converged = _sqp.lastConverged();
         _diag.iterations = _sqp.lastIterations();
@@ -106,6 +111,7 @@ private:
     bool ensureNominalInitialized(const dense::DblMatrix& coeffs,
                                   double target_v,
                                   double initial_x,
+                                  double initial_y,
                                   double dt) {
         if (_zNom.getNoOfRows() == 0) {
             return false;
@@ -117,7 +123,7 @@ private:
         }
         if (!_zNomInitialized) {
             MpcCost cost(_layout);
-            cost.UpdateReferenceTrajectory(coeffs, target_v, initial_x, dt);
+            cost.UpdateReferenceTrajectory(coeffs, target_v, initial_x, initial_y, dt);
             _zNom = cost.Ref().makeCopy();
             _zNomInitialized = true;
         }

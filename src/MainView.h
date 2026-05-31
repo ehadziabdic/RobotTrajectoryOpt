@@ -40,6 +40,18 @@ protected:
     bool onTimer(gui::Timer* pTimer) override;
 
 private:
+    static double normalizeAngle(double angle) {
+        constexpr double kPi = 3.1415926535897932384626433832795;
+        constexpr double kTwoPi = 6.2831853071795864769252867665590;
+        while (angle > kPi) {
+            angle -= kTwoPi;
+        }
+        while (angle < -kPi) {
+            angle += kTwoPi;
+        }
+        return angle;
+    }
+
     void advanceOneStep();
     void refreshVizFrame();
     void updateSidebar();
@@ -118,12 +130,13 @@ inline MainView::MainView()
     coeffs(3) = scenarioCoeffs(3);
 
     _telemetry = _scenarioConfig.initialTelemetry;
+    _telemetry.psi = normalizeAngle(_telemetry.psi);
     _targetVelocity = _telemetry.v;
 
-    _settings.maxIter = 6;
-    _settings.tol = 1e-3;
-    _settings.alpha = 1.0;
-    _settings.verbose = false;
+    _settings.maxIter = 30;
+    _settings.tol = 2e-3;
+    _settings.alpha = 0.8;
+    _settings.verbose = true;
     _engine.setSettings(_settings);
 
     _history.push_back({static_cast<float>(_telemetry.x), static_cast<float>(_telemetry.y)});
@@ -192,6 +205,7 @@ inline void MainView::resetSimulation() {
     coeffs(3) = scenarioCoeffs(3);
 
     _telemetry = _scenarioConfig.initialTelemetry;
+    _telemetry.psi = normalizeAngle(_telemetry.psi);
 
     _trajectory = mpc::Trajectory{};
     _history.clear();
@@ -219,9 +233,27 @@ inline bool MainView::onTimer(gui::Timer* pTimer) {
 }
 
 inline void MainView::advanceOneStep() {
-    if (!_engine.Solve(_telemetry, _coeffs, _targetVelocity, _layout.dt(), _trajectory)) {
-        auto d = _engine.diagnostics();
-        std::fprintf(stderr, "[MPC] Solve failed: ok=%d converged=%d iter=%d maxAbs=%.6f\n", d.ok ? 1 : 0, d.converged ? 1 : 0, d.iterations, d.maxAbs);
+    const double dt = _layout.dt();
+
+    const bool ok = _engine.Solve(_telemetry, _coeffs, _targetVelocity, dt, _scenarioConfig.obstacles, _trajectory);
+    const auto d = _engine.diagnostics();
+
+    // Print detailed per-step diagnostics to console for debugging / offline analysis
+    std::fprintf(stderr, "[MPC] Step: ok=%d converged=%d iter=%d maxAbs=%.6f telemetry_before(x,y,psi,v)=%.3f,%.3f,%.3f,%.3f trackingErr=%.6f trajN=%d\n",
+        ok ? 1 : 0,
+        d.converged ? 1 : 0,
+        d.iterations,
+        d.maxAbs,
+        _telemetry.x,
+        _telemetry.y,
+        _telemetry.psi,
+        _telemetry.v,
+        _trackingError,
+        static_cast<int>(_trajectory.N));
+
+    if (!ok) {
+        // earlier behavior: print failure details and update UI
+        std::fprintf(stderr, "[MPC] Solve FAILED at this step (see diagnostics above)\n");
         updateSidebar();
         return;
     }
@@ -233,9 +265,9 @@ inline void MainView::advanceOneStep() {
             auto controls = _trajectory.controls.getManipulator();
             delta = controls(0, 0);
             accel = controls(1, 0);
+            std::fprintf(stderr, "[MPC] First control: delta=%.6f accel=%.6f\n", delta, accel);
         }
 
-        const double dt = _layout.dt();
         const double lf = _layout.Lf();
         const double x = _telemetry.x;
         const double y = _telemetry.y;
@@ -244,11 +276,17 @@ inline void MainView::advanceOneStep() {
 
         _telemetry.x = x + v * std::cos(psi) * dt;
         _telemetry.y = y + v * std::sin(psi) * dt;
-        _telemetry.psi = psi + (v / lf) * delta * dt;
+        _telemetry.psi = normalizeAngle(psi + (v / lf) * delta * dt);
         _telemetry.v = v + accel * dt;
 
         _history.push_back({static_cast<float>(_telemetry.x), static_cast<float>(_telemetry.y)});
+    } else {
+        std::fprintf(stderr, "[MPC] Trajectory returned N=0 (no predicted controls)\n");
     }
+
+    // Print telemetry after update
+    std::fprintf(stderr, "[MPC] Telemetry after step: x=%.3f y=%.3f psi=%.3f v=%.3f trackingErr=%.6f\n",
+        _telemetry.x, _telemetry.y, _telemetry.psi, _telemetry.v, _trackingError);
 
     refreshVizFrame();
     updateSidebar();

@@ -25,7 +25,7 @@ private:
     gui::Label _lblMaxIter;
     gui::NumericEdit _edMaxIter;
     gui::Label _lblTolerance;
-    gui::ComboBox _cmbTolerance;
+    gui::NumericEdit _edTolerance;
     gui::GridLayout _layout;
 
     int _initialLanguageIndex = 0;
@@ -39,24 +39,15 @@ private:
         {"JP", "langJapanese"}
     }};
 
-    static int toleranceToIndex(double tolerance) {
-        if (tolerance <= 1e-5) {
-            return 3;
-        }
-        if (tolerance <= 1e-4) {
-            return 2;
-        }
-        if (tolerance <= 1e-3) {
-            return 1;
-        }
-        return 0;
-    }
-
     void updateValueLabels() {
         _edMaxIter.setMinValue(1.0);
         _edMaxIter.setMaxValue(1000000.0);
         _edMaxIter.setNumberOfDigitsAfterDecimalPoint(0);
         _edMaxIter.showThSep(false);
+        _edTolerance.setMinValue(1e-8);
+        _edTolerance.setMaxValue(1.0);
+        _edTolerance.setNumberOfDigitsAfterDecimalPoint(6);
+        _edTolerance.showThSep(false);
     }
 
 public:
@@ -65,24 +56,21 @@ public:
         , _lblMaxIter(tr("lblMaxIter"))
         , _edMaxIter(td::int4)
         , _lblTolerance(tr("lblTolerance"))
+        , _edTolerance(td::real8)
         , _layout(3, 2)
     {
         gui::GridComposer gc(_layout);
         gc.appendRow(_lblLanguage) << _cmbLanguage;
         gc.appendRow(_lblMaxIter) << _edMaxIter;
-        gc.appendRow(_lblTolerance) << _cmbTolerance;
+        gc.appendRow(_lblTolerance) << _edTolerance;
         setLayout(&_layout);
 
         for (std::size_t i = 0; i < kLanguages.size(); ++i) {
             _cmbLanguage.addItem(tr(kLanguages[i].labelKey));
         }
 
-        _cmbTolerance.addItem("1e-2");
-        _cmbTolerance.addItem("1e-3");
-        _cmbTolerance.addItem("1e-4");
-        _cmbTolerance.addItem("1e-5");
-
-        _cmbTolerance.selectIndex(1);
+        // default tolerance value
+        _edTolerance.setText("0.002", false);
         _cmbLanguage.selectIndex(_initialLanguageIndex);
 
         updateValueLabels();
@@ -92,7 +80,9 @@ public:
         char iterBuffer[64];
         std::snprintf(iterBuffer, sizeof(iterBuffer), "%d", maxIter);
         _edMaxIter.setText(iterBuffer, false);
-        _cmbTolerance.selectIndex(toleranceToIndex(tolerance));
+        char tolBuf[64];
+        std::snprintf(tolBuf, sizeof(tolBuf), "%.6f", tolerance);
+        _edTolerance.setText(tolBuf, false);
 
         _initialLanguageIndex = 0;
         for (std::size_t i = 0; i < kLanguages.size(); ++i) {
@@ -112,13 +102,9 @@ public:
     }
 
     double selectedTolerance() const {
-        switch (_cmbTolerance.getSelectedIndex()) {
-            case 0: return 1e-2;
-            case 1: return 1e-3;
-            case 2: return 1e-4;
-            case 3: return 1e-5;
-            default: return 1e-3;
-        }
+        double value = 2e-3;
+        _edTolerance.getValue(value);
+        return value;
     }
 
     td::String selectedLanguageExtension() const {

@@ -25,7 +25,7 @@ public:
     void Assemble() {
         const std::size_t nZ = _layout.totalSize();
         _nZ = static_cast<td::UINT4>(nZ);
-        const std::size_t nC = 4 * _layout.N();
+        const std::size_t nC = _constraints.rowCount();
         const std::size_t kktSize = nZ + nC;
 
         const std::size_t nnzEstimate = 658;

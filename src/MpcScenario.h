@@ -5,6 +5,7 @@
 #include <dense/Matrix.h>
 
 #include "MpcEngine.h"
+#include "MpcObstacle.h"
 
 namespace mpc {
 
@@ -12,12 +13,6 @@ enum class SimScenario {
     StraightLine = 0,
     LaneChange = 1,
     SCurve = 2,
-};
-
-struct Obstacle {
-    double x = 0.0;
-    double y = 0.0;
-    double r = 0.5;
 };
 
 struct ScenarioConfig {

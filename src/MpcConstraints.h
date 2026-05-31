@@ -7,6 +7,7 @@
 #include <vector>
 #include <cmath>
 #include "MpcLayout.h"
+#include "MpcObstacle.h"
 
 namespace mpc {
 
@@ -26,12 +27,14 @@ public:
     }
 
         void setVerbose(bool verbose) { _verbose = verbose; }
+        void setObstacles(const std::vector<Obstacle>& obstacles) { _obstacles = obstacles; }
 
     const MpcLayout& layout() const { return _layout; }
     sparse::IDblMatrix* matrix() { return _matrix.ptr(); }
     const sparse::IDblMatrix* matrix() const { return _matrix.ptr(); }
     const dense::DblMatrix& rhs() const { return _rhs; }
     const std::vector<Triplet>& triplets() const { return _triplets; }
+    std::size_t rowCount() const { return _rowCount; }
 
     void setInitialState(const dense::DblMatrix& initial_state) {
         if (initial_state.getNoOfRows() * initial_state.getNoOfCols() < 4) {
@@ -70,12 +73,17 @@ private:
 
     void assemble() {
         const std::size_t N = _layout.N();
-        const std::size_t rows = 4 * N;
+        const std::size_t obstacleSlots = _layout.obstacleSlackPerStep();
+        const std::size_t activeObstacles = std::min<std::size_t>(obstacleSlots, _obstacles.size());
+        const std::size_t obstacleRowsPerStep = activeObstacles;
+        const std::size_t obstacleRowCount = obstacleRowsPerStep * (N - 1);
+        const std::size_t rows = 4 * N + obstacleRowCount;
         const std::size_t cols = _layout.totalSize();
 
+        _rowCount = rows;
         _triplets.clear();
 
-        const std::size_t nzEstimate = 4 + (N - 1) * 14;
+        const std::size_t nzEstimate = 4 + (N - 1) * 14 + obstacleRowCount * 3;
 
         _matrix = sparse::createDblMatrix(
             static_cast<int>(rows),
@@ -142,6 +150,36 @@ private:
             addTriplet(static_cast<td::INT4>(row), static_cast<td::INT4>(_layout.idxA(t)), -_layout.dt());
             b(static_cast<td::UINT4>(row)) = 0.0;
             ++row;
+
+            for (std::size_t obsIdx = 0; obsIdx < obstacleSlots && obsIdx < _obstacles.size(); ++obsIdx) {
+                const auto& obstacle = _obstacles[obsIdx];
+                const double safeRadius = obstacle.r + 0.15;
+                const double xNom = nom(static_cast<td::UINT4>(_layout.idxX(t + 1)));
+                const double yNom = nom(static_cast<td::UINT4>(_layout.idxY(t + 1)));
+                const double dx = xNom - obstacle.x;
+                const double dy = yNom - obstacle.y;
+                const double dist2 = dx * dx + dy * dy;
+                const double violation = safeRadius * safeRadius - dist2;
+
+                const double gradX = 2.0 * dx;
+                const double gradY = 2.0 * dy;
+                const td::UINT4 slackIdx = static_cast<td::UINT4>(_layout.idxSlack(t + 1, obsIdx));
+
+                if (violation <= 0.0) {
+                    addTriplet(static_cast<td::INT4>(row), static_cast<td::INT4>(slackIdx), 1.0);
+                    b(static_cast<td::UINT4>(row)) = 0.0;
+                    ++row;
+                    continue;
+                }
+
+                // Soft obstacle row: linearized violation with positive slack.
+                addTriplet(static_cast<td::INT4>(row), static_cast<td::INT4>(_layout.idxX(t + 1)), gradX);
+                addTriplet(static_cast<td::INT4>(row), static_cast<td::INT4>(_layout.idxY(t + 1)), gradY);
+                addTriplet(static_cast<td::INT4>(row), static_cast<td::INT4>(slackIdx), 1.0);
+
+                b(static_cast<td::UINT4>(row)) = violation + gradX * xNom + gradY * yNom;
+                ++row;
+            }
         }
 
         if (_verbose) {
@@ -159,6 +197,8 @@ private:
     std::vector<Triplet> _triplets;
     sparse::DblMatrixReleaser _matrix;
     dense::DblMatrix _rhs;
+    std::vector<Obstacle> _obstacles;
+    std::size_t _rowCount = 0;
     bool _verbose = false;
 };
 

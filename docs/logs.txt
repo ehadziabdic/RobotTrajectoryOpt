@@ -1,0 +1,2050 @@
+lane change:
+
+
+
+SQP iter=9 max|dZ|=7.79722
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=10 max|dZ|=7.42568
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=11 max|dZ|=5.82636
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=12 max|dZ|=7.09707
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=13 max|dZ|=5.68533
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=14 max|dZ|=3.8147
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=15 max|dZ|=9.89368
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=16 max|dZ|=1.94734
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=17 max|dZ|=1.07812
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=18 max|dZ|=1.31004
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=19 max|dZ|=1.73739
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=20 max|dZ|=1.86062
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=21 max|dZ|=3.4336
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=22 max|dZ|=5.77674
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=23 max|dZ|=5.85238
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=24 max|dZ|=7.77269
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=25 max|dZ|=7.16576
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=26 max|dZ|=9.42919
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=27 max|dZ|=8.94885
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=28 max|dZ|=4.86306
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=29 max|dZ|=4.63647
+[MPC Failsafe] maxIter reached. Rolling back to iteration with lowest objective; min max|dZ| = 7.16576.
+[MPC] Step: ok=1 converged=0 iter=30 maxAbs=7.165762 telemetry_before(x,y,psi,v)=33.582,-6.975,-0.963,6.363 trackingErr=10.072610 trajN=20
+[MPC] First control: delta=-0.360000 accel=2.041808
+[MPC] Telemetry after step: x=33.945 y=-7.498 psi=-1.422 v=6.568 trackingErr=10.072610
+MpcEngine: launching SQP with zWork size=118 first_vals=[16.7911, 17.0376, 17.3928, 17.9793, 19.0144, 20.558, 22.3915, 24.2776]
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=0 max|dZ|=9.25568
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=1 max|dZ|=8.15765
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=2 max|dZ|=4.49788
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=3 max|dZ|=3.70313
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=4 max|dZ|=2.98708
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=5 max|dZ|=2.94595
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=6 max|dZ|=3.35439
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=7 max|dZ|=4.8691
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=8 max|dZ|=6.66715
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=9 max|dZ|=6.41525
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=10 max|dZ|=8.07446
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=11 max|dZ|=5.07927
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=12 max|dZ|=2.36839
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=13 max|dZ|=2.93249
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=14 max|dZ|=3.15008
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=15 max|dZ|=3.07773
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=16 max|dZ|=3.19066
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=17 max|dZ|=2.24634
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=18 max|dZ|=3.95334
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=19 max|dZ|=4.57064
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=20 max|dZ|=9.56651
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=21 max|dZ|=4.26073
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=22 max|dZ|=5.99319
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=23 max|dZ|=4.25633
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=24 max|dZ|=7.72276
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=25 max|dZ|=3.92906
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=26 max|dZ|=4.32627
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=27 max|dZ|=5.09408
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=28 max|dZ|=6.20415
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=29 max|dZ|=7.67541
+[MPC Failsafe] maxIter reached. Rolling back to iteration with lowest objective; min max|dZ| = 4.26073.
+[MPC] Step: ok=1 converged=0 iter=30 maxAbs=4.260734 telemetry_before(x,y,psi,v)=33.945,-7.498,-1.422,6.568 trackingErr=10.428967 trajN=20
+[MPC] First control: delta=0.487661 accel=-0.819951
+[MPC] Telemetry after step: x=34.043 y=-8.147 psi=-0.781 v=6.486 trackingErr=10.428967
+MpcEngine: launching SQP with zWork size=118 first_vals=[16.9727, 17.1454, 17.6774, 18.5552, 19.7567, 21.0848, 22.2211, 22.9116]
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=0 max|dZ|=5.93189
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=1 max|dZ|=4.00408
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=2 max|dZ|=9.59185
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=3 max|dZ|=3.98758
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=4 max|dZ|=3.189
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=5 max|dZ|=7.26725
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=6 max|dZ|=8.07283
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=7 max|dZ|=11.0197
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=8 max|dZ|=6.9595
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=9 max|dZ|=6.59228
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=10 max|dZ|=9.78847
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=11 max|dZ|=10.2746
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=12 max|dZ|=8.06915
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=13 max|dZ|=6.94605
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=14 max|dZ|=4.79412
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=15 max|dZ|=7.60703
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=16 max|dZ|=12.7233
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=17 max|dZ|=11.3996
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=18 max|dZ|=11.7527
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=19 max|dZ|=3.03841
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=20 max|dZ|=4.98301
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=21 max|dZ|=8.57842
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=22 max|dZ|=9.22238
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=23 max|dZ|=5.32599
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=24 max|dZ|=6.41715
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=25 max|dZ|=5.73515
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=26 max|dZ|=9.77624
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=27 max|dZ|=8.60205
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=28 max|dZ|=5.49286
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=29 max|dZ|=8.15367
+[MPC Failsafe] maxIter reached. Rolling back to iteration with lowest objective; min max|dZ| = 9.78847.
+[MPC] Step: ok=1 converged=0 iter=30 maxAbs=9.788465 telemetry_before(x,y,psi,v)=34.043,-8.147,-0.781,6.486 trackingErr=11.953789 trajN=20
+[MPC] First control: delta=0.406343 accel=1.607667
+[MPC] Telemetry after step: x=34.504 y=-8.604 psi=-0.254 v=6.646 trackingErr=11.953789
+MpcEngine: launching SQP with zWork size=118 first_vals=[17.0215, 17.2973, 17.8067, 18.6692, 19.8317, 21.1806, 22.4717, 23.7601]
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=0 max|dZ|=10.555
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=1 max|dZ|=7.59449
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=2 max|dZ|=6.38773
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=3 max|dZ|=5.19506
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=4 max|dZ|=6.25012
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=5 max|dZ|=8.71882
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=6 max|dZ|=9.16139
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=7 max|dZ|=5.82936
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=8 max|dZ|=9.99551
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=9 max|dZ|=7.53943
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=10 max|dZ|=7.73114
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=11 max|dZ|=13.3215
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=12 max|dZ|=3.21807
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=13 max|dZ|=2.97524
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=14 max|dZ|=4.88115
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=15 max|dZ|=5.72498
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=16 max|dZ|=7.64789
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=17 max|dZ|=6.44458
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=18 max|dZ|=5.21089
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=19 max|dZ|=5.34596
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=20 max|dZ|=5.10956
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=21 max|dZ|=4.97809
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=22 max|dZ|=6.90742
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=23 max|dZ|=9.40567
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=24 max|dZ|=8.3178
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=25 max|dZ|=6.33416
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=26 max|dZ|=4.05655
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=27 max|dZ|=4.76709
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=28 max|dZ|=3.78866
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=29 max|dZ|=3.28907
+[MPC Failsafe] maxIter reached. Rolling back to iteration with lowest objective; min max|dZ| = 9.99551.
+[MPC] Step: ok=1 converged=0 iter=30 maxAbs=9.995507 telemetry_before(x,y,psi,v)=34.504,-8.604,-0.254,6.646 trackingErr=11.672385 trajN=20
+[MPC] First control: delta=-0.370255 accel=1.674465
+[MPC] Telemetry after step: x=35.147 y=-8.771 psi=-0.746 v=6.814 trackingErr=11.672385
+MpcEngine: launching SQP with zWork size=118 first_vals=[17.2518, 17.5788, 18.1777, 19.269, 20.6867, 22.2276, 22.5698, 24.149]
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=0 max|dZ|=7.1728
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=1 max|dZ|=7.64881
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=2 max|dZ|=13.7329
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=3 max|dZ|=4.76033
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=4 max|dZ|=5.91035
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=5 max|dZ|=5.2418
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=6 max|dZ|=6.08535
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=7 max|dZ|=5.20707
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=8 max|dZ|=3.49245
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=9 max|dZ|=7.32265
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=10 max|dZ|=7.55178
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=11 max|dZ|=9.19927
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=12 max|dZ|=7.63214
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=13 max|dZ|=7.85329
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=14 max|dZ|=9.2402
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=15 max|dZ|=2.24324
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=16 max|dZ|=3.0696
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=17 max|dZ|=6.09299
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=18 max|dZ|=9.34097
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=19 max|dZ|=8.02234
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=20 max|dZ|=5.80765
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=21 max|dZ|=9.29334
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=22 max|dZ|=14.1218
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=23 max|dZ|=4.9628
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=24 max|dZ|=10.0187
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=25 max|dZ|=6.14757
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=26 max|dZ|=13.6791
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=27 max|dZ|=5.4756
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=28 max|dZ|=5.95792
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=29 max|dZ|=4.57651
+[MPC Failsafe] maxIter reached. Rolling back to iteration with lowest objective; min max|dZ| = 6.14757.
+[MPC] Step: ok=1 converged=0 iter=30 maxAbs=6.147571 telemetry_before(x,y,psi,v)=35.147,-8.771,-0.746,6.814 trackingErr=12.120644 trajN=20
+[MPC] First control: delta=0.599690 accel=-0.378013
+[MPC] Telemetry after step: x=35.647 y=-9.233 psi=0.071 v=6.776 trackingErr=12.120644
+MpcEngine: launching SQP with zWork size=118 first_vals=[17.5735, 17.8676, 18.247, 18.7442, 19.6568, 21.161, 23.1064, 25.1651]
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=0 max|dZ|=13.2673
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=1 max|dZ|=4.85808
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=2 max|dZ|=4.41086
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=3 max|dZ|=5.8954
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=4 max|dZ|=9.54756
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=5 max|dZ|=7.18971
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=6 max|dZ|=2.16353
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=7 max|dZ|=1.96255
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=8 max|dZ|=1.85428
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=9 max|dZ|=4.51082
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=10 max|dZ|=6.20109
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=11 max|dZ|=4.2619
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=12 max|dZ|=6.07104
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=13 max|dZ|=7.29334
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=14 max|dZ|=9.55126
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=15 max|dZ|=13.3783
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=16 max|dZ|=9.608
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=17 max|dZ|=5.94756
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=18 max|dZ|=2.74646
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=19 max|dZ|=4.08611
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=20 max|dZ|=4.78816
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=21 max|dZ|=5.31892
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=22 max|dZ|=8.19261
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=23 max|dZ|=3.105
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=24 max|dZ|=3.02398
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=25 max|dZ|=3.17131
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=26 max|dZ|=3.71634
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=27 max|dZ|=3.40469
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=28 max|dZ|=5.79868
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=29 max|dZ|=6.10754
+[MPC Failsafe] maxIter reached. Rolling back to iteration with lowest objective; min max|dZ| = 13.3783.
+[MPC] Step: ok=1 converged=0 iter=30 maxAbs=13.378255 telemetry_before(x,y,psi,v)=35.647,-9.233,0.071,6.776 trackingErr=10.768283 trajN=20
+[MPC] First control: delta=-0.553539 accel=-2.472040
+[MPC] Telemetry after step: x=36.323 y=-9.185 psi=-0.679 v=6.529 trackingErr=10.768283
+MpcEngine: launching SQP with zWork size=118 first_vals=[17.8236, 18.162, 18.3824, 18.3549, 18.8225, 19.7031, 20.9672, 22.4844]
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=0 max|dZ|=9.09456
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=1 max|dZ|=6.46495
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=2 max|dZ|=3.07187
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=3 max|dZ|=5.38195
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=4 max|dZ|=4.97233
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=5 max|dZ|=6.96794
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=6 max|dZ|=7.73021
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=7 max|dZ|=3.2881
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=8 max|dZ|=3.12796
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=9 max|dZ|=6.66747
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=10 max|dZ|=16.5713
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=11 max|dZ|=11.5707
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=12 max|dZ|=11.5651
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=13 max|dZ|=6.16682
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=14 max|dZ|=5.81171
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=15 max|dZ|=9.41401
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=16 max|dZ|=10.7291
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=17 max|dZ|=3.76269
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=18 max|dZ|=3.34724
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=19 max|dZ|=4.24592
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=20 max|dZ|=9.70348
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=21 max|dZ|=3.42415
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=22 max|dZ|=9.70601
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=23 max|dZ|=10.0159
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=24 max|dZ|=10.9143
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=25 max|dZ|=6.6831
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=26 max|dZ|=3.06916
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=27 max|dZ|=4.74608
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=28 max|dZ|=9.845
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=29 max|dZ|=6.58488
+[MPC Failsafe] maxIter reached. Rolling back to iteration with lowest objective; min max|dZ| = 9.41401.
+[MPC] Step: ok=1 converged=0 iter=30 maxAbs=9.414011 telemetry_before(x,y,psi,v)=36.323,-9.185,-0.679,6.529 trackingErr=11.644775 trajN=20
+[MPC] First control: delta=0.406667 accel=1.052434
+[MPC] Telemetry after step: x=36.831 y=-9.595 psi=-0.148 v=6.634 trackingErr=11.644775
+MpcEngine: launching SQP with zWork size=118 first_vals=[18.1616, 18.4509, 19.0628, 20.1898, 21.6396, 23.0652, 24.0609, 24.5106]
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=0 max|dZ|=10.3387
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=1 max|dZ|=4.10737
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=2 max|dZ|=3.96452
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=3 max|dZ|=4.40311
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=4 max|dZ|=6.62219
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=5 max|dZ|=10.9026
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=6 max|dZ|=8.52177
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=7 max|dZ|=6.46511
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=8 max|dZ|=2.95829
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=9 max|dZ|=2.60609
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=10 max|dZ|=4.01759
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=11 max|dZ|=4.68077
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=12 max|dZ|=10.8645
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=13 max|dZ|=4.83283
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=14 max|dZ|=11.0722
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=15 max|dZ|=8.86973
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=16 max|dZ|=8.91742
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=17 max|dZ|=3.32383
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=18 max|dZ|=3.09885
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=19 max|dZ|=6.43402
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=20 max|dZ|=5.31593
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=21 max|dZ|=6.1261
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=22 max|dZ|=5.52297
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=23 max|dZ|=5.93664
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=24 max|dZ|=15.0818
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=25 max|dZ|=9.9542
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=26 max|dZ|=9.23795
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=27 max|dZ|=6.05498
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=28 max|dZ|=9.23075
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=29 max|dZ|=6.38931
+[MPC Failsafe] maxIter reached. Rolling back to iteration with lowest objective; min max|dZ| = 15.0818.
+[MPC] Step: ok=1 converged=0 iter=30 maxAbs=15.081846 telemetry_before(x,y,psi,v)=36.831,-9.595,-0.148,6.634 trackingErr=11.273414 trajN=20
+[MPC] First control: delta=-0.452617 accel=0.877971
+[MPC] Telemetry after step: x=37.487 y=-9.693 psi=-0.749 v=6.722 trackingErr=11.273414
+MpcEngine: launching SQP with zWork size=118 first_vals=[18.4156, 18.7455, 19.1004, 19.5546, 20.3254, 21.5282, 23.1259, 24.8907]
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=0 max|dZ|=9.52721
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=1 max|dZ|=9.50535
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=2 max|dZ|=6.23749
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=3 max|dZ|=9.12246
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=4 max|dZ|=6.45732
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=5 max|dZ|=5.40278
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=6 max|dZ|=8.44006
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=7 max|dZ|=3.16525
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=8 max|dZ|=3.95927
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=9 max|dZ|=7.23618
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=10 max|dZ|=7.55117
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=11 max|dZ|=3.44087
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=12 max|dZ|=2.40661
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=13 max|dZ|=5.27619
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=14 max|dZ|=8.12721
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=15 max|dZ|=3.27729
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=16 max|dZ|=4.14764
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=17 max|dZ|=2.24364
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=18 max|dZ|=5.12174
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=19 max|dZ|=7.20441
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=20 max|dZ|=5.69067
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=21 max|dZ|=6.56787
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=22 max|dZ|=4.3027
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=23 max|dZ|=7.95922
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=24 max|dZ|=9.38362
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=25 max|dZ|=4.33302
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=26 max|dZ|=2.94178
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=27 max|dZ|=6.43773
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=28 max|dZ|=6.02727
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=29 max|dZ|=7.78459
+[MPC Failsafe] maxIter reached. Rolling back to iteration with lowest objective; min max|dZ| = 8.12721.
+[MPC] Step: ok=1 converged=0 iter=30 maxAbs=8.127211 telemetry_before(x,y,psi,v)=37.487,-9.693,-0.749,6.722 trackingErr=10.709802 trajN=20
+[MPC] First control: delta=0.424828 accel=0.817145
+[MPC] Telemetry after step: x=37.980 y=-10.151 psi=-0.177 v=6.803 trackingErr=10.709802
+MpcEngine: launching SQP with zWork size=118 first_vals=[18.7437, 19.0335, 19.5362, 20.3901, 21.6616, 23.2303, 24.874, 26.2976]
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=0 max|dZ|=3.30239
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=1 max|dZ|=4.31911
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=2 max|dZ|=2.79833
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=3 max|dZ|=4.55686
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=4 max|dZ|=3.62118
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=5 max|dZ|=7.88619
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=6 max|dZ|=7.6107
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=7 max|dZ|=3.4634
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=8 max|dZ|=6.05827
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=9 max|dZ|=7.34876
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=10 max|dZ|=12.9675
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=11 max|dZ|=9.53979
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=12 max|dZ|=6.52519
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=13 max|dZ|=6.30701
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=14 max|dZ|=14.5862
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=15 max|dZ|=12.2981
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=16 max|dZ|=13.1451
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=17 max|dZ|=3.09957
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=18 max|dZ|=3.03311
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=19 max|dZ|=2.98156
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=20 max|dZ|=4.61581
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=21 max|dZ|=7.75983
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=22 max|dZ|=7.64663
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=23 max|dZ|=5.37035
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=24 max|dZ|=3.27474
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=25 max|dZ|=3.04355
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=26 max|dZ|=2.95876
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=27 max|dZ|=3.68121
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=28 max|dZ|=3.59746
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=29 max|dZ|=4.29222
+[MPC Failsafe] maxIter reached. Rolling back to iteration with lowest objective; min max|dZ| = 14.5862.
+[MPC] Step: ok=1 converged=0 iter=30 maxAbs=14.586201 telemetry_before(x,y,psi,v)=37.980,-10.151,-0.177,6.803 trackingErr=15.967638 trajN=20
+[MPC] First control: delta=-0.399948 accel=-1.228731
+[MPC] Telemetry after step: x=38.650 y=-10.271 psi=-0.722 v=6.681 trackingErr=15.967638
+MpcEngine: launching SQP with zWork size=118 first_vals=[18.9899, 19.3274, 20.1135, 21.4025, 22.7598, 24.0293, 23.6167, 23.2665]
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=0 max|dZ|=12.2172
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=1 max|dZ|=13.689
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=2 max|dZ|=3.10545
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=3 max|dZ|=3.01888
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=4 max|dZ|=3.10336
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=5 max|dZ|=3.85486
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=6 max|dZ|=3.10471
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=7 max|dZ|=4.95813
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=8 max|dZ|=6.29493
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=9 max|dZ|=7.33444
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=10 max|dZ|=4.72426
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=11 max|dZ|=5.07505
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=12 max|dZ|=9.42892
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=13 max|dZ|=5.1041
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=14 max|dZ|=3.44901
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=15 max|dZ|=2.87354
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=16 max|dZ|=6.06428
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=17 max|dZ|=5.24727
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=18 max|dZ|=5.29076
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=19 max|dZ|=4.55175
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=20 max|dZ|=5.71276
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=21 max|dZ|=2.38008
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=22 max|dZ|=7.81198
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=23 max|dZ|=6.05728
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=24 max|dZ|=8.0952
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=25 max|dZ|=9.57934
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=26 max|dZ|=8.90269
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=27 max|dZ|=6.97242
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=28 max|dZ|=4.16655
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=29 max|dZ|=3.03665
+[MPC Failsafe] maxIter reached. Rolling back to iteration with lowest objective; min max|dZ| = 9.42892.
+[MPC] Step: ok=1 converged=0 iter=30 maxAbs=9.428919 telemetry_before(x,y,psi,v)=38.650,-10.271,-0.722,6.681 trackingErr=11.622344 trajN=20
+[MPC] First control: delta=0.570160 accel=-1.620297
+[MPC] Telemetry after step: x=39.151 y=-10.712 psi=0.040 v=6.519 trackingErr=11.622344
+
+
+
+
+
+
+
+
+s-curve:
+
+
+
+
+
+
+
+SQP iter=9 max|dZ|=3.12764
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=10 max|dZ|=4.15212
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=11 max|dZ|=12.4574
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=12 max|dZ|=8.24005
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=13 max|dZ|=7.29583
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=14 max|dZ|=3.58462
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=15 max|dZ|=3.13663
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=16 max|dZ|=4.43997
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=17 max|dZ|=3.64873
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=18 max|dZ|=8.078
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=19 max|dZ|=3.59749
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=20 max|dZ|=3.3062
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=21 max|dZ|=3.11909
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=22 max|dZ|=3.06171
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=23 max|dZ|=4.92394
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=24 max|dZ|=4.65791
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=25 max|dZ|=6.26375
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=26 max|dZ|=10.2478
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=27 max|dZ|=6.26138
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=28 max|dZ|=7.50943
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=29 max|dZ|=6.47212
+[MPC Failsafe] maxIter reached. Rolling back to iteration with lowest objective; min max|dZ| = 12.4574.
+[MPC] Step: ok=1 converged=0 iter=30 maxAbs=12.457392 telemetry_before(x,y,psi,v)=30.384,9.327,-1.561,7.834 trackingErr=8.281052 trajN=20
+[MPC] First control: delta=-0.400000 accel=-2.988943
+[MPC] Telemetry after step: x=30.392 y=8.543 psi=-2.188 v=7.535 trackingErr=8.281052
+MpcEngine: launching SQP with zWork size=118 first_vals=[15.192, 15.3628, 15.8224, 16.7081, 17.5477, 18.2964, 18.9136, 19.4023]
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=0 max|dZ|=8.11293
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=1 max|dZ|=7.0314
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=2 max|dZ|=3.47589
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=3 max|dZ|=5.00211
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=4 max|dZ|=3.29721
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=5 max|dZ|=5.65069
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=6 max|dZ|=9.57724
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=7 max|dZ|=9.5403
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=8 max|dZ|=6.8267
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=9 max|dZ|=3.03283
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=10 max|dZ|=3.63262
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=11 max|dZ|=3.13143
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=12 max|dZ|=4.56759
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=13 max|dZ|=12.4878
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=14 max|dZ|=5.84539
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=15 max|dZ|=5.68961
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=16 max|dZ|=4.87779
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=17 max|dZ|=8.0376
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=18 max|dZ|=8.18505
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=19 max|dZ|=4.38784
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=20 max|dZ|=6.36737
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=21 max|dZ|=10.9424
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=22 max|dZ|=8.05637
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=23 max|dZ|=6.51068
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=24 max|dZ|=2.76846
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=25 max|dZ|=6.79416
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=26 max|dZ|=5.59539
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=27 max|dZ|=7.23672
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=28 max|dZ|=7.30636
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=29 max|dZ|=3.10761
+[MPC Failsafe] maxIter reached. Rolling back to iteration with lowest objective; min max|dZ| = 9.57724.
+[MPC] Step: ok=1 converged=0 iter=30 maxAbs=9.577244 telemetry_before(x,y,psi,v)=30.392,8.543,-2.188,7.535 trackingErr=8.240340 trajN=20
+[MPC] First control: delta=-0.367693 accel=-1.102208
+[MPC] Telemetry after step: x=29.956 y=7.929 psi=-2.742 v=7.425 trackingErr=8.240340
+MpcEngine: launching SQP with zWork size=118 first_vals=[15.1959, 15.1858, 15.5752, 16.5259, 17.3645, 18.0849, 18.7969, 19.5568]
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=0 max|dZ|=9.40782
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=1 max|dZ|=7.16773
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=2 max|dZ|=3.94583
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=3 max|dZ|=4.59024
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=4 max|dZ|=3.1182
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=5 max|dZ|=4.71298
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=6 max|dZ|=8.1699
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=7 max|dZ|=5.56227
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=8 max|dZ|=5.48897
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=9 max|dZ|=6.4228
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=10 max|dZ|=7.59134
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=11 max|dZ|=7.6995
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=12 max|dZ|=6.97502
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=13 max|dZ|=3.12883
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=14 max|dZ|=2.98704
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=15 max|dZ|=2.34975
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=16 max|dZ|=6.53141
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=17 max|dZ|=7.60262
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=18 max|dZ|=4.12791
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=19 max|dZ|=8.70991
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=20 max|dZ|=7.59048
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=21 max|dZ|=4.56387
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=22 max|dZ|=3.46485
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=23 max|dZ|=4.96361
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=24 max|dZ|=6.05767
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=25 max|dZ|=6.51241
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=26 max|dZ|=4.35183
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=27 max|dZ|=3.78599
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=28 max|dZ|=6.33262
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=29 max|dZ|=6.56971
+[MPC Failsafe] maxIter reached. Rolling back to iteration with lowest objective; min max|dZ| = 5.56227.
+[MPC] Step: ok=1 converged=0 iter=30 maxAbs=5.562274 telemetry_before(x,y,psi,v)=29.956,7.929,-2.742,7.425 trackingErr=7.158585 trajN=20
+[MPC] First control: delta=0.400010 accel=-0.055275
+[MPC] Telemetry after step: x=29.272 y=7.640 psi=-2.148 v=7.419 trackingErr=7.158585
+MpcEngine: launching SQP with zWork size=118 first_vals=[14.9779, 14.8022, 15.1895, 15.4578, 16.4604, 17.5455, 18.4724, 19.0892]
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=0 max|dZ|=5.98115
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=1 max|dZ|=6.05253
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=2 max|dZ|=6.4518
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=3 max|dZ|=7.17419
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=4 max|dZ|=7.30492
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=5 max|dZ|=6.61547
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=6 max|dZ|=3.46155
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=7 max|dZ|=3.38415
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=8 max|dZ|=11.4304
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=9 max|dZ|=9.34391
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=10 max|dZ|=8.96395
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=11 max|dZ|=3.86016
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=12 max|dZ|=5.61365
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=13 max|dZ|=5.43455
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=14 max|dZ|=6.83056
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=15 max|dZ|=5.65542
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=16 max|dZ|=6.59813
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=17 max|dZ|=8.37171
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=18 max|dZ|=3.61432
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=19 max|dZ|=4.85004
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=20 max|dZ|=3.60254
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=21 max|dZ|=3.36419
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=22 max|dZ|=7.90005
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=23 max|dZ|=9.82505
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=24 max|dZ|=8.71559
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=25 max|dZ|=5.61453
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=26 max|dZ|=7.41857
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=27 max|dZ|=5.7645
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=28 max|dZ|=8.5845
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=29 max|dZ|=7.65653
+[MPC Failsafe] maxIter reached. Rolling back to iteration with lowest objective; min max|dZ| = 7.17419.
+[MPC] Step: ok=1 converged=0 iter=30 maxAbs=7.174186 telemetry_before(x,y,psi,v)=29.272,7.640,-2.148,7.419 trackingErr=6.462725 trajN=20
+[MPC] First control: delta=0.400000 accel=-0.141686
+[MPC] Telemetry after step: x=28.867 y=7.018 psi=-1.554 v=7.405 trackingErr=6.462725
+MpcEngine: launching SQP with zWork size=118 first_vals=[14.6365, 14.636, 15.1466, 16.1186, 17.3066, 17.2443, 18.6828, 20.1686]
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=0 max|dZ|=7.46276
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=1 max|dZ|=6.54919
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=2 max|dZ|=3.61415
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=3 max|dZ|=3.3148
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=4 max|dZ|=11.3216
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=5 max|dZ|=6.50708
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=6 max|dZ|=3.66364
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=7 max|dZ|=3.6351
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=8 max|dZ|=6.59425
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=9 max|dZ|=10.5512
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=10 max|dZ|=4.89221
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=11 max|dZ|=7.83093
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=12 max|dZ|=3.59175
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=13 max|dZ|=4.5197
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=14 max|dZ|=5.55787
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=15 max|dZ|=3.13388
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=16 max|dZ|=5.04056
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=17 max|dZ|=6.07763
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=18 max|dZ|=3.04424
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=19 max|dZ|=3.12926
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=20 max|dZ|=2.60187
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=21 max|dZ|=3.08347
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=22 max|dZ|=5.60476
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=23 max|dZ|=5.38613
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=24 max|dZ|=5.47209
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=25 max|dZ|=7.99466
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=26 max|dZ|=7.34526
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=27 max|dZ|=6.14648
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=28 max|dZ|=8.13457
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=29 max|dZ|=4.65668
+[MPC Failsafe] maxIter reached. Rolling back to iteration with lowest objective; min max|dZ| = 5.47209.
+[MPC] Step: ok=1 converged=0 iter=30 maxAbs=5.472089 telemetry_before(x,y,psi,v)=28.867,7.018,-1.554,7.405 trackingErr=7.339566 trajN=20
+[MPC] First control: delta=0.406400 accel=0.204301
+[MPC] Telemetry after step: x=28.879 y=6.278 psi=-0.952 v=7.425 trackingErr=7.339566
+MpcEngine: launching SQP with zWork size=118 first_vals=[14.4336, 14.5966, 15.1039, 15.999, 17.1749, 18.5003, 19.9035, 21.322]
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=0 max|dZ|=8.02142
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=1 max|dZ|=7.18528
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=2 max|dZ|=6.39114
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=3 max|dZ|=7.28807
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=4 max|dZ|=7.71996
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=5 max|dZ|=7.93974
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=6 max|dZ|=2.88399
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=7 max|dZ|=3.36505
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=8 max|dZ|=5.44455
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=9 max|dZ|=9.44247
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=10 max|dZ|=7.82685
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=11 max|dZ|=7.16788
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=12 max|dZ|=3.62357
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=13 max|dZ|=3.43892
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=14 max|dZ|=7.20769
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=15 max|dZ|=11.3333
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=16 max|dZ|=9.03378
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=17 max|dZ|=4.12324
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=18 max|dZ|=3.26868
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=19 max|dZ|=4.05822
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=20 max|dZ|=9.9596
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=21 max|dZ|=7.96099
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=22 max|dZ|=5.26735
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=23 max|dZ|=7.07819
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=24 max|dZ|=10.4806
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=25 max|dZ|=8.73089
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=26 max|dZ|=6.71782
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=27 max|dZ|=4.62058
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=28 max|dZ|=11.6875
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=29 max|dZ|=6.18957
+[MPC Failsafe] maxIter reached. Rolling back to iteration with lowest objective; min max|dZ| = 10.4806.
+[MPC] Step: ok=1 converged=0 iter=30 maxAbs=10.480590 telemetry_before(x,y,psi,v)=28.879,6.278,-0.952,7.425 trackingErr=5.254962 trajN=20
+[MPC] First control: delta=-0.400000 accel=-0.807483
+[MPC] Telemetry after step: x=29.310 y=5.673 psi=-1.546 v=7.345 trackingErr=5.254962
+MpcEngine: launching SQP with zWork size=118 first_vals=[14.4397, 14.7291, 15.2789, 16.1332, 17.2226, 18.4081, 19.6242, 20.8292]
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=0 max|dZ|=8.67311
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=1 max|dZ|=5.85692
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=2 max|dZ|=4.24827
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=3 max|dZ|=6.82083
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=4 max|dZ|=4.94818
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=5 max|dZ|=4.02687
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=6 max|dZ|=4.77731
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=7 max|dZ|=5.6539
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=8 max|dZ|=5.00674
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=9 max|dZ|=5.26071
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=10 max|dZ|=4.80755
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=11 max|dZ|=5.38019
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=12 max|dZ|=8.51642
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=13 max|dZ|=3.62919
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=14 max|dZ|=5.94301
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=15 max|dZ|=8.42609
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=16 max|dZ|=5.98723
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=17 max|dZ|=4.72916
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=18 max|dZ|=3.01883
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=19 max|dZ|=4.38949
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=20 max|dZ|=9.89022
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=21 max|dZ|=8.75537
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=22 max|dZ|=4.86501
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=23 max|dZ|=5.06773
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=24 max|dZ|=6.603
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=25 max|dZ|=7.63831
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=26 max|dZ|=4.08026
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=27 max|dZ|=7.89472
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=28 max|dZ|=8.49965
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=29 max|dZ|=4.72052
+[MPC Failsafe] maxIter reached. Rolling back to iteration with lowest objective; min max|dZ| = 6.603.
+[MPC] Step: ok=1 converged=0 iter=30 maxAbs=6.602996 telemetry_before(x,y,psi,v)=29.310,5.673,-1.546,7.345 trackingErr=4.323272 trajN=20
+[MPC] First control: delta=-0.400000 accel=-2.186713
+[MPC] Telemetry after step: x=29.328 y=4.938 psi=-2.134 v=7.126 trackingErr=4.323272
+MpcEngine: launching SQP with zWork size=118 first_vals=[14.6549, 14.8185, 15.3211, 16.2749, 17.5765, 18.966, 20.2887, 21.4524]
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=0 max|dZ|=7.67483
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=1 max|dZ|=4.25419
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=2 max|dZ|=7.94543
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=3 max|dZ|=5.91505
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=4 max|dZ|=4.44613
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=5 max|dZ|=3.75827
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=6 max|dZ|=3.74732
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=7 max|dZ|=5.3818
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=8 max|dZ|=7.89788
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=9 max|dZ|=6.94441
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=10 max|dZ|=4.31993
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=11 max|dZ|=9.26485
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=12 max|dZ|=8.37551
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=13 max|dZ|=5.15948
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=14 max|dZ|=5.88413
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=15 max|dZ|=6.69101
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=16 max|dZ|=9.02466
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=17 max|dZ|=3.13626
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=18 max|dZ|=4.52759
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=19 max|dZ|=10.7666
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=20 max|dZ|=5.22971
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=21 max|dZ|=7.73663
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=22 max|dZ|=4.27202
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=23 max|dZ|=4.78093
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=24 max|dZ|=2.56174
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=25 max|dZ|=4.54309
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=26 max|dZ|=5.86968
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=27 max|dZ|=9.53534
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=28 max|dZ|=5.77161
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=29 max|dZ|=8.27475
+[MPC Failsafe] maxIter reached. Rolling back to iteration with lowest objective; min max|dZ| = 6.94441.
+[MPC] Step: ok=1 converged=0 iter=30 maxAbs=6.944408 telemetry_before(x,y,psi,v)=29.328,4.938,-2.134,7.126 trackingErr=6.250084 trajN=20
+[MPC] First control: delta=0.598452 accel=2.194788
+[MPC] Telemetry after step: x=28.947 y=4.336 psi=-1.281 v=7.346 trackingErr=6.250084
+MpcEngine: launching SQP with zWork size=118 first_vals=[14.6638, 14.6694, 15.0422, 15.5979, 16.2492, 16.8795, 17.4115, 17.8511]
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=0 max|dZ|=4.22342
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=1 max|dZ|=9.18729
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=2 max|dZ|=8.04159
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=3 max|dZ|=5.38604
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=4 max|dZ|=5.07538
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=5 max|dZ|=10.811
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=6 max|dZ|=12.2133
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=7 max|dZ|=4.63819
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=8 max|dZ|=6.17804
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=9 max|dZ|=5.04845
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=10 max|dZ|=4.77007
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=11 max|dZ|=4.26926
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=12 max|dZ|=4.25254
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=13 max|dZ|=4.16367
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=14 max|dZ|=2.84596
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=15 max|dZ|=10.172
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=16 max|dZ|=5.96839
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=17 max|dZ|=4.71133
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=18 max|dZ|=5.50052
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=19 max|dZ|=3.0563
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=20 max|dZ|=6.05479
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=21 max|dZ|=4.50671
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=22 max|dZ|=4.01821
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=23 max|dZ|=8.03365
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=24 max|dZ|=7.37503
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=25 max|dZ|=2.93082
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=26 max|dZ|=4.51533
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=27 max|dZ|=7.76427
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=28 max|dZ|=9.99888
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=29 max|dZ|=6.93315
+[MPC Failsafe] maxIter reached. Rolling back to iteration with lowest objective; min max|dZ| = 10.811.
+[MPC] Step: ok=1 converged=0 iter=30 maxAbs=10.811012 telemetry_before(x,y,psi,v)=28.947,4.336,-1.281,7.346 trackingErr=3.416814 trajN=20
+[MPC] First control: delta=-0.398653 accel=-2.196339
+[MPC] Telemetry after step: x=29.157 y=3.632 psi=-1.867 v=7.126 trackingErr=3.416814
+MpcEngine: launching SQP with zWork size=118 first_vals=[14.4736, 14.6976, 15.2823, 16.2465, 16.6753, 16.7898, 17.9192, 19.1196]
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=0 max|dZ|=12.1667
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=1 max|dZ|=5.30217
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=2 max|dZ|=8.76915
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=3 max|dZ|=10.9282
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=4 max|dZ|=3.3736
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=5 max|dZ|=6.09986
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=6 max|dZ|=5.63752
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=7 max|dZ|=7.19854
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=8 max|dZ|=4.67225
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=9 max|dZ|=2.90432
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=10 max|dZ|=3.98699
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=11 max|dZ|=5.2305
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=12 max|dZ|=5.79803
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=13 max|dZ|=5.9035
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=14 max|dZ|=8.60703
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=15 max|dZ|=5.44484
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=16 max|dZ|=8.38696
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=17 max|dZ|=3.88398
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=18 max|dZ|=6.241
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=19 max|dZ|=8.69261
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=20 max|dZ|=3.31105
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=21 max|dZ|=3.07224
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=22 max|dZ|=3.78006
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=23 max|dZ|=4.87651
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=24 max|dZ|=6.81372
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=25 max|dZ|=3.42624
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=26 max|dZ|=3.53474
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=27 max|dZ|=3.73354
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=28 max|dZ|=4.09611
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=29 max|dZ|=8.02391
+[MPC Failsafe] maxIter reached. Rolling back to iteration with lowest objective; min max|dZ| = 5.44484.
+[MPC] Step: ok=1 converged=0 iter=30 maxAbs=5.444837 telemetry_before(x,y,psi,v)=29.157,3.632,-1.867,7.126 trackingErr=2.429473 trajN=20
+[MPC] First control: delta=0.244162 accel=0.965187
+[MPC] Telemetry after step: x=28.949 y=2.950 psi=-1.519 v=7.222 trackingErr=2.429473
+MpcEngine: launching SQP with zWork size=118 first_vals=[14.5785, 14.6569, 14.8799, 15.1562, 15.5157, 16.0836, 16.9849, 18.2367]
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=0 max|dZ|=8.47157
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=1 max|dZ|=3.76085
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=2 max|dZ|=6.16769
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=3 max|dZ|=9.20062
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=4 max|dZ|=3.6331
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=5 max|dZ|=4.13933
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=6 max|dZ|=5.99659
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=7 max|dZ|=7.95005
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=8 max|dZ|=7.30514
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=9 max|dZ|=5.17942
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=10 max|dZ|=8.20503
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=11 max|dZ|=5.82654
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=12 max|dZ|=3.77425
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=13 max|dZ|=3.59645
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=14 max|dZ|=3.44706
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=15 max|dZ|=7.23108
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=16 max|dZ|=9.09458
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=17 max|dZ|=7.0625
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=18 max|dZ|=8.59645
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=19 max|dZ|=4.89764
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=20 max|dZ|=8.83734
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=21 max|dZ|=9.1845
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=22 max|dZ|=4.94574
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=23 max|dZ|=5.65712
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=24 max|dZ|=7.75165
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=25 max|dZ|=7.15077
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=26 max|dZ|=5.95241
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=27 max|dZ|=5.96782
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=28 max|dZ|=2.78214
+MPC constraints: rows=80 cols=118 nz_est=270 nz_actual=270
+MpcSqp: solver returned ok (hot-start); res.z.size=118 expected=118
+SQP iter=29 max|dZ|=2.22446
+[MPC Failsafe] maxIter reached. Rolling back to iteration with lowest objective; min max|dZ| = 7.95005.
+[MPC] Step: ok=1 converged=0 iter=30 maxAbs=7.950051 telemetry_before(x,y,psi,v)=28.949,2.950,-1.519,7.222 trackingErr=1.836432 trajN=20
+[MPC] First control: delta=-0.367742 accel=-0.585148
+[MPC] Telemetry after step: x=28.987 y=2.229 psi=-2.050 v=7.164 trackingErr=1.836432
