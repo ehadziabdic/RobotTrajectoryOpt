@@ -111,7 +111,7 @@ public:
         // Only accept the new warm-start if convergence was reasonable.
         // If maxAbs is very large, the SQP diverged; fall back to a fresh
         // reference-trajectory init on the next step to escape the bad basin.
-        if (_sqp.lastMaxAbs() < 15.0) {
+        if (_sqp.lastMaxAbs() < 5.0) {
             _zNom = zWork;
         } else {
             // Force re-initialization from reference on next call

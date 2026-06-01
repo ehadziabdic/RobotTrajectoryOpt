@@ -53,16 +53,15 @@ inline ScenarioConfig makeStraightLineScenarioConfig() {
 inline ScenarioConfig makeLaneChangeScenarioConfig() {
     ScenarioConfig config;
     config.scenario = SimScenario::LaneChange;
-    config.initialTelemetry = Telemetry{0.0, 0.0, 0.0, 1.0};
+    config.initialTelemetry = Telemetry{0.0, 0.0, 0.0, 1.5};
     config.obstacles.clear();
-    config.obstacles.push_back({10.0, 0.5, 1.0});
-    config.obstacles.push_back({20.0, 1.8, 1.0});
+    config.obstacles.push_back({5.0, 0.0, 1.0});
 
     auto coeffs = config.coeffs.getColumnManipulator();
     coeffs(0) = 0.0;
     coeffs(1) = 0.0;
-    coeffs(2) = 0.008;
-    coeffs(3) = -0.00012;
+    coeffs(2) = 0.015;
+    coeffs(3) = -0.0005;
     return config;
 }
 
@@ -73,9 +72,9 @@ inline ScenarioConfig makeSCurveScenarioConfig() {
 
     auto coeffs = config.coeffs.getColumnManipulator();
     coeffs(0) = 0.0;
-    coeffs(1) = 0.12;
-    coeffs(2) = -0.004;
-    coeffs(3) = 0.000035;
+    coeffs(1) = 0.08;
+    coeffs(2) = -0.002;
+    coeffs(3) = 0.000012;
     return config;
 }
 

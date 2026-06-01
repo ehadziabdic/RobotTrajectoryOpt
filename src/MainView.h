@@ -141,9 +141,9 @@ inline MainView::MainView()
     _telemetry.psi = normalizeAngle(_telemetry.psi);
     _targetVelocity = _telemetry.v;
 
-    _settings.maxIter = 30;
+    _settings.maxIter = 60;
     _settings.tol = 2e-3;
-    _settings.alpha = 0.3;
+    _settings.alpha = 0.12;
     _settings.verbose = true;
     _engine.setSettings(_settings);
 

@@ -19,7 +19,7 @@ public:
     struct Settings {
         int maxIter = 30;
         double tol = 2e-3;
-        double alpha = 0.5;
+        double alpha = 0.12;
         double steerLimit = 0.6;
         double accelLimit = 3.0;
         bool verbose = false;
@@ -57,7 +57,6 @@ public:
 
         dense::DblMatrix bestZ = zNom.makeCopy();
         double bestMaxAbs = std::numeric_limits<double>::max();
-        double bestObjective = std::numeric_limits<double>::max();
 
         for (int iter = 0; iter < cfg.maxIter; ++iter) {
             solverCost.UpdateReferenceTrajectory(coeffs, target_v, initial_x, initial_y, dt);
@@ -127,9 +126,7 @@ public:
             }
             _lastIterations = iter + 1;
             _lastMaxAbs = maxAbs;
-            const double objective = evaluateObjective(solverCost, zNom);
-            if (objective < bestObjective) {
-                bestObjective = objective;
+            if (maxAbs < bestMaxAbs) {
                 bestMaxAbs = maxAbs;
                 bestZ = zNom.makeCopy();
             }
@@ -181,7 +178,6 @@ public:
         MpcCost solverCost(_layout);
         dense::DblMatrix bestZ = zNom.makeCopy();
         double bestMaxAbs = std::numeric_limits<double>::max();
-        double bestObjective = std::numeric_limits<double>::max();
 
         for (int iter = 0; iter < cfg.maxIter; ++iter) {
             solverCost.UpdateReferenceTrajectory(coeffs, target_v, initial_x, initial_y, dt);
@@ -251,9 +247,7 @@ public:
             }
             _lastIterations = iter + 1;
             _lastMaxAbs = maxAbs;
-            const double objective = evaluateObjective(solverCost, zNom);
-            if (objective < bestObjective) {
-                bestObjective = objective;
+            if (maxAbs < bestMaxAbs) {
                 bestMaxAbs = maxAbs;
                 bestZ = zNom.makeCopy();
             }

@@ -12,7 +12,7 @@ public:
         : _layout(layout),
           Q(4, 1, nullptr, true),
           R(2, 1, nullptr, true),
-                    slackWeight(3000.0),
+          slackWeight(8000.0),
           Hdiag(static_cast<td::UINT4>(_layout.totalSize()), 1, nullptr, true),
           g(static_cast<td::UINT4>(_layout.totalSize()), 1, nullptr, true),
           Zref(static_cast<td::UINT4>(_layout.totalSize()), 1, nullptr, true) {
@@ -98,10 +98,14 @@ public:
         double xref = x_closest;
         double psiref = std::atan2(dy_at(xref), 1.0);
         const double vrefConst = target_v;
+        const double max_path_x = x_closest + static_cast<double>(N) * vrefConst * dt * 1.8;
 
         for (std::size_t t = 1; t < N; ++t) {
             // Step forward using heading-aware increments
             xref += vrefConst * std::cos(psiref) * dt;
+            if (xref > max_path_x) {
+                xref = max_path_x;
+            }
 
             // Recompute reference heading from polynomial slope at new x
             psiref = std::atan2(dy_at(xref), 1.0);
