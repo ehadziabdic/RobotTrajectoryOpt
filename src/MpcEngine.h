@@ -54,7 +54,9 @@ public:
                double target_v,
                double dt,
                const std::vector<Obstacle>& obstacles,
-               Trajectory& out) {
+               Trajectory& out,
+               bool freezeAtPeak = false,
+               double maxLookahead = 15.0) {
         if (dt <= 0.0) {
             std::cout << "MpcEngine: invalid dt" << std::endl;
             _diag = Diagnostics{};
@@ -65,7 +67,20 @@ public:
             _diag = Diagnostics{};
             return false;
         }
-        if (!ensureNominalInitialized(coeffs, target_v, current.x, current.y, dt)) {
+
+        // Stale warm-start check (before nominal init)
+        if (_zNomInitialized && _zNom.getNoOfRows() > 0) {
+            auto zCheck = _zNom.getColumnManipulator();
+            const double warmX = zCheck(static_cast<td::UINT4>(_layout.idxX(0)));
+            const double warmY = zCheck(static_cast<td::UINT4>(_layout.idxY(0)));
+            const double dx = current.x - warmX;
+            const double dy = current.y - warmY;
+            if (dx * dx + dy * dy > 4.0) {  // >2m drift
+                _zNomInitialized = false;
+            }
+        }
+
+        if (!ensureNominalInitialized(coeffs, target_v, current.x, current.y, current.psi, dt, freezeAtPeak, maxLookahead)) {
             std::cout << "MpcEngine: nominal init failed" << std::endl;
             _diag = Diagnostics{};
             return false;
@@ -97,7 +112,10 @@ public:
                        current.x,
                        current.y,
                        current.psi,
-                       current.v);
+                       current.v,
+                       current.psi,
+                       freezeAtPeak,
+                       maxLookahead);
         _diag.ok = ok;
         _diag.converged = _sqp.lastConverged();
         _diag.iterations = _sqp.lastIterations();
@@ -127,7 +145,10 @@ private:
                                   double target_v,
                                   double initial_x,
                                   double initial_y,
-                                  double dt) {
+                                  double initial_psi,
+                                  double dt,
+                                  bool freezeAtPeak,
+                                  double maxLookahead) {
         if (_zNom.getNoOfRows() == 0) {
             return false;
         }
@@ -138,7 +159,9 @@ private:
         }
         if (!_zNomInitialized) {
             MpcCost cost(_layout);
-            cost.UpdateReferenceTrajectory(coeffs, target_v, initial_x, initial_y, dt);
+            cost.setFreezeAtPeak(freezeAtPeak);
+            cost.setMaxLookahead(maxLookahead);
+            cost.UpdateReferenceTrajectory(coeffs, target_v, initial_x, initial_y, dt, initial_psi);
             _zNom = cost.Ref().makeCopy();
             _zNomInitialized = true;
         }

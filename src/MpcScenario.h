@@ -20,6 +20,8 @@ struct ScenarioConfig {
     Telemetry initialTelemetry{};
     dense::DblMatrix coeffs;
     std::vector<Obstacle> obstacles;
+    bool freezeAtPeak = false;
+    double maxLookahead = 15.0;
 
     ScenarioConfig()
         : coeffs(4, 1, nullptr, true) {}
@@ -41,6 +43,8 @@ inline ScenarioConfig makeStraightLineScenarioConfig() {
     ScenarioConfig config;
     config.scenario = SimScenario::StraightLine;
     config.initialTelemetry = Telemetry{0.0, 0.0, 0.0, 1.0};
+    config.freezeAtPeak = false;
+    config.maxLookahead = 15.0;
 
     auto coeffs = config.coeffs.getColumnManipulator();
     coeffs(0) = 0.0;
@@ -54,14 +58,15 @@ inline ScenarioConfig makeLaneChangeScenarioConfig() {
     ScenarioConfig config;
     config.scenario = SimScenario::LaneChange;
     config.initialTelemetry = Telemetry{0.0, 0.0, 0.0, 1.5};
-    config.obstacles.clear();
-    config.obstacles.push_back({5.0, 0.0, 1.0});
+    config.obstacles = {{8.0, 0.3, 0.5}, {32.0, -0.3, 0.5}};
+    config.freezeAtPeak = false;
+    config.maxLookahead = 20.0;
 
     auto coeffs = config.coeffs.getColumnManipulator();
     coeffs(0) = 0.0;
-    coeffs(1) = 0.0;
-    coeffs(2) = 0.015;
-    coeffs(3) = -0.0005;
+    coeffs(1) = 0.311769;
+    coeffs(2) = -0.023383;
+    coeffs(3) = 0.000390;
     return config;
 }
 
@@ -69,12 +74,15 @@ inline ScenarioConfig makeSCurveScenarioConfig() {
     ScenarioConfig config;
     config.scenario = SimScenario::SCurve;
     config.initialTelemetry = Telemetry{0.0, 0.0, 0.0, 1.5};
+    config.obstacles = {};
+    config.freezeAtPeak = false;
+    config.maxLookahead = 25.0;
 
     auto coeffs = config.coeffs.getColumnManipulator();
     coeffs(0) = 0.0;
-    coeffs(1) = 0.08;
-    coeffs(2) = -0.002;
-    coeffs(3) = 0.000012;
+    coeffs(1) = 0.22269225;
+    coeffs(2) = -0.00954395;
+    coeffs(3) = 0.00009089;
     return config;
 }
 

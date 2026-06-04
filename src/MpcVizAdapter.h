@@ -98,13 +98,22 @@ public:
 
         // Generate reference path independently spanning the full track ahead
         {
+            const bool doFreeze = (c3 < 0.0 && c2 > 0.0);
+            const double x_peak_viz = doFreeze ? (-2.0 * c2 / (3.0 * c3))
+                                                : std::numeric_limits<double>::max();
+            const double y_peak_viz = doFreeze
+                ? (c2 * x_peak_viz * x_peak_viz + c3 * x_peak_viz * x_peak_viz * x_peak_viz)
+                : 0.0;
+
             const double xStart = initialX - 5.0;
-            const double xEnd = initialX + 60.0;
-            const int nRef = 200;
+            const double xEnd   = initialX + 80.0;   // wider window to show full S
+            const int nRef = 300;
             frame.referencePath.reserve(nRef);
             for (int i = 0; i < nRef; ++i) {
                 const double x = xStart + (xEnd - xStart) * i / (nRef - 1);
-                const double y = c0 + c1 * x + c2 * x * x + c3 * x * x * x;
+                double y = c0 + c1 * x + c2 * x * x + c3 * x * x * x;
+                if (doFreeze && x >= x_peak_viz)
+                    y = y_peak_viz;   // clamp Y, X keeps advancing — line stays visible
                 frame.referencePath.push_back({static_cast<float>(x), static_cast<float>(y)});
             }
         }

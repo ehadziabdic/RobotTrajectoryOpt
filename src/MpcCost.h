@@ -4,6 +4,10 @@
 #include <cmath>
 #include "MpcLayout.h"
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
 namespace mpc {
 
 class MpcCost {
@@ -17,21 +21,26 @@ public:
           g(static_cast<td::UINT4>(_layout.totalSize()), 1, nullptr, true),
           Zref(static_cast<td::UINT4>(_layout.totalSize()), 1, nullptr, true) {
         auto q = Q.getColumnManipulator();
-        q(0) = 1.0; // qx
-        q(1) = 1.0; // qy
-                q(2) = 2.0; // qpsi
-                q(3) = 3.0; // qv
+        q(0) = 0.5; // qx
+        q(1) = 8.0; // qy
+        q(2) = 5.0; // qpsi
+        q(3) = 1.0; // qv
 
         auto r = R.getColumnManipulator();
-        r(0) = 4.0; // r_delta
-                r(1) = 1.0; // r_a
+        r(0) = 0.5; // r_delta
+        r(1) = 0.5; // r_a
 
         buildHdiag();
     }
 
+    void setFreezeAtPeak(bool v) { _freezeAtPeak = v; }
+    void setMaxLookahead(double v) { _maxLookahead = v; }
+    bool freezeAtPeak() const { return _freezeAtPeak; }
+    double maxLookahead() const { return _maxLookahead; }
+
     const MpcLayout& layout() const { return _layout; }
 
-    void UpdateReferenceTrajectory(const dense::DblMatrix& coeffs, double target_v, double initial_x, double initial_y, double dt) {
+    void UpdateReferenceTrajectory(const dense::DblMatrix& coeffs, double target_v, double initial_x, double initial_y, double dt, double initial_psi) {
         double c0 = 0.0;
         double c1 = 0.0;
         double c2 = 0.0;
@@ -94,15 +103,34 @@ public:
         z(static_cast<td::UINT4>(_layout.idxPsi(0))) = psi0;
         z(static_cast<td::UINT4>(_layout.idxV(0))) = v0;
 
+        // Step C2: Replace any existing max_path_x computation with:
+        const double max_path_x = x_closest + _maxLookahead;
+
+        // Step C3: Before the reference trajectory loop, initialize psiref_prev and normalize
+        double psiref_prev = std::atan2(dy_at(x_closest), 1.0);
+        while (psiref_prev - initial_psi >  M_PI) psiref_prev -= 2.0 * M_PI;
+        while (psiref_prev - initial_psi < -M_PI) psiref_prev += 2.0 * M_PI;
+
+        // Step C4: If _freezeAtPeak is true and c3 < 0 and c2 > 0, compute before the loop:
+        double x_peak = 0.0;
+        if (_freezeAtPeak && c3 < 0.0 && c2 > 0.0) {
+            x_peak = -2.0 * c2 / (3.0 * c3);
+        }
+
         // Build forward reference trajectory from the closest point, but keep k=0 locked to telemetry
         double xref = x_closest;
         double psiref = std::atan2(dy_at(xref), 1.0);
         const double vrefConst = target_v;
-        const double max_path_x = x_closest + static_cast<double>(N) * vrefConst * dt * 1.8;
 
         for (std::size_t t = 1; t < N; ++t) {
             // Step forward using heading-aware increments
             xref += vrefConst * std::cos(psiref) * dt;
+
+            // Step C6: Inside the loop, after advancing xref, add freeze logic
+            if (_freezeAtPeak && c3 < 0.0 && c2 > 0.0 && xref >= x_peak) {
+                xref = x_peak;
+            }
+
             if (xref > max_path_x) {
                 xref = max_path_x;
             }
@@ -110,8 +138,16 @@ public:
             // Recompute reference heading from polynomial slope at new x
             psiref = std::atan2(dy_at(xref), 1.0);
 
+            // Step C5: Inside the loop, after computing psiref = std::atan2(dy_at(xref), 1.0):
+            while (psiref - psiref_prev >  M_PI) psiref -= 2.0 * M_PI;
+            while (psiref - psiref_prev < -M_PI) psiref += 2.0 * M_PI;
+            psiref_prev = psiref;
+
+            // Step C7: Apply y-floor on yref:
+            const double yref = y_at(xref);
+
             z(static_cast<td::UINT4>(_layout.idxX(t))) = xref;
-            z(static_cast<td::UINT4>(_layout.idxY(t))) = y_at(xref);
+            z(static_cast<td::UINT4>(_layout.idxY(t))) = yref;
             z(static_cast<td::UINT4>(_layout.idxPsi(t))) = psiref;
             z(static_cast<td::UINT4>(_layout.idxV(t))) = vrefConst;
         }
@@ -170,6 +206,8 @@ private:
     dense::DblMatrix g;
     dense::DblMatrix Zref;
     double slackWeight;
+    bool _freezeAtPeak = false;
+    double _maxLookahead = 15.0;
 };
 
 } // namespace mpc

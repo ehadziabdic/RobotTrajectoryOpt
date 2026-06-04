@@ -274,7 +274,7 @@ inline bool MainView::onTimer(gui::Timer* pTimer) {
 inline void MainView::advanceOneStep() {
     const double dt = _layout.dt();
 
-    const bool ok = _engine.Solve(_telemetry, _coeffs, _targetVelocity, dt, _scenarioConfig.obstacles, _trajectory);
+    const bool ok = _engine.Solve(_telemetry, _coeffs, _targetVelocity, dt, _scenarioConfig.obstacles, _trajectory, _scenarioConfig.maxLookahead);
     const auto d = _engine.diagnostics();
 
     // Print detailed per-step diagnostics to console for debugging / offline analysis

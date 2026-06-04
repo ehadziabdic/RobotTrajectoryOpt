@@ -38,7 +38,10 @@ public:
                double initial_y,
                double dt,
                const Settings& cfg,
-               const std::vector<Obstacle>& obstacles) {
+               const std::vector<Obstacle>& obstacles,
+               double initial_psi,
+               bool freezeAtPeak = false,
+               double maxLookahead = 15.0) {
         _lastIterations = 0;
         _lastMaxAbs = 0.0;
         _lastConverged = false;
@@ -47,7 +50,9 @@ public:
         dense::DblMatrix zNom(nZ, 1, nullptr, true);
 
         MpcCost solverCost(_layout);
-        solverCost.UpdateReferenceTrajectory(coeffs, target_v, initial_x, initial_y, dt);
+        solverCost.setFreezeAtPeak(freezeAtPeak);
+        solverCost.setMaxLookahead(maxLookahead);
+        solverCost.UpdateReferenceTrajectory(coeffs, target_v, initial_x, initial_y, dt, initial_psi);
         auto zref = solverCost.Ref().getColumnManipulator();
         auto zn = zNom.getColumnManipulator();
         for (td::UINT4 i = 0; i < nZ; ++i) {
@@ -59,7 +64,7 @@ public:
         double bestMaxAbs = std::numeric_limits<double>::max();
 
         for (int iter = 0; iter < cfg.maxIter; ++iter) {
-            solverCost.UpdateReferenceTrajectory(coeffs, target_v, initial_x, initial_y, dt);
+            solverCost.UpdateReferenceTrajectory(coeffs, target_v, initial_x, initial_y, dt, initial_psi);
             MpcConstraints constraints(_layout);
             constraints.setVerbose(cfg.verbose);
             constraints.setObstacles(obstacles);
@@ -69,7 +74,7 @@ public:
             auto initv = init.getColumnManipulator();
             initv(0) = zn(static_cast<td::UINT4>(_layout.idxX(0)));
             initv(1) = zn(static_cast<td::UINT4>(_layout.idxY(0)));
-            initv(2) = zn(static_cast<td::UINT4>(_layout.idxPsi(0)));
+            initv(2) = initial_psi;
             initv(3) = zn(static_cast<td::UINT4>(_layout.idxV(0)));
             constraints.setInitialState(init);
 
@@ -158,7 +163,10 @@ public:
                double init_x,
                double init_y,
                double init_psi,
-               double init_v) {
+               double init_v,
+               double initial_psi,
+               bool freezeAtPeak = false,
+               double maxLookahead = 15.0) {
         _lastIterations = 0;
         _lastMaxAbs = 0.0;
         _lastConverged = false;
@@ -176,11 +184,13 @@ public:
         sanitizeTrajectory(zNom, cfg);
 
         MpcCost solverCost(_layout);
+        solverCost.setFreezeAtPeak(freezeAtPeak);
+        solverCost.setMaxLookahead(maxLookahead);
         dense::DblMatrix bestZ = zNom.makeCopy();
         double bestMaxAbs = std::numeric_limits<double>::max();
 
         for (int iter = 0; iter < cfg.maxIter; ++iter) {
-            solverCost.UpdateReferenceTrajectory(coeffs, target_v, initial_x, initial_y, dt);
+            solverCost.UpdateReferenceTrajectory(coeffs, target_v, initial_x, initial_y, dt, initial_psi);
             MpcConstraints constraints(_layout);
             constraints.setVerbose(cfg.verbose);
             constraints.setObstacles(obstacles);
