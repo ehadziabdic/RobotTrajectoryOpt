@@ -2,6 +2,7 @@
 #include <dense/Matrix.h>
 #include <td/Types.h>
 #include <cmath>
+#include <limits>
 #include "MpcLayout.h"
 
 #ifndef M_PI
@@ -21,10 +22,10 @@ public:
           g(static_cast<td::UINT4>(_layout.totalSize()), 1, nullptr, true),
           Zref(static_cast<td::UINT4>(_layout.totalSize()), 1, nullptr, true) {
         auto q = Q.getColumnManipulator();
-        q(0) = 0.5; // qx
-        q(1) = 8.0; // qy
-        q(2) = 5.0; // qpsi
-        q(3) = 1.0; // qv
+        q(0) = 0.5;  // qx
+        q(1) = 50.0; // qy - strong lateral tracking (was drowning under qv domination)
+        q(2) = 25.0; // qpsi - strong heading alignment to prevent overshoot
+        q(3) = 1.0;  // qv - low: let solver use velocity for tracking rather than rigid vref
 
         auto r = R.getColumnManipulator();
         r(0) = 0.5; // r_delta
@@ -35,31 +36,38 @@ public:
 
     void setFreezeAtPeak(bool v) { _freezeAtPeak = v; }
     void setMaxLookahead(double v) { _maxLookahead = v; }
+    void setTrackLength(double v) { _trackLength = v; }
     bool freezeAtPeak() const { return _freezeAtPeak; }
     double maxLookahead() const { return _maxLookahead; }
+    double trackLength() const { return _trackLength; }
 
     const MpcLayout& layout() const { return _layout; }
 
-    void UpdateReferenceTrajectory(const dense::DblMatrix& coeffs, double target_v, double initial_x, double initial_y, double dt, double initial_psi) {
-        double c0 = 0.0;
-        double c1 = 0.0;
-        double c2 = 0.0;
-        double c3 = 0.0;
+    // projection_v is the velocity used to advance xref along the curve.
+    // When projection_v < 0, target_v is used (backward-compatible default).
+    // Passing the actual vehicle velocity makes the reference x-positions
+    // match where the vehicle will be, eliminating systematic tracking offset
+    // caused by velocity mismatch.
+    void UpdateReferenceTrajectory(const dense::DblMatrix& coeffs, double target_v, double initial_x, double initial_y, double dt, double initial_psi, double projection_v = -1.0) {
+        // Read up to 6 coefficients (quintic) for smooth S-curves with
+        // zero initial/terminal slope — essential for trackability when
+        // the vehicle starts with heading 0 and the horizon is short.
+        double c0 = 0.0, c1 = 0.0, c2 = 0.0, c3 = 0.0, c4 = 0.0, c5 = 0.0;
 
         auto cmat = coeffs.getManipulator();
         const td::UINT4 r = coeffs.getNoOfRows();
-        const td::UINT4 c = coeffs.getNoOfCols();
-        if (r >= 4) {
-            c0 = cmat(0, 0);
-            c1 = cmat(1, 0);
-            c2 = cmat(2, 0);
-            c3 = cmat(3, 0);
-        } else if (c >= 4) {
-            c0 = cmat(0, 0);
-            c1 = cmat(0, 1);
-            c2 = cmat(0, 2);
-            c3 = cmat(0, 3);
-        }
+        const td::UINT4 nc = coeffs.getNoOfCols();
+        // Support both 6x1 column vector and 1x6 row vector
+        const td::UINT4 maxC = (r > 1) ? r : nc;
+        auto read = [&](td::UINT4 i) -> double {
+            return (r > 1) ? cmat(i, 0) : cmat(0, i);
+        };
+        if (maxC >= 1) c0 = read(0);
+        if (maxC >= 2) c1 = read(1);
+        if (maxC >= 3) c2 = read(2);
+        if (maxC >= 4) c3 = read(3);
+        if (maxC >= 5) c4 = read(4);
+        if (maxC >= 6) c5 = read(5);
 
         auto z = Zref.getColumnManipulator();
         auto h = Hdiag.getColumnManipulator();
@@ -67,15 +75,47 @@ public:
 
         const std::size_t N = _layout.N();
 
-        // Find closest x on polynomial y(x) to current (initial_x, initial_y)
+        // Quintic polynomial (gracefully degrades to cubic when c4=c5=0).
+        auto y_poly = [&](double x) {
+            return c0 + c1 * x + c2 * x * x + c3 * x * x * x
+                 + c4 * x * x * x * x + c5 * x * x * x * x * x;
+        };
+        auto dy_poly = [&](double x) {
+            return c1 + 2.0 * c2 * x + 3.0 * c3 * x * x
+                 + 4.0 * c4 * x * x * x + 5.0 * c5 * x * x * x * x;
+        };
+
+        // Beyond _trackLength the cubic term dominates and the road would
+        // curve increasingly steeply forever, which is not a valid road and
+        // causes the tracker to chase an ever-receding target (the "goes
+        // crazy" behavior). Past the end of the designed maneuver, continue
+        // as a straight line tangent to the cubic at x = _trackLength
+        // (position and heading stay continuous, curvature drops to 0).
+        // Scenarios that never need saturation (e.g. StraightLine, all
+        // coeffs 0) use the std::numeric_limits<double>::max() sentinel; skip
+        // evaluating the cubic there to avoid intermediate x*x*x overflow.
+        const bool hasTrackLimit = _trackLength < 1.0e6;
+        const double xEndSat = hasTrackLimit ? _trackLength : 0.0;
+        const double yEndSat = hasTrackLimit ? y_poly(xEndSat) : 0.0;
+        const double dyEndSat = hasTrackLimit ? dy_poly(xEndSat) : 0.0;
+
         auto y_at = [&](double x) {
-            return c0 + c1 * x + c2 * x * x + c3 * x * x * x;
+            if (!hasTrackLimit || x <= xEndSat) {
+                return y_poly(x);
+            }
+            return yEndSat + dyEndSat * (x - xEndSat);
         };
         auto dy_at = [&](double x) {
-            return c1 + 2.0 * c2 * x + 3.0 * c3 * x * x;
+            if (!hasTrackLimit || x <= xEndSat) {
+                return dy_poly(x);
+            }
+            return dyEndSat;
         };
         auto ddy_at = [&](double x) {
-            return 2.0 * c2 + 6.0 * c3 * x;
+            if (!hasTrackLimit || x <= xEndSat) {
+                return 2.0 * c2 + 6.0 * c3 * x + 12.0 * c4 * x * x + 20.0 * c5 * x * x * x;
+            }
+            return 0.0;
         };
 
         double x_closest = initial_x;
@@ -120,11 +160,14 @@ public:
         // Build forward reference trajectory from the closest point, but keep k=0 locked to telemetry
         double xref = x_closest;
         double psiref = std::atan2(dy_at(xref), 1.0);
+        // Use projection_v for spatial advancement (matches actual vehicle speed),
+        // but target_v for the velocity reference in the cost.
+        const double adv_v = (projection_v >= 0.0) ? projection_v : target_v;
         const double vrefConst = target_v;
 
         for (std::size_t t = 1; t < N; ++t) {
-            // Step forward using heading-aware increments
-            xref += vrefConst * std::cos(psiref) * dt;
+            // Step forward using heading-aware increments at projection velocity
+            xref += adv_v * std::cos(psiref) * dt;
 
             // Step C6: Inside the loop, after advancing xref, add freeze logic
             if (_freezeAtPeak && c3 < 0.0 && c2 > 0.0 && xref >= x_peak) {
@@ -208,6 +251,7 @@ private:
     double slackWeight;
     bool _freezeAtPeak = false;
     double _maxLookahead = 15.0;
+    double _trackLength = std::numeric_limits<double>::max();
 };
 
 } // namespace mpc

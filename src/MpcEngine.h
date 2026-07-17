@@ -3,6 +3,7 @@
 #include <td/Types.h>
 #include <cstddef>
 #include <iostream>
+#include <limits>
 #include <vector>
 #include "MpcLayout.h"
 #include "MpcCost.h"
@@ -56,7 +57,8 @@ public:
                const std::vector<Obstacle>& obstacles,
                Trajectory& out,
                bool freezeAtPeak = false,
-               double maxLookahead = 15.0) {
+               double maxLookahead = 15.0,
+               double trackLength = std::numeric_limits<double>::max()) {
         if (dt <= 0.0) {
             std::cout << "MpcEngine: invalid dt" << std::endl;
             _diag = Diagnostics{};
@@ -80,7 +82,7 @@ public:
             }
         }
 
-        if (!ensureNominalInitialized(coeffs, target_v, current.x, current.y, current.psi, dt, freezeAtPeak, maxLookahead)) {
+        if (!ensureNominalInitialized(coeffs, target_v, current.x, current.y, current.psi, dt, freezeAtPeak, maxLookahead, trackLength, current.v)) {
             std::cout << "MpcEngine: nominal init failed" << std::endl;
             _diag = Diagnostics{};
             return false;
@@ -115,7 +117,8 @@ public:
                        current.v,
                        current.psi,
                        freezeAtPeak,
-                       maxLookahead);
+                       maxLookahead,
+                       trackLength);
         _diag.ok = ok;
         _diag.converged = _sqp.lastConverged();
         _diag.iterations = _sqp.lastIterations();
@@ -148,7 +151,9 @@ private:
                                   double initial_psi,
                                   double dt,
                                   bool freezeAtPeak,
-                                  double maxLookahead) {
+                                  double maxLookahead,
+                                  double trackLength,
+                                  double projection_v = -1.0) {
         if (_zNom.getNoOfRows() == 0) {
             return false;
         }
@@ -161,7 +166,10 @@ private:
             MpcCost cost(_layout);
             cost.setFreezeAtPeak(freezeAtPeak);
             cost.setMaxLookahead(maxLookahead);
-            cost.UpdateReferenceTrajectory(coeffs, target_v, initial_x, initial_y, dt, initial_psi);
+            cost.setTrackLength(trackLength);
+            // Pass actual vehicle velocity for spatial projection so warm-start
+            // reference already accounts for the true travel speed
+            cost.UpdateReferenceTrajectory(coeffs, target_v, initial_x, initial_y, dt, initial_psi, projection_v);
             _zNom = cost.Ref().makeCopy();
             _zNomInitialized = true;
         }

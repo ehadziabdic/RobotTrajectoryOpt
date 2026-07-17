@@ -43,4 +43,7 @@ compile_commands.json
 
 ## Custom ignore rules (uncomment if needed)
 docs/superpowers/
+.kilo
+logs/
+
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <limits>
 #include <vector>
 
 #include <dense/Matrix.h>
@@ -22,9 +23,15 @@ struct ScenarioConfig {
     std::vector<Obstacle> obstacles;
     bool freezeAtPeak = false;
     double maxLookahead = 15.0;
+    // x-coordinate where the designed maneuver (S-weave / S-curve) ends.
+    // Beyond this point the reference polynomial is unbounded (cubic term
+    // dominates), so the reference generator must switch to a straight-line
+    // continuation using the tangent at trackLength. Default = "never
+    // saturate" for scenarios whose polynomial is already a straight line.
+    double trackLength = std::numeric_limits<double>::max();
 
     ScenarioConfig()
-        : coeffs(4, 1, nullptr, true) {}
+        : coeffs(6, 1, nullptr, true) {}
 };
 
 inline const char* scenarioKey(SimScenario scenario) {
@@ -51,6 +58,8 @@ inline ScenarioConfig makeStraightLineScenarioConfig() {
     coeffs(1) = 0.0;
     coeffs(2) = 0.0;
     coeffs(3) = 0.0;
+    coeffs(4) = 0.0;
+    coeffs(5) = 0.0;
     return config;
 }
 
@@ -61,12 +70,21 @@ inline ScenarioConfig makeLaneChangeScenarioConfig() {
     config.obstacles = {{8.0, 0.3, 0.5}, {32.0, -0.3, 0.5}};
     config.freezeAtPeak = false;
     config.maxLookahead = 20.0;
+    config.trackLength = 40.0; // = 2L: end of the S-weave (see HANDOFF derivation)
 
+    // Quintic S-curve with zero initial/terminal slope (matches vehicle heading).
+    // y = c5*(-32000*x^2 + 3200*x^3 - 100*x^4 + x^5)
+    // Roots at x=0 (double, slope 0), x=20, x=40 (double, slope 0).
+    // Amplitude ±1.5, obstacles at (8,0.3) and (32,-0.3) are cleared.
+    const double ampl = 1.5;
+    const double c5 = ampl / 915849.0;
     auto coeffs = config.coeffs.getColumnManipulator();
     coeffs(0) = 0.0;
-    coeffs(1) = 0.311769;
-    coeffs(2) = -0.023383;
-    coeffs(3) = 0.000390;
+    coeffs(1) = 0.0;
+    coeffs(2) = -32000.0 * c5;
+    coeffs(3) = 3200.0 * c5;
+    coeffs(4) = -100.0 * c5;
+    coeffs(5) = c5;
     return config;
 }
 
@@ -76,13 +94,20 @@ inline ScenarioConfig makeSCurveScenarioConfig() {
     config.initialTelemetry = Telemetry{0.0, 0.0, 0.0, 1.5};
     config.obstacles = {};
     config.freezeAtPeak = false;
-    config.maxLookahead = 25.0;
+    config.maxLookahead = 30.0;
+    config.trackLength = 40.0;
 
+    // Inverted quintic S-curve with zero initial/terminal slope.
+    // Same shape as LaneChange but negated (starts going UP, crosses at x=20, goes DOWN).
+    const double ampl = 1.5;
+    const double c5 = ampl / 915849.0;
     auto coeffs = config.coeffs.getColumnManipulator();
     coeffs(0) = 0.0;
-    coeffs(1) = 0.22269225;
-    coeffs(2) = -0.00954395;
-    coeffs(3) = 0.00009089;
+    coeffs(1) = 0.0;
+    coeffs(2) = 32000.0 * c5;
+    coeffs(3) = -3200.0 * c5;
+    coeffs(4) = 100.0 * c5;
+    coeffs(5) = -c5;
     return config;
 }
 

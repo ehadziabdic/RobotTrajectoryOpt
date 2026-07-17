@@ -41,7 +41,8 @@ public:
                const std::vector<Obstacle>& obstacles,
                double initial_psi,
                bool freezeAtPeak = false,
-               double maxLookahead = 15.0) {
+               double maxLookahead = 15.0,
+               double trackLength = std::numeric_limits<double>::max()) {
         _lastIterations = 0;
         _lastMaxAbs = 0.0;
         _lastConverged = false;
@@ -52,6 +53,7 @@ public:
         MpcCost solverCost(_layout);
         solverCost.setFreezeAtPeak(freezeAtPeak);
         solverCost.setMaxLookahead(maxLookahead);
+        solverCost.setTrackLength(trackLength);
         solverCost.UpdateReferenceTrajectory(coeffs, target_v, initial_x, initial_y, dt, initial_psi);
         auto zref = solverCost.Ref().getColumnManipulator();
         auto zn = zNom.getColumnManipulator();
@@ -166,7 +168,8 @@ public:
                double init_v,
                double initial_psi,
                bool freezeAtPeak = false,
-               double maxLookahead = 15.0) {
+               double maxLookahead = 15.0,
+               double trackLength = std::numeric_limits<double>::max()) {
         _lastIterations = 0;
         _lastMaxAbs = 0.0;
         _lastConverged = false;
@@ -186,11 +189,14 @@ public:
         MpcCost solverCost(_layout);
         solverCost.setFreezeAtPeak(freezeAtPeak);
         solverCost.setMaxLookahead(maxLookahead);
+        solverCost.setTrackLength(trackLength);
         dense::DblMatrix bestZ = zNom.makeCopy();
         double bestMaxAbs = std::numeric_limits<double>::max();
 
         for (int iter = 0; iter < cfg.maxIter; ++iter) {
-            solverCost.UpdateReferenceTrajectory(coeffs, target_v, initial_x, initial_y, dt, initial_psi);
+            // Use init_v for spatial projection so xref advances at actual
+            // vehicle speed (eliminates systematic offset from velocity mismatch)
+            solverCost.UpdateReferenceTrajectory(coeffs, target_v, initial_x, initial_y, dt, initial_psi, init_v);
             MpcConstraints constraints(_layout);
             constraints.setVerbose(cfg.verbose);
             constraints.setObstacles(obstacles);

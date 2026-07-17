@@ -3,9 +3,14 @@
 #include <algorithm>
 #include <atomic>
 #include <cmath>
+#include <cstdarg>
+#include <ctime>
+#include <fstream>
 #include <functional>
+#include <iomanip>
 #include <limits>
 #include <mutex>
+#include <sstream>
 #include <thread>
 #include <vector>
 
@@ -78,6 +83,9 @@ private:
 
     StepSnapshot captureSnapshot() const;
     void restoreSnapshot(const StepSnapshot& snapshot);
+    void openLogFile();
+    void closeLogFile();
+    void logMsg(const char* fmt, ...);
 
 private:
     gui::SplitterLayout _splitter;
@@ -113,6 +121,9 @@ private:
     std::mutex _simMutex;
     std::atomic<bool> _solverRunning{false};
     std::thread _solverThread;
+    std::ofstream _logFile;
+    std::string _logFilePath;
+    std::atomic<bool> _stopRequested{false};
 };
 
 inline MainView::MainView()
@@ -124,7 +135,7 @@ inline MainView::MainView()
     , _timer(this, 0.05f, false)
     , _layout(20, 0.1, 0.5)
     , _engine(_layout)
-    , _coeffs(4, 1, nullptr, true)
+    , _coeffs(6, 1, nullptr, true)
 {
     setMargins(0, 0, 0, 0);
 
@@ -136,6 +147,8 @@ inline MainView::MainView()
     coeffs(1) = scenarioCoeffs(1);
     coeffs(2) = scenarioCoeffs(2);
     coeffs(3) = scenarioCoeffs(3);
+    coeffs(4) = scenarioCoeffs(4);
+    coeffs(5) = scenarioCoeffs(5);
 
     _telemetry = _scenarioConfig.initialTelemetry;
     _telemetry.psi = normalizeAngle(_telemetry.psi);
@@ -144,7 +157,7 @@ inline MainView::MainView()
     _settings.maxIter = 60;
     _settings.tol = 2e-3;
     _settings.alpha = 0.12;
-    _settings.verbose = true;
+    _settings.verbose = false;
     _engine.setSettings(_settings);
 
     _history.push_back({static_cast<float>(_telemetry.x), static_cast<float>(_telemetry.y)});
@@ -178,6 +191,15 @@ inline MainView::MainView()
     _pathCanvas.setTrackingError(_trackingError);
     _actuationCanvas.setFrame(&_frame);
 
+    openLogFile();
+    if (_logFile.is_open()) {
+        logMsg("=== Simulation Run Started ===\n");
+        logMsg("Scenario: %s | TrackLength: %.1f | Obstacles: %zu\n",
+               scenarioKey(_scenarioConfig.scenario),
+               _scenarioConfig.trackLength,
+               _scenarioConfig.obstacles.size());
+    }
+
     refreshVizFrame();
     updateSidebar();
     updatePlaybackButtons();
@@ -186,13 +208,16 @@ inline MainView::MainView()
 
 inline MainView::~MainView() {
     _running = false;
+    _stopRequested = false;
     if (_solverThread.joinable()) {
         _solverThread.join();
     }
+    closeLogFile();
 }
 
 inline void MainView::startSimulation() {
     _running = true;
+    _stopRequested = false;
     setPlaybackSpeed(_speedPercent);
     if (!_timer.isRunning()) {
         _timer.start();
@@ -224,6 +249,8 @@ inline void MainView::resetSimulation() {
     coeffs(1) = scenarioCoeffs(1);
     coeffs(2) = scenarioCoeffs(2);
     coeffs(3) = scenarioCoeffs(3);
+    coeffs(4) = scenarioCoeffs(4);
+    coeffs(5) = scenarioCoeffs(5);
 
     _telemetry = _scenarioConfig.initialTelemetry;
     _telemetry.psi = normalizeAngle(_telemetry.psi);
@@ -234,6 +261,17 @@ inline void MainView::resetSimulation() {
     _history.push_back({static_cast<float>(_telemetry.x), static_cast<float>(_telemetry.y)});
 
     _trackingError = 0.0;
+    _stopRequested = false;
+
+    closeLogFile();
+    openLogFile();
+    if (_logFile.is_open()) {
+        logMsg("=== Simulation Run Started ===\n");
+        logMsg("Scenario: %s | TrackLength: %.1f | Obstacles: %zu\n",
+               scenarioKey(_scenarioConfig.scenario),
+               _scenarioConfig.trackLength,
+               _scenarioConfig.obstacles.size());
+    }
 
     refreshVizFrame();
     updateSidebar();
@@ -258,6 +296,11 @@ inline bool MainView::onTimer(gui::Timer* pTimer) {
             return true;
         }
 
+        if (_stopRequested.exchange(false)) {
+            stopSimulation();
+            return true;
+        }
+
         _solverRunning.store(true);
         _solverThread = std::thread([this]() {
             {
@@ -274,11 +317,18 @@ inline bool MainView::onTimer(gui::Timer* pTimer) {
 inline void MainView::advanceOneStep() {
     const double dt = _layout.dt();
 
-    const bool ok = _engine.Solve(_telemetry, _coeffs, _targetVelocity, dt, _scenarioConfig.obstacles, _trajectory, _scenarioConfig.maxLookahead);
+    // NOTE: previously this called Solve(..., _trajectory, _scenarioConfig.maxLookahead)
+    // which silently bound maxLookahead (20.0/25.0, a double) to the *freezeAtPeak*
+    // (bool) parameter via implicit conversion, while the real maxLookahead argument
+    // was left at its 15.0 default and _scenarioConfig.freezeAtPeak was never read at
+    // all. Fixed to pass both fields to their correct parameter slots, plus trackLength
+    // so the reference saturates into a straight line after the maneuver ends.
+    const bool ok = _engine.Solve(_telemetry, _coeffs, _targetVelocity, dt, _scenarioConfig.obstacles, _trajectory,
+                                   _scenarioConfig.freezeAtPeak, _scenarioConfig.maxLookahead, _scenarioConfig.trackLength);
     const auto d = _engine.diagnostics();
 
     // Print detailed per-step diagnostics to console for debugging / offline analysis
-    std::fprintf(stderr, "[MPC] Step: ok=%d converged=%d iter=%d maxAbs=%.6f telemetry_before(x,y,psi,v)=%.3f,%.3f,%.3f,%.3f trackingErr=%.6f trajN=%d\n",
+    logMsg("[MPC] Step: ok=%d converged=%d iter=%d maxAbs=%.6f telemetry_before(x,y,psi,v)=%.3f,%.3f,%.3f,%.3f trackingErr=%.6f trajN=%d\n",
         ok ? 1 : 0,
         d.converged ? 1 : 0,
         d.iterations,
@@ -291,7 +341,7 @@ inline void MainView::advanceOneStep() {
         static_cast<int>(_trajectory.N));
 
     if (!ok) {
-        std::fprintf(stderr, "[MPC] Solve FAILED at this step (see diagnostics above)\n");
+        logMsg("[MPC] Solve FAILED at this step (see diagnostics above)\n");
         return;
     }
 
@@ -302,7 +352,7 @@ inline void MainView::advanceOneStep() {
             auto controls = _trajectory.controls.getManipulator();
             delta = controls(0, 0);
             accel = controls(1, 0);
-            std::fprintf(stderr, "[MPC] First control: delta=%.6f accel=%.6f\n", delta, accel);
+            logMsg("[MPC] First control: delta=%.6f accel=%.6f\n", delta, accel);
         }
 
         const double lf = _layout.Lf();
@@ -318,11 +368,11 @@ inline void MainView::advanceOneStep() {
 
         _history.push_back({static_cast<float>(_telemetry.x), static_cast<float>(_telemetry.y)});
     } else {
-        std::fprintf(stderr, "[MPC] Trajectory returned N=0 (no predicted controls)\n");
+        logMsg("[MPC] Trajectory returned N=0 (no predicted controls)\n");
     }
 
     // Print telemetry after update
-    std::fprintf(stderr, "[MPC] Telemetry after step: x=%.3f y=%.3f psi=%.3f v=%.3f trackingErr=%.6f\n",
+    logMsg("[MPC] Telemetry after step: x=%.3f y=%.3f psi=%.3f v=%.3f trackingErr=%.6f\n",
         _telemetry.x, _telemetry.y, _telemetry.psi, _telemetry.v, _trackingError);
 
 }
@@ -346,7 +396,9 @@ inline void MainView::refreshVizFrame() {
         -0.436332f,
         0.436332f,
         -1.0f,
-        1.0f);
+        1.0f,
+        _scenarioConfig.trackLength,
+        _scenarioConfig.freezeAtPeak);
 
     _trackingError = computeTrackingError(_telemetry, _frame.referencePath);
 
@@ -472,13 +524,66 @@ inline void MainView::notifyToolbarState() {
     _onToolbarState(_running, canBack, canForward);
 }
 
+inline void MainView::openLogFile() {
+    std::time_t now = std::time(nullptr);
+    std::tm tm{};
+#if defined(_WIN32)
+    localtime_s(&tm, &now);
+#else
+    localtime_r(&now, &tm);
+#endif
+    char timestamp[64];
+    std::strftime(timestamp, sizeof(timestamp), "%Y%m%d_%H%M%S", &tm);
+    _logFilePath = "sim_log_" + std::string(timestamp) + ".txt";
+    _logFile.open(_logFilePath, std::ios::out | std::ios::app);
+}
+
+inline void MainView::closeLogFile() {
+    if (_logFile.is_open()) {
+        _logFile << "=== Simulation Run Ended ===\n";
+        _logFile.flush();
+        _logFile.close();
+    }
+}
+
+inline void MainView::logMsg(const char* fmt, ...) {
+    char buffer[2048];
+    va_list args;
+    va_start(args, fmt);
+    std::vsnprintf(buffer, sizeof(buffer), fmt, args);
+    va_end(args);
+
+    std::fprintf(stderr, "%s", buffer);
+    if (_logFile.is_open()) {
+        _logFile << buffer;
+        _logFile.flush();
+    }
+}
+
 inline double MainView::evaluateReferenceY(double x) const {
     auto coeffs = _coeffs.getColumnManipulator();
     const double c0 = coeffs(0);
     const double c1 = coeffs(1);
     const double c2 = coeffs(2);
     const double c3 = coeffs(3);
-    return c0 + c1 * x + c2 * x * x + c3 * x * x * x;
+    const double c4 = coeffs(4);
+    const double c5 = coeffs(5);
+    const double trackLength = _scenarioConfig.trackLength;
+    const auto y_poly = [&](double x) {
+        return c0 + c1 * x + c2 * x * x + c3 * x * x * x
+             + c4 * x * x * x * x + c5 * x * x * x * x * x;
+    };
+    const auto dy_poly = [&](double x) {
+        return c1 + 2.0 * c2 * x + 3.0 * c3 * x * x
+             + 4.0 * c4 * x * x * x + 5.0 * c5 * x * x * x * x;
+    };
+    if (trackLength < 1.0e6 && x > trackLength) {
+        const double xe = trackLength;
+        const double ye = y_poly(xe);
+        const double dye = dy_poly(xe);
+        return ye + dye * (x - xe);
+    }
+    return y_poly(x);
 }
 
 inline double MainView::computeTrackingError(const mpc::Telemetry& telem, const std::vector<mpc::PlotPoint>& referencePath) const {

@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <cstddef>
+#include <limits>
 
 #include <dense/Matrix.h>
 
@@ -45,7 +46,9 @@ public:
                                   float deltaMin,
                                   float deltaMax,
                                   float accelMin,
-                                  float accelMax) {
+                                  float accelMax,
+                                  double trackLength = std::numeric_limits<double>::max(),
+                                  bool freezeAtPeak = false) {
         MpcVizFrame frame;
         frame.historyPath = history;
         frame.obstacles = obstacles;
@@ -72,16 +75,19 @@ public:
         auto states = traj.states.getManipulator();
         auto controls = traj.controls.getManipulator();
 
-        double c0 = 0.0;
-        double c1 = 0.0;
-        double c2 = 0.0;
-        double c3 = 0.0;
-        if (coeffs.getNoOfRows() >= 4 || coeffs.getNoOfCols() >= 4) {
-            auto c = coeffs.getColumnManipulator();
-            c0 = c(0);
-            c1 = c(1);
-            c2 = c(2);
-            c3 = c(3);
+        double c0 = 0.0, c1 = 0.0, c2 = 0.0, c3 = 0.0, c4 = 0.0, c5 = 0.0;
+        const td::UINT4 maxC = std::max(coeffs.getNoOfRows(), coeffs.getNoOfCols());
+        if (maxC >= 1) {
+            auto cm = coeffs.getManipulator();
+            auto read = [&](td::UINT4 i) -> double {
+                return (coeffs.getNoOfRows() > 1) ? cm(i, 0) : cm(0, i);
+            };
+            c0 = read(0);
+            if (maxC >= 2) c1 = read(1);
+            if (maxC >= 3) c2 = read(2);
+            if (maxC >= 4) c3 = read(3);
+            if (maxC >= 5) c4 = read(4);
+            if (maxC >= 6) c5 = read(5);
         }
 
         for (std::size_t t = 0; t < n; ++t) {
@@ -96,14 +102,39 @@ public:
             frame.timeS[t] = static_cast<float>(static_cast<double>(t) * dt);
         }
 
-        // Generate reference path independently spanning the full track ahead
+        // Generate reference path independently spanning the full track ahead.
+        // Mirrors MpcCost::UpdateReferenceTrajectory's saturation: past
+        // trackLength the polynomial is replaced with its tangent line so the
+        // drawn road matches what the solver is actually tracking (otherwise
+        // the visualization shows the raw unbounded polynomial shooting off
+        // while the solver has already flattened its target).
+        // freezeAtPeak is a legacy flag only enabled for single-hump cubic
+        // polynomials that do not return to zero at trackLength.
         {
-            const bool doFreeze = (c3 < 0.0 && c2 > 0.0);
-            const double x_peak_viz = doFreeze ? (-2.0 * c2 / (3.0 * c3))
-                                                : std::numeric_limits<double>::max();
-            const double y_peak_viz = doFreeze
-                ? (c2 * x_peak_viz * x_peak_viz + c3 * x_peak_viz * x_peak_viz * x_peak_viz)
-                : 0.0;
+            // Quintic helpers (gracefully handles cubic by c4=c5=0)
+            auto y_poly = [&](double x) {
+                return c0 + c1 * x + c2 * x * x + c3 * x * x * x
+                     + c4 * x * x * x * x + c5 * x * x * x * x * x;
+            };
+            auto dy_poly = [&](double x) {
+                return c1 + 2.0 * c2 * x + 3.0 * c3 * x * x
+                     + 4.0 * c4 * x * x * x + 5.0 * c5 * x * x * x * x;
+            };
+
+            const bool doFreeze = freezeAtPeak && (c3 < 0.0 && c2 > 0.0);
+            double x_peak_viz = std::numeric_limits<double>::max();
+            double y_peak_viz = 0.0;
+            if (doFreeze) {
+                // For a cubic with c3<0, c2>0, the peak is at -2*c2/(3*c3).
+                // For higher-degree polynomials we'd need a root-finder, but
+                // freezeAtPeak is only used with simple cubic shapes.
+                x_peak_viz = -2.0 * c2 / (3.0 * c3);
+                y_peak_viz = y_poly(x_peak_viz);
+            }
+            const bool hasTrackLimit = trackLength < 1.0e6;
+            const double xEndSat = hasTrackLimit ? trackLength : 0.0;
+            const double yEndSat = hasTrackLimit ? y_poly(xEndSat) : 0.0;
+            const double dyEndSat = hasTrackLimit ? dy_poly(xEndSat) : 0.0;
 
             const double xStart = initialX - 5.0;
             const double xEnd   = initialX + 80.0;   // wider window to show full S
@@ -111,7 +142,12 @@ public:
             frame.referencePath.reserve(nRef);
             for (int i = 0; i < nRef; ++i) {
                 const double x = xStart + (xEnd - xStart) * i / (nRef - 1);
-                double y = c0 + c1 * x + c2 * x * x + c3 * x * x * x;
+                double y;
+                if (hasTrackLimit && x > xEndSat) {
+                    y = yEndSat + dyEndSat * (x - xEndSat);
+                } else {
+                    y = y_poly(x);
+                }
                 if (doFreeze && x >= x_peak_viz)
                     y = y_peak_viz;   // clamp Y, X keeps advancing — line stays visible
                 frame.referencePath.push_back({static_cast<float>(x), static_cast<float>(y)});

@@ -1,0 +1,146 @@
+\documentclass[12pt]{article}
+
+% ---------- Packages ----------
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{xcolor}
+
+% ---------- Hyperlink styling ----------
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue,
+    citecolor=black
+}
+
+% ---------- Header/Footer ----------
+\pagestyle{fancy}
+\setlength{\headheight}{15pt}
+\fancyhf{}
+\fancyhead[L]{2D Robot Path Planning using Trajectory Optimization (MPC)}
+\fancyhead[R]{ETF-DSAI}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ---------- Section formatting ----------
+\titleformat{\section}{\normalfont\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalfont\large\bfseries}{\thesubsection}{1em}{}
+
+\begin{document}
+
+% ================= TITLE PAGE =================
+\begin{titlepage}
+    \centering
+
+    % --- Logos (replace with actual logo files if available) ---
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        % \includegraphics[width=0.6\textwidth]{etf_logo.png}
+        \textbf{Univerzitet u Sarajevu}\\
+        Elektrotehnički fakultet Sarajevo
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        % \includegraphics[width=0.5\textwidth]{dsai_logo.png}
+        \textbf{DSAI}\\
+        Data Science \& Artificial Intelligence
+    \end{minipage}
+
+    \vspace{4cm}
+
+    {\LARGE \bfseries PROJECT PROPOSAL}\\[0.5cm]
+    {\Large 2D Robot Path Planning using Trajectory Optimization (MPC)}
+
+    \vspace{5cm}
+
+    \begin{flushleft}
+        \textbf{Course:} Numerical Optimization\\[0.3cm]
+        \textbf{Professor:} Prof. Dr. Izudin Džafić\\[0.3cm]
+        \textbf{Student:} Emin Hadžiabdić\\[0.3cm]
+        \textbf{Academic Year:} 2025/26\\[0.3cm]
+        \textbf{Student ID:} 19960
+    \end{flushleft}
+
+    \vfill
+
+    {\large Sarajevo, May 20th 2026}
+
+\end{titlepage}
+
+% ================= TABLE OF CONTENTS =================
+\tableofcontents
+\newpage
+
+% ================= CONTENT =================
+
+\section*{The Core Idea}
+\addcontentsline{toc}{section}{The Core Idea}
+
+For this project, I want to tackle 2D robot path planning, but instead of using a standard grid-search algorithm like A* (A star), I want to treat it entirely as a continuous mathematical optimization problem.
+
+The goal is to find the best possible path for a mobile robot to move from Point A to Point B over a fixed timeline ($t = 1$ to $N$). ``Best possible'' means finding a trajectory that avoids obstacles, respects the robot's physical limits (like max speed and acceleration), and keeps the movement smooth to save energy.
+
+\section*{How it Maps to the Lectures}
+\addcontentsline{toc}{section}{How it Maps to the Lectures}
+
+This problem directly applies several key concepts we covered in class, specifically focusing on handling constraints and structuring large systems of equations:
+
+\subsection*{The Objective Function (Lecture 6)}
+\addcontentsline{toc}{subsection}{The Objective Function (Lecture 6)}
+
+I will set up a Quadratic Programming (QP) cost function.
+
+It will penalize two things:
+\begin{enumerate}
+    \item How far the robot is from the target.
+    \item How aggressive the control changes are.
+\end{enumerate}
+
+The goal is to minimize this cost over the entire timeline.
+
+\subsection*{Equality Constraints \& Physics (Lecture 3 \& 4)}
+\addcontentsline{toc}{subsection}{Equality Constraints \& Physics (Lecture 3 \& 4)}
+
+The robot has to obey physics -- its position at time step $t+1$ depends strictly on its position, velocity, and steering angle at time step $t$.
+
+When you chain these equations together over a long timeline (e.g., 50 time steps), it creates a massive system of linear equations. Because step 50 has nothing to do with step 2, the global constraint matrix is highly structured and sparse. This is a perfect opportunity to use the Sparse LU factorization concepts from Lecture 3.
+
+\subsection*{Inequality Constraints \& Obstacles (Lecture 6)}
+\addcontentsline{toc}{subsection}{Inequality Constraints \& Obstacles (Lecture 6)}
+
+The robot cannot exceed its maximum speed, and it must maintain a minimum safe distance from any obstacle center:
+
+\begin{equation}
+    (x_t - x_{obs})^2 + (y_t - y_{obs})^2 \geq R^2
+\end{equation}
+
+Because obstacle avoidance introduces non-linear inequalities, the problem becomes non-convex. I plan to handle this iteratively using Sequential Quadratic Programming (SQP) or a Lagrange-Newton approach to evaluate the KKT conditions at each step.
+
+\section*{Matrix Structures \& GUI Implementation}
+\addcontentsline{toc}{section}{Matrix Structures \& GUI Implementation}
+
+\textbf{Dense Matrices:} I will use these for local state vectors (storing individual $(x, y)$ coordinates, speeds, and heading angles) and for the tuning weights in the objective function.
+
+\textbf{Sparse Matrices:} These will be used to construct the massive block-diagonal matrix that tracks the physics constraints across the entire timeline, keeping the calculations efficient.
+
+\textbf{NatID GUI Integration:} I plan to build an interactive 2D simulation interface. It will render the starting point, the target, and any obstacles. The GUI will draw the optimized path as a smooth line connecting the time steps, and if I move the obstacles around using GUI controls, the solver should update and re-draw the path in real-time.
+
+\section*{Code Base \& Adaptation Strategy}
+\addcontentsline{toc}{section}{Code Base \& Adaptation Strategy}
+
+Instead of writing a complex MPC framework completely from scratch, I plan to adapt the core mathematical loops from existing open-source references. Specifically, I have found two repositories on GitHub that match this scope perfectly:
+
+\begin{enumerate}
+    \item \href{https://github.com/jayshah19949596/Model-Predictive-Control-Project}{jayshah19949596/Model-Predictive-Control-Project} (A C++ MPC loop used for tracking 2D state configurations).
+    \item \href{https://github.com/DMaroo/mpc_path_planner}{DMaroo/mpc\_path\_planner} (A clean, minimal C++ project focusing directly on obstacle avoidance).
+\end{enumerate}
+
+My main focus will be stripping away any external dependencies these repositories use, refactoring their internal math to run entirely on the custom Dense and Sparse matrix structures required for this course, and then piping the output coordinates into the NatID framework for the visualization.
+
+\end{document}
