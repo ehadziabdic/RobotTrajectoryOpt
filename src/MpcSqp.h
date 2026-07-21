@@ -11,6 +11,8 @@
 #include "MpcConstraints.h"
 #include "MpcKkt.h"
 #include "MpcKktSolver.h"
+#include "MpcInequality.h"
+#include "MpcActiveSetQp.h"
 
 namespace mpc {
 
@@ -18,6 +20,7 @@ class MpcSqp {
 public:
     struct Settings {
         int maxIter = 30;
+        int maxActiveSetIter = 20;
         double tol = 2e-3;
         double alpha = 0.12;
         double steerLimit = 0.6;
@@ -31,6 +34,13 @@ public:
     int lastIterations() const { return _lastIterations; }
     double lastMaxAbs() const { return _lastMaxAbs; }
     bool lastConverged() const { return _lastConverged; }
+
+    void reset() {
+        _activeSet.clear();
+        _lastIterations = 0;
+        _lastMaxAbs = 0.0;
+        _lastConverged = false;
+    }
 
     bool Solve(const dense::DblMatrix& coeffs,
                double target_v,
@@ -46,6 +56,7 @@ public:
         _lastIterations = 0;
         _lastMaxAbs = 0.0;
         _lastConverged = false;
+        _activeSet.clear();
 
         const td::UINT4 nZ = static_cast<td::UINT4>(_layout.totalSize());
         dense::DblMatrix zNom(nZ, 1, nullptr, true);
@@ -61,6 +72,9 @@ public:
             zn(i) = zref(i);
         }
         sanitizeTrajectory(zNom, cfg);
+
+        // Build bound rows once (constant across SQP iterations)
+        std::vector<IneqRow> boundRows = buildBoundRows(_layout, cfg.steerLimit, cfg.accelLimit);
 
         dense::DblMatrix bestZ = zNom.makeCopy();
         double bestMaxAbs = std::numeric_limits<double>::max();
@@ -80,39 +94,45 @@ public:
             initv(3) = zn(static_cast<td::UINT4>(_layout.idxV(0)));
             constraints.setInitialState(init);
 
-            MpcKkt kkt(_layout, solverCost, constraints);
-            kkt.Assemble();
+            // Build obstacle rows for this linearization
+            std::vector<IneqRow> obstacleRows = constraints.buildObstacleRows();
 
-            MpcKktSolver solver;
-            auto res = solver.Solve(kkt);
-            if (!res.ok) {
+            // Combine all inequality rows
+            std::vector<IneqRow> allIneqRows;
+            allIneqRows.insert(allIneqRows.end(), boundRows.begin(), boundRows.end());
+            allIneqRows.insert(allIneqRows.end(), obstacleRows.begin(), obstacleRows.end());
+
+            // Convert current iterate to vector for active set
+            std::vector<double> zVec(nZ);
+            for (td::UINT4 i = 0; i < nZ; ++i) zVec[i] = zn(i);
+
+            auto asRes = SolveActiveSetQP(_layout, solverCost, constraints,
+                                          allIneqRows, _activeSet,
+                                          cfg.maxActiveSetIter, cfg.verbose, zVec);
+            if (!asRes.ok) {
                 if (cfg.verbose) {
-                    std::cout << "MpcSqp: solver.Solve returned !ok" << std::endl;
-                    if (kkt.matrix()) {
-                        std::cout << "  KKT nnz=" << kkt.matrix()->getNoOfNonZero() << std::endl;
-                    } else {
-                        std::cout << "  KKT matrix is null" << std::endl;
-                    }
+                    std::cout << "MpcSqp: SolveActiveSetQP returned !ok" << std::endl;
                 }
                 return false;
             }
+            _activeSet = asRes.workingSet;
 
             if (cfg.verbose) {
-                std::cout << "MpcSqp: solver returned ok; res.z.size=" << res.z.size() << " expected=" << nZ << std::endl;
+                std::cout << "MpcSqp: active-set step returned z.size=" << asRes.z.size() << " expected=" << nZ << std::endl;
             }
 
-            if (res.z.size() != static_cast<std::size_t>(nZ)) {
+            if (asRes.z.size() != static_cast<std::size_t>(nZ)) {
                 if (cfg.verbose) {
-                    std::cout << "MpcSqp: solver produced invalid z size=" << res.z.size() << " expected=" << nZ << std::endl;
+                    std::cout << "MpcSqp: active-set produced invalid z size=" << asRes.z.size() << " expected=" << nZ << std::endl;
                 }
                 return false;
             }
 
-            sanitizeTrajectoryVector(res.z, cfg);
+            sanitizeTrajectoryVector(asRes.z, cfg);
 
             double maxAbs = 0.0;
             for (td::UINT4 i = 0; i < nZ; ++i) {
-                double dz = res.z[i] - zn(i);
+                double dz = asRes.z[i] - zn(i);
                 if (isPsiIndex(i)) {
                     dz = wrapAngle(dz);
                 }
@@ -129,7 +149,8 @@ public:
             sanitizeTrajectory(zNom, cfg);
 
             if (cfg.verbose) {
-                std::cout << "SQP iter=" << iter << " max|dZ|=" << maxAbs << std::endl;
+                std::cout << "SQP iter=" << iter << " max|dZ|=" << maxAbs
+                          << " activeRows=" << _activeSet.size() << std::endl;
             }
             _lastIterations = iter + 1;
             _lastMaxAbs = maxAbs;
@@ -173,6 +194,7 @@ public:
         _lastIterations = 0;
         _lastMaxAbs = 0.0;
         _lastConverged = false;
+        _activeSet.clear();
 
         const td::UINT4 nZ = static_cast<td::UINT4>(_layout.totalSize());
         if (zNom.getNoOfRows() != nZ || zNom.getNoOfCols() != 1) {
@@ -186,6 +208,9 @@ public:
         }
         sanitizeTrajectory(zNom, cfg);
 
+        // Build bound rows once (constant across SQP iterations)
+        std::vector<IneqRow> boundRows = buildBoundRows(_layout, cfg.steerLimit, cfg.accelLimit);
+
         MpcCost solverCost(_layout);
         solverCost.setFreezeAtPeak(freezeAtPeak);
         solverCost.setMaxLookahead(maxLookahead);
@@ -194,8 +219,6 @@ public:
         double bestMaxAbs = std::numeric_limits<double>::max();
 
         for (int iter = 0; iter < cfg.maxIter; ++iter) {
-            // Use init_v for spatial projection so xref advances at actual
-            // vehicle speed (eliminates systematic offset from velocity mismatch)
             solverCost.UpdateReferenceTrajectory(coeffs, target_v, initial_x, initial_y, dt, initial_psi, init_v);
             MpcConstraints constraints(_layout);
             constraints.setVerbose(cfg.verbose);
@@ -210,39 +233,45 @@ public:
             initv(3) = init_v;
             constraints.setInitialState(init);
 
-            MpcKkt kkt(_layout, solverCost, constraints);
-            kkt.Assemble();
+            // Build obstacle rows for this linearization
+            std::vector<IneqRow> obstacleRows = constraints.buildObstacleRows();
 
-            MpcKktSolver solver;
-            auto res = solver.Solve(kkt);
-            if (!res.ok) {
+            // Combine all inequality rows
+            std::vector<IneqRow> allIneqRows;
+            allIneqRows.insert(allIneqRows.end(), boundRows.begin(), boundRows.end());
+            allIneqRows.insert(allIneqRows.end(), obstacleRows.begin(), obstacleRows.end());
+
+            // Convert current iterate to vector for active set
+            std::vector<double> zVec(nZ);
+            for (td::UINT4 i = 0; i < nZ; ++i) zVec[i] = zn(i);
+
+            auto asRes = SolveActiveSetQP(_layout, solverCost, constraints,
+                                          allIneqRows, _activeSet,
+                                          cfg.maxActiveSetIter, cfg.verbose, zVec);
+            if (!asRes.ok) {
                 if (cfg.verbose) {
-                    std::cout << "MpcSqp: solver.Solve returned !ok (hot-start)" << std::endl;
-                    if (kkt.matrix()) {
-                        std::cout << "  KKT nnz=" << kkt.matrix()->getNoOfNonZero() << std::endl;
-                    } else {
-                        std::cout << "  KKT matrix is null" << std::endl;
-                    }
+                    std::cout << "MpcSqp: SolveActiveSetQP returned !ok (hot-start)" << std::endl;
                 }
                 return false;
             }
+            _activeSet = asRes.workingSet;
 
             if (cfg.verbose) {
-                std::cout << "MpcSqp: solver returned ok (hot-start); res.z.size=" << res.z.size() << " expected=" << nZ << std::endl;
+                std::cout << "MpcSqp: active-set step returned z.size=" << asRes.z.size() << " expected=" << nZ << std::endl;
             }
 
-            if (res.z.size() != static_cast<std::size_t>(nZ)) {
+            if (asRes.z.size() != static_cast<std::size_t>(nZ)) {
                 if (cfg.verbose) {
-                    std::cout << "MpcSqp: solver produced invalid z size (hot-start)=" << res.z.size() << " expected=" << nZ << std::endl;
+                    std::cout << "MpcSqp: active-set produced invalid z size (hot-start)=" << asRes.z.size() << " expected=" << nZ << std::endl;
                 }
                 return false;
             }
 
-            sanitizeTrajectoryVector(res.z, cfg);
+            sanitizeTrajectoryVector(asRes.z, cfg);
 
             double maxAbs = 0.0;
             for (td::UINT4 i = 0; i < nZ; ++i) {
-                double dz = res.z[i] - zn(i);
+                double dz = asRes.z[i] - zn(i);
                 if (isPsiIndex(i)) {
                     dz = wrapAngle(dz);
                 }
@@ -259,7 +288,8 @@ public:
             sanitizeTrajectory(zNom, cfg);
 
             if (cfg.verbose) {
-                std::cout << "SQP iter=" << iter << " max|dZ|=" << maxAbs << std::endl;
+                std::cout << "SQP iter=" << iter << " max|dZ|=" << maxAbs
+                          << " activeRows=" << _activeSet.size() << std::endl;
             }
             _lastIterations = iter + 1;
             _lastMaxAbs = maxAbs;
@@ -312,11 +342,23 @@ private:
             if (isPsiIndex(i)) {
                 z[i] = wrapAngle(z[i]);
             } else if (i >= slackStart) {
-                z[i] = std::max(0.0, z[i]);
+                double clamped = std::max(0.0, z[i]);
+                if (cfg.verbose && clamped < z[i] - 1e-12) {
+                    std::cout << "Clamp safety net: slack[" << (i - slackStart) << "] " << z[i] << " -> " << clamped << std::endl;
+                }
+                z[i] = clamped;
             } else if (i >= deltaStart && i < aStart) {
-                z[i] = std::clamp(z[i], -cfg.steerLimit, cfg.steerLimit);
+                double clamped = std::clamp(z[i], -cfg.steerLimit, cfg.steerLimit);
+                if (cfg.verbose && std::fabs(clamped - z[i]) > 1e-12) {
+                    std::cout << "Clamp safety net: delta[" << (i - deltaStart) << "] " << z[i] << " -> " << clamped << std::endl;
+                }
+                z[i] = clamped;
             } else if (i >= aStart) {
-                z[i] = std::clamp(z[i], -cfg.accelLimit, cfg.accelLimit);
+                double clamped = std::clamp(z[i], -cfg.accelLimit, cfg.accelLimit);
+                if (cfg.verbose && std::fabs(clamped - z[i]) > 1e-12) {
+                    std::cout << "Clamp safety net: accel[" << (i - aStart) << "] " << z[i] << " -> " << clamped << std::endl;
+                }
+                z[i] = clamped;
             }
         }
     }
@@ -334,11 +376,23 @@ private:
             if (isPsiIndex(i)) {
                 v(i) = wrapAngle(v(i));
             } else if (i >= slackStart) {
-                v(i) = std::max(0.0, v(i));
+                double clamped = std::max(0.0, v(i));
+                if (cfg.verbose && clamped < v(i) - 1e-12) {
+                    std::cout << "Clamp safety net: slack[" << (i - slackStart) << "] " << v(i) << " -> " << clamped << std::endl;
+                }
+                v(i) = clamped;
             } else if (i >= deltaStart && i < aStart) {
-                v(i) = std::clamp(v(i), -cfg.steerLimit, cfg.steerLimit);
+                double clamped = std::clamp(v(i), -cfg.steerLimit, cfg.steerLimit);
+                if (cfg.verbose && std::fabs(clamped - v(i)) > 1e-12) {
+                    std::cout << "Clamp safety net: delta[" << (i - deltaStart) << "] " << v(i) << " -> " << clamped << std::endl;
+                }
+                v(i) = clamped;
             } else if (i >= aStart) {
-                v(i) = std::clamp(v(i), -cfg.accelLimit, cfg.accelLimit);
+                double clamped = std::clamp(v(i), -cfg.accelLimit, cfg.accelLimit);
+                if (cfg.verbose && std::fabs(clamped - v(i)) > 1e-12) {
+                    std::cout << "Clamp safety net: accel[" << (i - aStart) << "] " << v(i) << " -> " << clamped << std::endl;
+                }
+                v(i) = clamped;
             }
         }
     }
@@ -360,6 +414,7 @@ private:
     int _lastIterations = 0;
     double _lastMaxAbs = 0.0;
     bool _lastConverged = false;
+    std::vector<IneqRow> _activeSet;
 };
 
 } // namespace mpc

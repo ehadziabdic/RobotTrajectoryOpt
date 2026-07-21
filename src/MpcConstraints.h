@@ -8,6 +8,7 @@
 #include <cmath>
 #include "MpcLayout.h"
 #include "MpcObstacle.h"
+#include "MpcInequality.h"
 
 namespace mpc {
 
@@ -35,6 +36,51 @@ public:
     const dense::DblMatrix& rhs() const { return _rhs; }
     const std::vector<Triplet>& triplets() const { return _triplets; }
     std::size_t rowCount() const { return _rowCount; }
+
+    std::vector<IneqRow> buildObstacleRows() const {
+        std::vector<IneqRow> rows;
+        const std::size_t N = _layout.N();
+        const std::size_t obstacleSlots = _layout.obstacleSlackPerStep();
+        const std::size_t activeObstacles = std::min<std::size_t>(obstacleSlots, _obstacles.size());
+        if (activeObstacles == 0) {
+            return rows;
+        }
+
+        auto nom = _nominal.getColumnManipulator();
+        for (std::size_t t = 0; t < N - 1; ++t) {
+            for (std::size_t obsIdx = 0; obsIdx < activeObstacles; ++obsIdx) {
+                const auto& obstacle = _obstacles[obsIdx];
+                const double safeRadius = obstacle.r + 0.3;
+                const double xNom = nom(static_cast<td::UINT4>(_layout.idxX(t + 1)));
+                const double yNom = nom(static_cast<td::UINT4>(_layout.idxY(t + 1)));
+                const double dx = xNom - obstacle.x;
+                const double dy = yNom - obstacle.y;
+                const double dist2 = dx * dx + dy * dy;
+                const double R2 = safeRadius * safeRadius;
+                const double gradX = 2.0 * dx;
+                const double gradY = 2.0 * dy;
+                const td::UINT4 slackIdx = static_cast<td::UINT4>(_layout.idxSlack(t + 1, obsIdx));
+
+                // Distance constraint: linearization of (x-x_obs)^2+(y-y_obs)^2 >= R^2
+                // gradX*x + gradY*y + slack >= gradX*xNom + gradY*yNom + (R2 - dist2)
+                IneqRow distRow;
+                distRow.coeffs.push_back({static_cast<td::INT4>(_layout.idxX(t + 1)), gradX});
+                distRow.coeffs.push_back({static_cast<td::INT4>(_layout.idxY(t + 1)), gradY});
+                distRow.coeffs.push_back({static_cast<td::INT4>(slackIdx), 1.0});
+                distRow.rhs = gradX * xNom + gradY * yNom + (R2 - dist2);
+                distRow.tag = (4 << 24) | (static_cast<int>(t + 1) << 8) | static_cast<int>(obsIdx);
+                rows.push_back(distRow);
+
+                // Slack non-negativity: slack >= 0
+                IneqRow slackRow;
+                slackRow.coeffs.push_back({static_cast<td::INT4>(slackIdx), 1.0});
+                slackRow.rhs = 0.0;
+                slackRow.tag = (5 << 24) | (static_cast<int>(t + 1) << 8) | static_cast<int>(obsIdx);
+                rows.push_back(slackRow);
+            }
+        }
+        return rows;
+    }
 
     void setInitialState(const dense::DblMatrix& initial_state) {
         if (initial_state.getNoOfRows() * initial_state.getNoOfCols() < 4) {
@@ -73,17 +119,13 @@ private:
 
     void assemble() {
         const std::size_t N = _layout.N();
-        const std::size_t obstacleSlots = _layout.obstacleSlackPerStep();
-        const std::size_t activeObstacles = std::min<std::size_t>(obstacleSlots, _obstacles.size());
-        const std::size_t obstacleRowsPerStep = activeObstacles;
-        const std::size_t obstacleRowCount = obstacleRowsPerStep * (N - 1);
-        const std::size_t rows = 4 * N + obstacleRowCount;
+        const std::size_t rows = 4 * N;
         const std::size_t cols = _layout.totalSize();
 
         _rowCount = rows;
         _triplets.clear();
 
-        const std::size_t nzEstimate = 4 + (N - 1) * 14 + obstacleRowCount * 3;
+        const std::size_t nzEstimate = 4 + (N - 1) * 14;
 
         _matrix = sparse::createDblMatrix(
             static_cast<int>(rows),
@@ -150,36 +192,6 @@ private:
             addTriplet(static_cast<td::INT4>(row), static_cast<td::INT4>(_layout.idxA(t)), -_layout.dt());
             b(static_cast<td::UINT4>(row)) = 0.0;
             ++row;
-
-            for (std::size_t obsIdx = 0; obsIdx < obstacleSlots && obsIdx < _obstacles.size(); ++obsIdx) {
-                const auto& obstacle = _obstacles[obsIdx];
-                const double safeRadius = obstacle.r + 0.3;
-                const double xNom = nom(static_cast<td::UINT4>(_layout.idxX(t + 1)));
-                const double yNom = nom(static_cast<td::UINT4>(_layout.idxY(t + 1)));
-                const double dx = xNom - obstacle.x;
-                const double dy = yNom - obstacle.y;
-                const double dist2 = dx * dx + dy * dy;
-                const double R2 = safeRadius * safeRadius;
-
-                const double gradX = 2.0 * dx;
-                const double gradY = 2.0 * dy;
-                const td::UINT4 slackIdx = static_cast<td::UINT4>(_layout.idxSlack(t + 1, obsIdx));
-
-                if (dist2 >= R2 * 4.0) {
-                    // Far from obstacle: trivial slack-only row
-                    addTriplet(static_cast<td::INT4>(row), static_cast<td::INT4>(slackIdx), 1.0);
-                    b(static_cast<td::UINT4>(row)) = 0.0;
-                    ++row;
-                    continue;
-                }
-
-                // Active obstacle avoidance row: gradX*x + gradY*y + slack = gradX*xNom + gradY*yNom
-                addTriplet(static_cast<td::INT4>(row), static_cast<td::INT4>(_layout.idxX(t + 1)), gradX);
-                addTriplet(static_cast<td::INT4>(row), static_cast<td::INT4>(_layout.idxY(t + 1)), gradY);
-                addTriplet(static_cast<td::INT4>(row), static_cast<td::INT4>(slackIdx), 1.0);
-                b(static_cast<td::UINT4>(row)) = gradX * xNom + gradY * yNom;
-                ++row;
-            }
         }
 
         if (_verbose) {

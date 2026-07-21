@@ -13,6 +13,7 @@ public:
     struct Result {
         bool ok = false;
         std::vector<double> z;
+        std::vector<double> lambda;
     };
 
     Result Solve(const MpcKkt& kkt) {
@@ -25,7 +26,6 @@ public:
 
         const td::UINT4 n = static_cast<td::UINT4>(kktMat->getNoOfRows());
         const int nz = static_cast<int>(kktMat->getNoOfNonZero());
-        // Number of primal vars is provided by the KKT object (first nZ entries)
         const td::UINT4 nZ = kkt.primalSize();
 
         sparse::DblSolverReleaser solver(sparse::createDblSolver(
@@ -62,6 +62,11 @@ public:
         out.z.resize(nZ);
         for (td::UINT4 i = 0; i < nZ; ++i) {
             out.z[i] = solver->x(static_cast<td::INT4>(i));
+        }
+        const td::UINT4 nLambda = n - nZ;
+        out.lambda.resize(static_cast<std::size_t>(nLambda));
+        for (td::UINT4 i = 0; i < nLambda; ++i) {
+            out.lambda[i] = solver->x(static_cast<td::INT4>(nZ + i));
         }
         out.ok = true;
         return out;

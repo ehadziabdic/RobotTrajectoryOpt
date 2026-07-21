@@ -155,6 +155,7 @@ inline MainView::MainView()
     _targetVelocity = _telemetry.v;
 
     _settings.maxIter = 60;
+    _settings.maxActiveSetIter = 20;
     _settings.tol = 2e-3;
     _settings.alpha = 0.12;
     _settings.verbose = false;

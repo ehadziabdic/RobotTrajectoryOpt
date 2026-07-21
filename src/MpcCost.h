@@ -195,8 +195,22 @@ public:
             z(static_cast<td::UINT4>(_layout.idxV(t))) = vrefConst;
         }
 
+        const double Lf = 0.5;
+        const double steerLimit = 0.6;
         for (std::size_t t = 0; t < N - 1; ++t) {
-            z(static_cast<td::UINT4>(_layout.idxDelta(t))) = 0.0;
+            const double psi_t = z(static_cast<td::UINT4>(_layout.idxPsi(t)));
+            const double psi_next = z(static_cast<td::UINT4>(_layout.idxPsi(t + 1)));
+            const double v_t = z(static_cast<td::UINT4>(_layout.idxV(t)));
+            double dpsi = psi_next - psi_t;
+            while (dpsi >  M_PI) dpsi -= 2.0 * M_PI;
+            while (dpsi < -M_PI) dpsi += 2.0 * M_PI;
+            double delta_ff = 0.0;
+            if (std::fabs(v_t) > 0.1 && dt > 0.0) {
+                delta_ff = std::atan(Lf * dpsi / (v_t * dt));
+                if (delta_ff >  steerLimit) delta_ff =  steerLimit;
+                if (delta_ff < -steerLimit) delta_ff = -steerLimit;
+            }
+            z(static_cast<td::UINT4>(_layout.idxDelta(t))) = delta_ff;
             z(static_cast<td::UINT4>(_layout.idxA(t))) = 0.0;
         }
 

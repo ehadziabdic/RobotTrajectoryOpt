@@ -45,6 +45,7 @@ public:
         const td::UINT4 totalSize = static_cast<td::UINT4>(_layout.totalSize());
         _zNom = dense::DblMatrix(totalSize, 1, nullptr, true);
         _zNomInitialized = false;
+        _sqp.reset();
         _diag = Diagnostics{};
     }
 
@@ -129,13 +130,13 @@ public:
             return false;
         }
 
-        // Only accept the new warm-start if convergence was reasonable.
+        // Accept the converged warm-start if the SQP update was reasonable.
         // If maxAbs is very large, the SQP diverged; fall back to a fresh
         // reference-trajectory init on the next step to escape the bad basin.
         if (_sqp.lastMaxAbs() < 5.0) {
             _zNom = zWork;
         } else {
-            // Force re-initialization from reference on next call
+            // Divergence: force re-init from reference
             _zNomInitialized = false;
         }
 
