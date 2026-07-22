@@ -111,7 +111,15 @@ public:
                                           cfg.maxActiveSetIter, cfg.verbose, zVec);
             if (!asRes.ok) {
                 if (cfg.verbose) {
-                    std::cout << "MpcSqp: SolveActiveSetQP returned !ok" << std::endl;
+                    std::cout << "MpcSqp: SolveActiveSetQP returned !ok at iter=" << iter << std::endl;
+                }
+                if (bestMaxAbs < std::numeric_limits<double>::max()) {
+                    zNom = bestZ.makeCopy();
+                    sanitizeTrajectory(zNom, cfg);
+                    _lastIterations = iter + 1;
+                    _lastMaxAbs = bestMaxAbs;
+                    _lastConverged = false;
+                    return true;
                 }
                 return false;
             }
@@ -124,6 +132,14 @@ public:
             if (asRes.z.size() != static_cast<std::size_t>(nZ)) {
                 if (cfg.verbose) {
                     std::cout << "MpcSqp: active-set produced invalid z size=" << asRes.z.size() << " expected=" << nZ << std::endl;
+                }
+                if (bestMaxAbs < std::numeric_limits<double>::max()) {
+                    zNom = bestZ.makeCopy();
+                    sanitizeTrajectory(zNom, cfg);
+                    _lastIterations = iter + 1;
+                    _lastMaxAbs = bestMaxAbs;
+                    _lastConverged = false;
+                    return true;
                 }
                 return false;
             }
@@ -250,7 +266,15 @@ public:
                                           cfg.maxActiveSetIter, cfg.verbose, zVec);
             if (!asRes.ok) {
                 if (cfg.verbose) {
-                    std::cout << "MpcSqp: SolveActiveSetQP returned !ok (hot-start)" << std::endl;
+                    std::cout << "MpcSqp: SolveActiveSetQP returned !ok at iter=" << iter << " (hot-start)" << std::endl;
+                }
+                if (bestMaxAbs < std::numeric_limits<double>::max()) {
+                    zNom = bestZ.makeCopy();
+                    sanitizeTrajectory(zNom, cfg);
+                    _lastIterations = iter + 1;
+                    _lastMaxAbs = bestMaxAbs;
+                    _lastConverged = false;
+                    return true;
                 }
                 return false;
             }
@@ -263,6 +287,14 @@ public:
             if (asRes.z.size() != static_cast<std::size_t>(nZ)) {
                 if (cfg.verbose) {
                     std::cout << "MpcSqp: active-set produced invalid z size (hot-start)=" << asRes.z.size() << " expected=" << nZ << std::endl;
+                }
+                if (bestMaxAbs < std::numeric_limits<double>::max()) {
+                    zNom = bestZ.makeCopy();
+                    sanitizeTrajectory(zNom, cfg);
+                    _lastIterations = iter + 1;
+                    _lastMaxAbs = bestMaxAbs;
+                    _lastConverged = false;
+                    return true;
                 }
                 return false;
             }

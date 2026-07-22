@@ -125,7 +125,7 @@ private:
         _rowCount = rows;
         _triplets.clear();
 
-        const std::size_t nzEstimate = 4 + (N - 1) * 14;
+        const std::size_t nzEstimate = 4 + (N - 1) * 15;
 
         _matrix = sparse::createDblMatrix(
             static_cast<int>(rows),
@@ -179,11 +179,22 @@ private:
             b(static_cast<td::UINT4>(row)) = -vnom * cPsi * _layout.dt() * psi;
             ++row;
 
-            // psi_{t+1} - psi_t - (dt/Lf) * delta_t = 0
+            // psi_{t+1} - psi_t - (v_t/Lf)*delta_t*dt  (linearized around zNom)
+            // delta_nom is inferred from the nominal trajectory dynamics:
+            // psi(t+1) = psi(t) + (v(t)/Lf)*delta(t)*dt  =>  delta = (psi(t+1)-psi(t))*Lf/(v(t)*dt)
+            const double psiNomNext = nom(static_cast<td::UINT4>(_layout.idxPsi(t + 1)));
+            const double dtOverLf = _layout.dt() / _layout.Lf();
+            double deltaNom = 0.0;
+            if (std::fabs(vnom) > 1e-8 && std::fabs(dtOverLf) > 1e-8) {
+                deltaNom = (psiNomNext - psi) / (vnom * dtOverLf);
+                if (deltaNom > 0.6) deltaNom = 0.6;
+                if (deltaNom < -0.6) deltaNom = -0.6;
+            }
             addTriplet(static_cast<td::INT4>(row), static_cast<td::INT4>(_layout.idxPsi(t + 1)), 1.0);
             addTriplet(static_cast<td::INT4>(row), static_cast<td::INT4>(_layout.idxPsi(t)), -1.0);
-            addTriplet(static_cast<td::INT4>(row), static_cast<td::INT4>(_layout.idxDelta(t)), -_layout.dt() / _layout.Lf());
-            b(static_cast<td::UINT4>(row)) = 0.0;
+            addTriplet(static_cast<td::INT4>(row), static_cast<td::INT4>(_layout.idxDelta(t)), -vnom * dtOverLf);
+            addTriplet(static_cast<td::INT4>(row), static_cast<td::INT4>(_layout.idxV(t)), -deltaNom * dtOverLf);
+            b(static_cast<td::UINT4>(row)) = -vnom * deltaNom * dtOverLf;
             ++row;
 
             // v_{t+1} - v_t - a_t * dt = 0

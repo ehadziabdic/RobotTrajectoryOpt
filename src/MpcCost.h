@@ -118,24 +118,19 @@ public:
             return 0.0;
         };
 
-        double x_closest = initial_x;
-        // Newton iterations to find root of f(x) = (x - x0) + (y(x)-y0)*y'(x)
-        for (int it = 0; it < 12; ++it) {
-            const double yx = y_at(x_closest);
-            const double dy = dy_at(x_closest);
-            const double ddy = ddy_at(x_closest);
-            const double f = (x_closest - initial_x) + (yx - initial_y) * dy;
-            const double fp = 1.0 + dy * dy + (yx - initial_y) * ddy;
-            if (std::fabs(fp) < 1e-8) break;
-            const double dx = f / fp;
-            x_closest -= dx;
-            if (std::fabs(dx) < 1e-8) break;
-        }
-
-        // Ensure k=0 (initial) reference values preserve vehicle telemetry
-        const double y0 = initial_y;
+        // Reference trajectory starts from the vehicle's current x position
+        // and follows the polynomial forward.  The initial-state constraint
+        // locks z(0) to the actual vehicle state; the cost gradient pushes
+        // z(t) toward the polynomial for t >= 1.
         const double x0 = initial_x;
-        const double psi0 = std::atan(dy_at(x_closest));
+        const double y0 = y_at(x0);
+        // Use the polynomial heading at the vehicle's x as psi0.
+        // This makes the reference trajectory self-consistent with the
+        // polynomial: x-advance uses cos(psiref), y = y_at(xref),
+        // psi = atan2(dy_at(xref), 1).  Using initial_psi (vehicle heading)
+        // instead creates a straight-line x-advance that diverges from the
+        // curved polynomial, causing systematic tracking error growth.
+        const double psi0 = std::atan2(dy_at(x0), 1.0);
         const double v0 = target_v;
 
         z(static_cast<td::UINT4>(_layout.idxX(0))) = x0;
@@ -143,13 +138,11 @@ public:
         z(static_cast<td::UINT4>(_layout.idxPsi(0))) = psi0;
         z(static_cast<td::UINT4>(_layout.idxV(0))) = v0;
 
-        // Step C2: Replace any existing max_path_x computation with:
-        const double max_path_x = x_closest + _maxLookahead;
+        // max_path_x: lookahead from the vehicle's current position
+        const double max_path_x = x0 + _maxLookahead;
 
-        // Step C3: Before the reference trajectory loop, initialize psiref_prev and normalize
-        double psiref_prev = std::atan2(dy_at(x_closest), 1.0);
-        while (psiref_prev - initial_psi >  M_PI) psiref_prev -= 2.0 * M_PI;
-        while (psiref_prev - initial_psi < -M_PI) psiref_prev += 2.0 * M_PI;
+        // Initialize psiref_prev from the polynomial heading at the vehicle position
+        double psiref_prev = psi0;
 
         // Step C4: If _freezeAtPeak is true and c3 < 0 and c2 > 0, compute before the loop:
         double x_peak = 0.0;
@@ -157,17 +150,23 @@ public:
             x_peak = -2.0 * c2 / (3.0 * c3);
         }
 
-        // Build forward reference trajectory from the closest point, but keep k=0 locked to telemetry
-        double xref = x_closest;
-        double psiref = std::atan2(dy_at(xref), 1.0);
+        // Build forward reference trajectory from the vehicle's current x position.
+        // x advances smoothly by v*cos(psi)*dt each step — no discontinuity.
+        double xref = x0;
+        double psiref = psi0;
         // Use projection_v for spatial advancement (matches actual vehicle speed),
         // but target_v for the velocity reference in the cost.
         const double adv_v = (projection_v >= 0.0) ? projection_v : target_v;
         const double vrefConst = target_v;
 
         for (std::size_t t = 1; t < N; ++t) {
-            // Step forward using heading-aware increments at projection velocity
-            xref += adv_v * std::cos(psiref) * dt;
+            // Advance xref using the vehicle's actual heading (initial_psi).
+            // This makes xref match the vehicle's actual x-advance rate,
+            // so yref = y_at(xref) is evaluated at the correct x-position.
+            // Using cos(psiref) instead makes x-advance depend on the
+            // polynomial heading, which differs from the vehicle's heading
+            // when tracking error exists, creating systematic y-cost bias.
+            xref += adv_v * std::cos(initial_psi) * dt;
 
             // Step C6: Inside the loop, after advancing xref, add freeze logic
             if (_freezeAtPeak && c3 < 0.0 && c2 > 0.0 && xref >= x_peak) {
