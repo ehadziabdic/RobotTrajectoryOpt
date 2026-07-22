@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Robot Trajectory Optimization
+GenericName=Optimization
+Comment=Simulate Optimized Robot Trajectory
+Icon=robottrajectoryopt
+Exec=/usr/local/bin/RobotTrajectoryOpt
+Terminal=false
+Categories=Optimization;Simulation;
+Keywords=Optimization;Simulation;Robot;Trajectory;
+StartupNotify=true
