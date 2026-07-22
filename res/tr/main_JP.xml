@@ -39,6 +39,8 @@
         <Res id="engineSettings" tr="制御エンジン設定"/>
         <Res id="lblMaxIter" tr="最大反復回数:"/>
         <Res id="lblTolerance" tr="許容誤差:"/>
+        <Res id="lblAlpha" tr="ステップサイズ (α):"/>
+        <Res id="lblMaxActiveSetIter" tr="最大アクティブ集合:"/>
         <Res id="lblTimeStep" tr="時間ステップ (dt):"/>
         <Res id="lblHorizon" tr="ホライズンサイズ (N):"/>
 

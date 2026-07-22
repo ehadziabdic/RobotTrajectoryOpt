@@ -9,7 +9,7 @@
 class DialogSettings : public gui::Dialog {
 private:
     MpcSettingsPopup _settingsView;
-    std::function<void(int, double, const td::String&, bool)> _applyHandler;
+    std::function<void(int, double, double, int, const td::String&, bool)> _applyHandler;
 
 protected:
     bool onClick(gui::Dialog::Button::ID btnID, gui::Button* /*pButton*/) override {
@@ -17,6 +17,8 @@ protected:
             _applyHandler(
                 _settingsView.selectedMaxIter(),
                 _settingsView.selectedTolerance(),
+                _settingsView.selectedAlpha(),
+                _settingsView.selectedMaxActiveSetIter(),
                 _settingsView.selectedLanguageExtension(),
                 _settingsView.languageChanged());
         }
@@ -31,18 +33,18 @@ public:
                   {gui::Dialog::Button::ID::OK, tr("Ok"), gui::Button::Type::Default},
                   {gui::Dialog::Button::ID::Cancel, tr("Cancel")},
               },
-              gui::Size(460, 220),
+              gui::Size(460, 320),
               wndID)
     {
         setTitle(tr("settings"));
         setCentralView(&_settingsView);
     }
 
-    void syncValues(int maxIter, double tolerance, const td::String& languageExtension) {
-        _settingsView.syncValues(maxIter, tolerance, languageExtension);
+    void syncValues(int maxIter, double tolerance, double alpha, int maxActiveSetIter, const td::String& languageExtension) {
+        _settingsView.syncValues(maxIter, tolerance, alpha, maxActiveSetIter, languageExtension);
     }
 
-    void setApplyHandler(const std::function<void(int, double, const td::String&, bool)>& handler) {
+    void setApplyHandler(const std::function<void(int, double, double, int, const td::String&, bool)>& handler) {
         _applyHandler = handler;
     }
 };

@@ -39,6 +39,8 @@
         <Res id="engineSettings" tr="Ajustes del Controlador"/>
         <Res id="lblMaxIter" tr="Iteraciones Máx:"/>
         <Res id="lblTolerance" tr="Tolerancia:"/>
+        <Res id="lblAlpha" tr="Tamaño de Paso (α):"/>
+        <Res id="lblMaxActiveSetIter" tr="Máx. Iter. Activo:"/>
         <Res id="lblTimeStep" tr="Paso de Tiempo (dt):"/>
         <Res id="lblHorizon" tr="Tamaño del Horizonte (N):"/>
 

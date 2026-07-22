@@ -4,13 +4,12 @@
 #include <atomic>
 #include <cmath>
 #include <cstdarg>
+#include <cstdio>
 #include <ctime>
 #include <fstream>
 #include <functional>
-#include <iomanip>
 #include <limits>
 #include <mutex>
-#include <sstream>
 #include <thread>
 #include <vector>
 
@@ -158,6 +157,7 @@ inline MainView::MainView()
     _settings.maxActiveSetIter = 20;
     _settings.tol = 2e-3;
     _settings.alpha = 0.12;
+    _settings.vMax = 3.0;
     _settings.verbose = false;
     _engine.setSettings(_settings);
 
@@ -320,6 +320,10 @@ inline void MainView::advanceOneStep() {
 
     const bool ok = _engine.Solve(_telemetry, _coeffs, _targetVelocity, dt, _scenarioConfig.obstacles, _trajectory,
                                    _scenarioConfig.freezeAtPeak, _scenarioConfig.maxLookahead, _scenarioConfig.trackLength);
+    const auto d = _engine.diagnostics();
+    logMsg("step=%d ok=%d iter=%d maxAbs=%.6f x=%.3f y=%.3f v=%.3f\n",
+        _running ? 1 : 0, ok ? 1 : 0, d.iterations, d.maxAbs,
+        _telemetry.x, _telemetry.y, _telemetry.v);
 
     if (!ok) {
         return;
@@ -461,10 +465,12 @@ inline void MainView::openSettingsDialog() {
     const td::String currentLanguage = props ? props->getValue("translation", td::String("EN")) : td::String("EN");
 
     auto* dlg = new DialogSettings(this);
-    dlg->syncValues(_settings.maxIter, _settings.tol, currentLanguage);
-    dlg->setApplyHandler([this, app, props](int maxIter, double tolerance, const td::String& langExt, bool languageChanged) {
+    dlg->syncValues(_settings.maxIter, _settings.tol, _settings.alpha, _settings.maxActiveSetIter, currentLanguage);
+    dlg->setApplyHandler([this, app, props](int maxIter, double tolerance, double alpha, int maxActiveSetIter, const td::String& langExt, bool languageChanged) {
         _settings.maxIter = std::max(1, maxIter);
         _settings.tol = tolerance;
+        _settings.alpha = std::max(0.01, std::min(1.0, alpha));
+        _settings.maxActiveSetIter = std::max(1, maxActiveSetIter);
         _engine.setSettings(_settings);
 
         if (props) {
@@ -513,9 +519,12 @@ inline void MainView::openLogFile() {
 
 inline void MainView::closeLogFile() {
     if (_logFile.is_open()) {
-        _logFile << "=== Simulation Run Ended ===\n";
         _logFile.flush();
         _logFile.close();
+    }
+    if (!_logFilePath.empty()) {
+        std::remove(_logFilePath.c_str());
+        _logFilePath.clear();
     }
 }
 
@@ -526,6 +535,7 @@ inline void MainView::logMsg(const char* fmt, ...) {
     std::vsnprintf(buffer, sizeof(buffer), fmt, args);
     va_end(args);
 
+    fprintf(stderr, "%s", buffer);
     if (_logFile.is_open()) {
         _logFile << buffer;
     }

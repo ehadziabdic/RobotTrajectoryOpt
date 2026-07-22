@@ -39,6 +39,8 @@
         <Res id="engineSettings" tr="Reglereinstellungen"/>
         <Res id="lblMaxIter" tr="Max. Iterationen:"/>
         <Res id="lblTolerance" tr="Toleranz:"/>
+        <Res id="lblAlpha" tr="Schrittweite (α):"/>
+        <Res id="lblMaxActiveSetIter" tr="Max. Aktive-Menge:"/>
         <Res id="lblTimeStep" tr="Zeitschritt (dt):"/>
         <Res id="lblHorizon" tr="Horizonthöhe (N):"/>
 

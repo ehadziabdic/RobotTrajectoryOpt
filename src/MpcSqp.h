@@ -23,6 +23,7 @@ public:
         double alpha = 0.5;
         double steerLimit = 0.6;
         double accelLimit = 3.0;
+        double vMax = 3.0;
         bool verbose = false;
     };
 
@@ -74,7 +75,7 @@ public:
         sanitizeTrajectory(zNom, cfg);
 
         // Build bound rows once (constant across SQP iterations)
-        std::vector<IneqRow> boundRows = buildBoundRows(_layout, cfg.steerLimit, cfg.accelLimit);
+        std::vector<IneqRow> boundRows = buildBoundRows(_layout, cfg.steerLimit, cfg.accelLimit, cfg.vMax);
 
         MpcCost solverCost(_layout);
         solverCost.setFreezeAtPeak(freezeAtPeak);

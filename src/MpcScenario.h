@@ -12,8 +12,8 @@ namespace mpc {
 
 enum class SimScenario {
     StraightLine = 0,
-    LaneChange = 1,
-    SCurve = 2,
+    LaneChange = 2,
+    SCurve = 1,
 };
 
 struct ScenarioConfig {

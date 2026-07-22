@@ -39,6 +39,8 @@
         <Res id="engineSettings" tr="Postavke Kontrolera"/>
         <Res id="lblMaxIter" tr="Maks. Iteracija:"/>
         <Res id="lblTolerance" tr="Tolerancija:"/>
+        <Res id="lblAlpha" tr="Veličina Koraka (α):"/>
+        <Res id="lblMaxActiveSetIter" tr="Maks. Aktivnog Skupa:"/>
         <Res id="lblTimeStep" tr="Vremenski Korak (dt):"/>
         <Res id="lblHorizon" tr="Veličina Horizonta (N):"/>
 

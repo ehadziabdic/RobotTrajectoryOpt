@@ -39,6 +39,8 @@
         <Res id="engineSettings" tr="Paramètres du Contrôleur"/>
         <Res id="lblMaxIter" tr="Itérations Max :"/>
         <Res id="lblTolerance" tr="Tolérance :"/>
+        <Res id="lblAlpha" tr="Pas (α) :"/>
+        <Res id="lblMaxActiveSetIter" tr="Max Itér. Actif :"/>
         <Res id="lblTimeStep" tr="Pas de Temps (dt) :"/>
         <Res id="lblHorizon" tr="Taille de l'Horizon (N) :"/>
 

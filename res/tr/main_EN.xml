@@ -41,6 +41,8 @@
         <Res id="engineSettings" tr="Engine Settings"/>
         <Res id="lblMaxIter" tr="Max Iterations:"/>
         <Res id="lblTolerance" tr="Tolerance:"/>
+        <Res id="lblAlpha" tr="Step Size (α):"/>
+        <Res id="lblMaxActiveSetIter" tr="Max Active Set Iter:"/>
         <Res id="lblTimeStep" tr="Time Step (dt):"/>
         <Res id="lblHorizon" tr="Horizon Size (N):"/>
 

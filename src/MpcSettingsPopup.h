@@ -26,6 +26,10 @@ private:
     gui::NumericEdit _edMaxIter;
     gui::Label _lblTolerance;
     gui::NumericEdit _edTolerance;
+    gui::Label _lblAlpha;
+    gui::NumericEdit _edAlpha;
+    gui::Label _lblMaxActiveSetIter;
+    gui::NumericEdit _edMaxActiveSetIter;
     gui::GridLayout _layout;
 
     int _initialLanguageIndex = 0;
@@ -57,32 +61,54 @@ public:
         , _edMaxIter(td::int4)
         , _lblTolerance(tr("lblTolerance"))
         , _edTolerance(td::real8)
-        , _layout(3, 2)
+        , _lblAlpha(tr("lblAlpha"))
+        , _edAlpha(td::real8)
+        , _lblMaxActiveSetIter(tr("lblMaxActiveSetIter"))
+        , _edMaxActiveSetIter(td::int4)
+        , _layout(5, 2)
     {
         gui::GridComposer gc(_layout);
         gc.appendRow(_lblLanguage) << _cmbLanguage;
         gc.appendRow(_lblMaxIter) << _edMaxIter;
         gc.appendRow(_lblTolerance) << _edTolerance;
+        gc.appendRow(_lblAlpha) << _edAlpha;
+        gc.appendRow(_lblMaxActiveSetIter) << _edMaxActiveSetIter;
         setLayout(&_layout);
 
         for (std::size_t i = 0; i < kLanguages.size(); ++i) {
             _cmbLanguage.addItem(tr(kLanguages[i].labelKey));
         }
 
-        // default tolerance value
+        // default values
         _edTolerance.setText("0.002", false);
+        _edAlpha.setText("0.12", false);
+        _edAlpha.setMinValue(0.01);
+        _edAlpha.setMaxValue(1.0);
+        _edAlpha.setNumberOfDigitsAfterDecimalPoint(2);
+        _edAlpha.showThSep(false);
+        _edMaxActiveSetIter.setText("20", false);
+        _edMaxActiveSetIter.setMinValue(1.0);
+        _edMaxActiveSetIter.setMaxValue(100.0);
+        _edMaxActiveSetIter.setNumberOfDigitsAfterDecimalPoint(0);
+        _edMaxActiveSetIter.showThSep(false);
         _cmbLanguage.selectIndex(_initialLanguageIndex);
 
         updateValueLabels();
     }
 
-    void syncValues(int maxIter, double tolerance, const td::String& languageExtension) {
+    void syncValues(int maxIter, double tolerance, double alpha, int maxActiveSetIter, const td::String& languageExtension) {
         char iterBuffer[64];
         std::snprintf(iterBuffer, sizeof(iterBuffer), "%d", maxIter);
         _edMaxIter.setText(iterBuffer, false);
         char tolBuf[64];
         std::snprintf(tolBuf, sizeof(tolBuf), "%.6f", tolerance);
         _edTolerance.setText(tolBuf, false);
+        char alphaBuf[64];
+        std::snprintf(alphaBuf, sizeof(alphaBuf), "%.2f", alpha);
+        _edAlpha.setText(alphaBuf, false);
+        char asBuf[64];
+        std::snprintf(asBuf, sizeof(asBuf), "%d", maxActiveSetIter);
+        _edMaxActiveSetIter.setText(asBuf, false);
 
         _initialLanguageIndex = 0;
         for (std::size_t i = 0; i < kLanguages.size(); ++i) {
@@ -104,6 +130,18 @@ public:
     double selectedTolerance() const {
         double value = 2e-3;
         _edTolerance.getValue(value);
+        return value;
+    }
+
+    double selectedAlpha() const {
+        double value = 0.12;
+        _edAlpha.getValue(value);
+        return value;
+    }
+
+    int selectedMaxActiveSetIter() const {
+        int value = 20;
+        _edMaxActiveSetIter.getValue(value);
         return value;
     }
 
