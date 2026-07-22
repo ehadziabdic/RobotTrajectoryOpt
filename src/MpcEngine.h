@@ -61,57 +61,34 @@ public:
                double maxLookahead = 15.0,
                double trackLength = std::numeric_limits<double>::max()) {
         if (dt <= 0.0) {
-            std::cout << "MpcEngine: invalid dt" << std::endl;
+            std::cout << "MpcEngine: invalid dt\n";
             _diag = Diagnostics{};
             return false;
         }
         if (coeffs.getNoOfRows() == 0 || coeffs.getNoOfCols() == 0) {
-            std::cout << "MpcEngine: empty coeffs" << std::endl;
+            std::cout << "MpcEngine: empty coeffs\n";
             _diag = Diagnostics{};
             return false;
         }
 
-        // Force fresh reference regeneration every step.  Carrying over the
-        // previous step's SQP output as warm-start causes x-position drift:
-        // z(1..N-1) have x-positions from the old step, making z(0)≈z(1)
-        // which violates the dynamics constraint.  The SQP then needs many
-        // iterations to push the trajectory forward, and eventually fails.
-        // Always regenerating from the polynomial at the current vehicle
-        // position keeps the warm-start aligned and the SQP converges fast.
+        // Force fresh reference regeneration every step to prevent warm-start drift.
         _zNomInitialized = false;
 
         if (!ensureNominalInitialized(coeffs, target_v, current.x, current.y, current.psi, dt, freezeAtPeak, maxLookahead, trackLength, current.v)) {
-            std::cout << "MpcEngine: nominal init failed" << std::endl;
+            std::cout << "MpcEngine: nominal init failed\n";
             _diag = Diagnostics{};
             return false;
         }
 
         dense::DblMatrix zWork = _zNom.makeCopy();
 
-        // Snap warm-start t=0 to the current vehicle state so the SQP
-        // always starts from the correct position.
-        // z(1..N-1) stays on the polynomial reference — this is the correct
-        // warm-start since the reference is what the solver should track.
+        // Snap warm-start t=0 to the current vehicle state.
         {
             auto zw = zWork.getColumnManipulator();
             zw(static_cast<td::UINT4>(_layout.idxX(0)))   = current.x;
             zw(static_cast<td::UINT4>(_layout.idxY(0)))   = current.y;
             zw(static_cast<td::UINT4>(_layout.idxPsi(0))) = current.psi;
             zw(static_cast<td::UINT4>(_layout.idxV(0)))   = current.v;
-        }
-
-        if (_settings.verbose) {
-            const td::UINT4 nZ = static_cast<td::UINT4>(zWork.getNoOfRows());
-            auto zw = zWork.getColumnManipulator();
-            std::cout << "MpcEngine: launching SQP with zWork size=" << nZ << " first_vals=[";
-            const td::UINT4 dump = (nZ > 8) ? 8u : nZ;
-            for (td::UINT4 i = 0; i < dump; ++i) {
-                double v = zw(i);
-                if (!std::isfinite(v)) std::cout << "nan";
-                else std::cout << v;
-                if (i + 1 < dump) std::cout << ", ";
-            }
-            std::cout << "]" << std::endl;
         }
 
         const bool ok = _sqp.Solve(coeffs,
@@ -136,17 +113,13 @@ public:
         _diag.maxAbs = _sqp.lastMaxAbs();
 
         if (!ok) {
-            // SQP failed (KKT factorization issue).  Rather than freezing
-            // the vehicle, fall back to the reference trajectory feedforward
-            // controls so the vehicle keeps moving along the polynomial.
+            // SQP failed — fall back to reference feedforward controls.
             _zNomInitialized = false;
             extractTrajectory(out);
             return true;
         }
 
         // Accept the converged warm-start if the SQP update was reasonable.
-        // If maxAbs is very large, the SQP diverged; fall back to a fresh
-        // reference-trajectory init on the next step to escape the bad basin.
         if (_sqp.lastMaxAbs() < 5.0) {
             _zNom = zWork;
         } else {
@@ -154,11 +127,7 @@ public:
         }
 
         // Detect stagnation: SQP converged in very few iterations with
-        // near-zero update. This means the warm-start trajectory has become
-        // a fixed point of the SQP — the dynamics constraints are satisfied
-        // by the stale trajectory so the QP returns it unchanged, even though
-        // it no longer tracks the current reference.  Force a fresh
-        // reference-trajectory init on the next step to break the cycle.
+        // near-zero update. Force fresh reference on next step.
         if (_diag.converged && _diag.iterations <= 3 && _diag.maxAbs < 1e-6) {
             _zNomInitialized = false;
         }
@@ -191,8 +160,6 @@ private:
             cost.setFreezeAtPeak(freezeAtPeak);
             cost.setMaxLookahead(maxLookahead);
             cost.setTrackLength(trackLength);
-            // Pass actual vehicle velocity for spatial projection so warm-start
-            // reference already accounts for the true travel speed
             cost.UpdateReferenceTrajectory(coeffs, target_v, initial_x, initial_y, dt, initial_psi, projection_v);
             _zNom = cost.Ref().makeCopy();
             _zNomInitialized = true;

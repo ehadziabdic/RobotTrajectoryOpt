@@ -161,8 +161,8 @@ inline MpcSidebarView::MpcSidebarView()
     });
 
     _cmbScenario.addItem(tr("scenarioStraightLine"));
-    _cmbScenario.addItem(tr("scenarioLaneChange"));
     _cmbScenario.addItem(tr("scenarioSCurve"));
+    _cmbScenario.addItem(tr("scenarioLaneChange"));
     _cmbScenario.selectIndex(0);
     _cmbScenario.onChangedSelection([this]() {
         if (_onScenario) {

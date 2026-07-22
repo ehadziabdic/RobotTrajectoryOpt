@@ -50,7 +50,7 @@ inline ActiveSetResult SolveActiveSetQP(
 
     if (verbose) {
         std::cout << "ActiveSet: warm-start active rows=" << activeSet.size()
-                  << " total_ineq=" << allIneqRows.size() << std::endl;
+                  << " total_ineq=" << allIneqRows.size() << "\n";
     }
 
     std::vector<double> zCurrent = zInitial;
@@ -74,7 +74,7 @@ inline ActiveSetResult SolveActiveSetQP(
             sparse::Pivoting::DiagonalSinglePass));
 
         if (!solver.ptr()) {
-            if (verbose) std::cout << "ActiveSet: createDblSolver failed" << std::endl;
+            if (verbose) std::cout << "ActiveSet: createDblSolver failed" << "\n";
             return {false, zCurrent, activeSet};
         }
 
@@ -112,11 +112,11 @@ inline ActiveSetResult SolveActiveSetQP(
         }
 
         if (!solver->factorize()) {
-            if (verbose) std::cout << "ActiveSet: factorize failed iter=" << innerIter << std::endl;
+            if (verbose) std::cout << "ActiveSet: factorize failed iter=" << innerIter << "\n";
             return {false, zCurrent, activeSet};
         }
         if (!solver->solve()) {
-            if (verbose) std::cout << "ActiveSet: solve failed iter=" << innerIter << std::endl;
+            if (verbose) std::cout << "ActiveSet: solve failed iter=" << innerIter << "\n";
             return {false, zCurrent, activeSet};
         }
 
@@ -180,14 +180,14 @@ inline ActiveSetResult SolveActiveSetQP(
                 }
             }
             if (isDuplicate) {
-                if (verbose) std::cout << "ActiveSet: blocked duplicate tag=" << blocking->tag << std::endl;
+                if (verbose) std::cout << "ActiveSet: blocked duplicate tag=" << blocking->tag << "\n";
             } else {
                 for (td::UINT4 i = 0; i < nZ; ++i) {
                     zCurrent[i] += alpha * (zCandidate[i] - zCurrent[i]);
                 }
                 activeSet.push_back(*blocking);
                 if (verbose) {
-                    std::cout << "ActiveSet: added tag=" << blocking->tag << " alpha=" << alpha << std::endl;
+                    std::cout << "ActiveSet: added tag=" << blocking->tag << " alpha=" << alpha << "\n";
                 }
             }
             continue;
@@ -198,7 +198,7 @@ inline ActiveSetResult SolveActiveSetQP(
 
         // --- Optimality check via dual variables ---
         if (nW == 0) {
-            if (verbose) std::cout << "ActiveSet: converged " << (innerIter + 1) << " iters (unconstrained)" << std::endl;
+            if (verbose) std::cout << "ActiveSet: converged " << (innerIter + 1) << " iters (unconstrained)" << "\n";
             return {true, zCurrent, activeSet};
         }
 
@@ -216,17 +216,17 @@ inline ActiveSetResult SolveActiveSetQP(
             int droppedTag = activeSet[mostNegativeIdx].tag;
             activeSet.erase(activeSet.begin() + mostNegativeIdx);
             if (verbose) {
-                std::cout << "ActiveSet: dropped tag=" << droppedTag << " lambda=" << mostNegativeVal << std::endl;
+                std::cout << "ActiveSet: dropped tag=" << droppedTag << " lambda=" << mostNegativeVal << "\n";
             }
             continue;
         }
 
-        if (verbose) std::cout << "ActiveSet: converged " << (innerIter + 1) << " iters" << std::endl;
+        if (verbose) std::cout << "ActiveSet: converged " << (innerIter + 1) << " iters" << "\n";
         return {true, zCurrent, activeSet};
     }
 
     if (verbose) {
-        std::cout << "ActiveSet: maxInnerIter=" << maxInnerIter << " reached, returning best feasible" << std::endl;
+        std::cout << "ActiveSet: maxInnerIter=" << maxInnerIter << " reached, returning best feasible" << "\n";
     }
     return {true, zCurrent, activeSet};
 }

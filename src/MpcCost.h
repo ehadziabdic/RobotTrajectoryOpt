@@ -43,15 +43,10 @@ public:
 
     const MpcLayout& layout() const { return _layout; }
 
-    // projection_v is the velocity used to advance xref along the curve.
-    // When projection_v < 0, target_v is used (backward-compatible default).
-    // Passing the actual vehicle velocity makes the reference x-positions
-    // match where the vehicle will be, eliminating systematic tracking offset
-    // caused by velocity mismatch.
+    // projection_v: velocity used to advance xref along the curve.
+    // When < 0, target_v is used (default).
     void UpdateReferenceTrajectory(const dense::DblMatrix& coeffs, double target_v, double initial_x, double initial_y, double dt, double initial_psi, double projection_v = -1.0) {
-        // Read up to 6 coefficients (quintic) for smooth S-curves with
-        // zero initial/terminal slope — essential for trackability when
-        // the vehicle starts with heading 0 and the horizon is short.
+        // Read up to 6 coefficients (quintic).
         double c0 = 0.0, c1 = 0.0, c2 = 0.0, c3 = 0.0, c4 = 0.0, c5 = 0.0;
 
         auto cmat = coeffs.getManipulator();
@@ -85,15 +80,8 @@ public:
                  + 4.0 * c4 * x * x * x + 5.0 * c5 * x * x * x * x;
         };
 
-        // Beyond _trackLength the cubic term dominates and the road would
-        // curve increasingly steeply forever, which is not a valid road and
-        // causes the tracker to chase an ever-receding target (the "goes
-        // crazy" behavior). Past the end of the designed maneuver, continue
-        // as a straight line tangent to the cubic at x = _trackLength
-        // (position and heading stay continuous, curvature drops to 0).
-        // Scenarios that never need saturation (e.g. StraightLine, all
-        // coeffs 0) use the std::numeric_limits<double>::max() sentinel; skip
-        // evaluating the cubic there to avoid intermediate x*x*x overflow.
+        // Beyond _trackLength the polynomial continues as a straight line
+        // tangent to the curve at x = _trackLength.
         const bool hasTrackLimit = _trackLength < 1.0e6;
         const double xEndSat = hasTrackLimit ? _trackLength : 0.0;
         const double yEndSat = hasTrackLimit ? y_poly(xEndSat) : 0.0;
@@ -118,18 +106,11 @@ public:
             return 0.0;
         };
 
-        // Reference trajectory starts from the vehicle's current x position
-        // and follows the polynomial forward.  The initial-state constraint
-        // locks z(0) to the actual vehicle state; the cost gradient pushes
-        // z(t) toward the polynomial for t >= 1.
+        // Reference trajectory starts from the vehicle's current x position.
+        // The initial-state constraint locks z(0) to the actual vehicle state;
+        // the cost gradient pushes z(t) toward the polynomial for t >= 1.
         const double x0 = initial_x;
         const double y0 = y_at(x0);
-        // Use the polynomial heading at the vehicle's x as psi0.
-        // This makes the reference trajectory self-consistent with the
-        // polynomial: x-advance uses cos(psiref), y = y_at(xref),
-        // psi = atan2(dy_at(xref), 1).  Using initial_psi (vehicle heading)
-        // instead creates a straight-line x-advance that diverges from the
-        // curved polynomial, causing systematic tracking error growth.
         const double psi0 = std::atan2(dy_at(x0), 1.0);
         const double v0 = target_v;
 
@@ -144,14 +125,13 @@ public:
         // Initialize psiref_prev from the polynomial heading at the vehicle position
         double psiref_prev = psi0;
 
-        // Step C4: If _freezeAtPeak is true and c3 < 0 and c2 > 0, compute before the loop:
+        // If _freezeAtPeak is true and c3 < 0 and c2 > 0, compute peak before loop.
         double x_peak = 0.0;
         if (_freezeAtPeak && c3 < 0.0 && c2 > 0.0) {
             x_peak = -2.0 * c2 / (3.0 * c3);
         }
 
         // Build forward reference trajectory from the vehicle's current x position.
-        // x advances smoothly by v*cos(psi)*dt each step — no discontinuity.
         double xref = x0;
         double psiref = psi0;
         // Use projection_v for spatial advancement (matches actual vehicle speed),
@@ -160,15 +140,10 @@ public:
         const double vrefConst = target_v;
 
         for (std::size_t t = 1; t < N; ++t) {
-            // Advance xref using the vehicle's actual heading (initial_psi).
-            // This makes xref match the vehicle's actual x-advance rate,
-            // so yref = y_at(xref) is evaluated at the correct x-position.
-            // Using cos(psiref) instead makes x-advance depend on the
-            // polynomial heading, which differs from the vehicle's heading
-            // when tracking error exists, creating systematic y-cost bias.
+            // Advance xref using the vehicle's heading (initial_psi).
             xref += adv_v * std::cos(initial_psi) * dt;
 
-            // Step C6: Inside the loop, after advancing xref, add freeze logic
+            // Freeze logic: clamp xref at peak if enabled
             if (_freezeAtPeak && c3 < 0.0 && c2 > 0.0 && xref >= x_peak) {
                 xref = x_peak;
             }
@@ -180,12 +155,11 @@ public:
             // Recompute reference heading from polynomial slope at new x
             psiref = std::atan2(dy_at(xref), 1.0);
 
-            // Step C5: Inside the loop, after computing psiref = std::atan2(dy_at(xref), 1.0):
+            // Wrap reference heading to [-pi, pi]
             while (psiref - psiref_prev >  M_PI) psiref -= 2.0 * M_PI;
             while (psiref - psiref_prev < -M_PI) psiref += 2.0 * M_PI;
             psiref_prev = psiref;
 
-            // Step C7: Apply y-floor on yref:
             const double yref = y_at(xref);
 
             z(static_cast<td::UINT4>(_layout.idxX(t))) = xref;

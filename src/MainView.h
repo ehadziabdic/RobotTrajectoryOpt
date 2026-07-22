@@ -318,31 +318,10 @@ inline bool MainView::onTimer(gui::Timer* pTimer) {
 inline void MainView::advanceOneStep() {
     const double dt = _layout.dt();
 
-    // NOTE: previously this called Solve(..., _trajectory, _scenarioConfig.maxLookahead)
-    // which silently bound maxLookahead (20.0/25.0, a double) to the *freezeAtPeak*
-    // (bool) parameter via implicit conversion, while the real maxLookahead argument
-    // was left at its 15.0 default and _scenarioConfig.freezeAtPeak was never read at
-    // all. Fixed to pass both fields to their correct parameter slots, plus trackLength
-    // so the reference saturates into a straight line after the maneuver ends.
     const bool ok = _engine.Solve(_telemetry, _coeffs, _targetVelocity, dt, _scenarioConfig.obstacles, _trajectory,
                                    _scenarioConfig.freezeAtPeak, _scenarioConfig.maxLookahead, _scenarioConfig.trackLength);
-    const auto d = _engine.diagnostics();
-
-    // Print detailed per-step diagnostics to console for debugging / offline analysis
-    logMsg("[MPC] Step: ok=%d converged=%d iter=%d maxAbs=%.6f telemetry_before(x,y,psi,v)=%.3f,%.3f,%.3f,%.3f trackingErr=%.6f trajN=%d\n",
-        ok ? 1 : 0,
-        d.converged ? 1 : 0,
-        d.iterations,
-        d.maxAbs,
-        _telemetry.x,
-        _telemetry.y,
-        _telemetry.psi,
-        _telemetry.v,
-        _trackingError,
-        static_cast<int>(_trajectory.N));
 
     if (!ok) {
-        logMsg("[MPC] Solve FAILED at this step (see diagnostics above)\n");
         return;
     }
 
@@ -353,7 +332,6 @@ inline void MainView::advanceOneStep() {
             auto controls = _trajectory.controls.getManipulator();
             delta = controls(0, 0);
             accel = controls(1, 0);
-            logMsg("[MPC] First control: delta=%.6f accel=%.6f\n", delta, accel);
         }
 
         const double lf = _layout.Lf();
@@ -368,13 +346,7 @@ inline void MainView::advanceOneStep() {
         _telemetry.v = std::clamp(v + accel * dt, 0.1, _targetVelocity * 2.0);
 
         _history.push_back({static_cast<float>(_telemetry.x), static_cast<float>(_telemetry.y)});
-    } else {
-        logMsg("[MPC] Trajectory returned N=0 (no predicted controls)\n");
     }
-
-    // Print telemetry after update
-    logMsg("[MPC] Telemetry after step: x=%.3f y=%.3f psi=%.3f v=%.3f trackingErr=%.6f\n",
-        _telemetry.x, _telemetry.y, _telemetry.psi, _telemetry.v, _trackingError);
 
 }
 
@@ -554,10 +526,8 @@ inline void MainView::logMsg(const char* fmt, ...) {
     std::vsnprintf(buffer, sizeof(buffer), fmt, args);
     va_end(args);
 
-    std::fprintf(stderr, "%s", buffer);
     if (_logFile.is_open()) {
         _logFile << buffer;
-        _logFile.flush();
     }
 }
 

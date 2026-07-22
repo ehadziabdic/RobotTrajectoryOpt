@@ -135,7 +135,7 @@ private:
 
         if (!_matrix.ptr()) {
             if (_verbose) {
-                std::cout << "MPC constraints: createDblMatrix returned null" << std::endl;
+                std::cout << "MPC constraints: createDblMatrix returned null\n";
             }
             return;
         }
