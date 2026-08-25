@@ -14,6 +14,7 @@
 ![MPC](https://img.shields.io/badge/Control-Model%20Predictive%20Control-purple)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 ![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgray)
+[![Build All Installers](https://github.com/ehadziabdic/RobotTrajectoryOpt/actions/workflows/release-all.yml/badge.svg)](https://github.com/ehadziabdic/RobotTrajectoryOpt/actions/workflows/release-all.yml)
 
 </div>
 
@@ -27,6 +28,8 @@
 - [Technologies](#%EF%B8%8F-technologies)
 - [Prerequisites](#-prerequisites)
 - [Installation](#-installation)
+  - [Option A — Download a Ready-Made Installer (Recommended for Users)](#option-a--download-a-ready-made-installer-recommended-for-users)
+  - [Option B — Build from Source (Developers)](#option-b--build-from-source-developers)
 - [Building the Project](#-building-the-project)
 - [Usage](#-usage)
 - [Scenarios](#-scenarios)
@@ -165,6 +168,48 @@ Before installing, ensure you have the following:
 - **Build Tool:** Ninja (recommended) or Make
 
 ## 📥 Installation
+
+### Option A — Download a Ready-Made Installer (Recommended for Users)
+
+Prebuilt installers for all platforms are available on the
+[**Releases**](https://github.com/ehadziabdic/RobotTrajectoryOpt/releases) page.
+No compiler, CMake, or natID SDK required.
+
+#### 🪟 Windows
+
+1. Download `RobotTrajectoryOpt-win.zip` from the [latest release](https://github.com/ehadziabdic/RobotTrajectoryOpt/releases/latest)
+2. **Unzip it** — keep the `.exe` and `.msi` files **together in the same folder**
+3. Run `Install_RobotTrajectoryOptimization.exe` (or double-click the `.msi` directly)
+4. Follow the setup wizard — the app is registered in Add/Remove Programs and gets a Start Menu entry
+5. Uninstall anytime via *Windows Settings → Apps*
+
+> The installer bundles all required runtime libraries (natID framework + GTK), so nothing else needs to be installed.
+
+#### 🍎 macOS (Apple Silicon — M1/M2/M3/M4)
+
+1. Download `RobotTrajectoryOpt-macOS-Silicon.zip` from the [latest release](https://github.com/ehadziabdic/RobotTrajectoryOpt/releases/latest)
+2. Unzip it — you get `RobotTrajectoryOptimization.app`
+3. Drag the `.app` into your **Applications** folder
+4. **First launch:** right-click the app → **Open** → confirm **Open** in the dialog
+   (the app is unsigned/ad-hoc signed, so macOS Gatekeeper blocks normal first launch)
+
+#### 🍎 macOS (Intel, 2016–2020 Macs)
+
+Same as above, but download `RobotTrajectoryOpt-macOS-Intel.zip`.
+
+#### 🐧 Linux (Ubuntu 24.04+ / Debian-based)
+
+```bash
+# Download RobotTrajectoryOpt-linux.zip from the latest release, then:
+unzip RobotTrajectoryOpt-linux.zip
+sudo apt install ./RobotTrajectoryOpt*.deb
+```
+
+The `.deb` declares its dependencies (`libgtk-4`, `libadwaita`, etc.), so `apt` pulls in everything automatically. After installing, the app appears in your application menu with an icon.
+
+---
+
+### Option B — Build from Source (Developers)
 
 ### 1. Install natID Framework
 
