@@ -100,7 +100,7 @@ if(UNIX AND NOT APPLE)
     foreach(SIZE ${ICON_SIZES})
         install(FILES ${CMAKE_CURRENT_LIST_DIR}/res/appIcon/lnxApp${SIZE}.png
                 DESTINATION share/icons/hicolor/${SIZE}x${SIZE}/apps
-                RENAME amazonsgame.png)
+                RENAME robottrajectoryopt.png)
     endforeach()
     
     # Install .desktop file
