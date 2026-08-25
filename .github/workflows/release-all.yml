@@ -283,6 +283,25 @@ jobs:
           echo "--- Setup output tree ---"
           find $HOME/natID.RAMDisk/Setup -maxdepth 4 2>/dev/null || echo "no Setup dir"
 
+      - name: Embed app icons into .deb (SetupCollector leaves hicolor empty)
+        run: |
+          DEB=$(find $HOME/natID.RAMDisk/Setup -name "*.deb" | head -1)
+          if [ -z "$DEB" ]; then echo "ERROR: no .deb found"; exit 1; fi
+          echo "Patching: $DEB"
+          rm -rf /tmp/debpatch && mkdir -p /tmp/debpatch
+          dpkg-deb -R "$DEB" /tmp/debpatch/pkg
+          ICON_SRC=$HOME/Desktop/RobotTrajectoryOpt/res/appIcon
+          # Name must match Icon= in the generated .desktop (= executableName)
+          APP_NAME=RobotTrajectoryOpt
+          for SIZE in 16 32 48 128 256; do
+            DIR=/tmp/debpatch/pkg/usr/share/icons/hicolor/${SIZE}x${SIZE}/apps
+            mkdir -p "$DIR"
+            cp "$ICON_SRC/lnxApp${SIZE}.png" "$DIR/${APP_NAME}.png"
+          done
+          dpkg-deb -b /tmp/debpatch/pkg "$DEB"
+          echo "--- Icons now in deb: ---"
+          dpkg-deb -c "$DEB" | grep -i "icons/"
+
       - name: Stage installer output
         run: |
           mkdir -p ${{ github.workspace }}/installer-output
