@@ -1,7 +1,7 @@
 <?xml version='1.0'?>
 <DevRes version="2026.08.25" regionals="Common/Regionals"
         displayName="RobotTrajectoryOptimization"
-        maintainer="EminHadziabdic"
+        maintainer="Emin Hadziabdic"
         email="emin.hadziabdic05@gmail.com"
         homePage="https://github.com/ehadziabdic/RobotTrajectoryOpt"
         majorVersion="2"
