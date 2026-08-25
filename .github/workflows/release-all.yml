@@ -145,15 +145,24 @@ jobs:
       - name: Stage installer output
         run: |
           mkdir -p ${{ github.workspace }}/installer-output
-          cp -R $HOME/natID.RAMDisk/Setup/ALL_Bundles/* ${{ github.workspace }}/installer-output/ 2>/dev/null || \
-            cp -R $HOME/natID.RAMDisk/Setup/RobotTrajectoryOpt/* ${{ github.workspace }}/installer-output/ 2>/dev/null || \
-            echo "WARNING: no installer output found"
+          echo "--- Full Setup tree ---"
+          find $HOME/natID.RAMDisk/Setup -maxdepth 5 || echo "no Setup dir"
+          # Find the .app bundle wherever SetupCollector put it
+          APP_PATH=$(find $HOME/natID.RAMDisk/Setup -maxdepth 5 -type d -name "*.app" | head -1)
+          if [ -z "$APP_PATH" ]; then
+            echo "ERROR: no .app bundle found in Setup tree"
+            exit 1
+          fi
+          echo "Found app bundle: $APP_PATH"
+          cp -R "$APP_PATH" ${{ github.workspace }}/installer-output/
           ls -laR ${{ github.workspace }}/installer-output/
 
       - name: Create distributable zip (ditto preserves exec permissions)
         run: |
           cd ${{ github.workspace }}/installer-output
-          ditto -c -k --keepParent --sequesterRsrc RobotTrajectoryOpt.app RobotTrajectoryOpt-macOS-Silicon.zip
+          APP_NAME=$(find . -maxdepth 1 -type d -name "*.app" | head -1 | xargs basename)
+          echo "Zipping $APP_NAME"
+          ditto -c -k --keepParent --sequesterRsrc "$APP_NAME" RobotTrajectoryOpt-macOS-Silicon.zip
           ls -la RobotTrajectoryOpt-macOS-Silicon.zip
 
       - uses: actions/upload-artifact@v4
@@ -201,15 +210,24 @@ jobs:
       - name: Stage installer output
         run: |
           mkdir -p ${{ github.workspace }}/installer-output
-          cp -R $HOME/natID.RAMDisk/Setup/ALL_Bundles/* ${{ github.workspace }}/installer-output/ 2>/dev/null || \
-            cp -R $HOME/natID.RAMDisk/Setup/RobotTrajectoryOpt/* ${{ github.workspace }}/installer-output/ 2>/dev/null || \
-            echo "WARNING: no installer output found"
+          echo "--- Full Setup tree ---"
+          find $HOME/natID.RAMDisk/Setup -maxdepth 5 || echo "no Setup dir"
+          # Find the .app bundle wherever SetupCollector put it
+          APP_PATH=$(find $HOME/natID.RAMDisk/Setup -maxdepth 5 -type d -name "*.app" | head -1)
+          if [ -z "$APP_PATH" ]; then
+            echo "ERROR: no .app bundle found in Setup tree"
+            exit 1
+          fi
+          echo "Found app bundle: $APP_PATH"
+          cp -R "$APP_PATH" ${{ github.workspace }}/installer-output/
           ls -laR ${{ github.workspace }}/installer-output/
 
       - name: Create distributable zip (ditto preserves exec permissions)
         run: |
           cd ${{ github.workspace }}/installer-output
-          ditto -c -k --keepParent --sequesterRsrc RobotTrajectoryOpt.app RobotTrajectoryOpt-macOS-Intel.zip
+          APP_NAME=$(find . -maxdepth 1 -type d -name "*.app" | head -1 | xargs basename)
+          echo "Zipping $APP_NAME"
+          ditto -c -k --keepParent --sequesterRsrc "$APP_NAME" RobotTrajectoryOpt-macOS-Intel.zip
           ls -la RobotTrajectoryOpt-macOS-Intel.zip
 
       - uses: actions/upload-artifact@v4
