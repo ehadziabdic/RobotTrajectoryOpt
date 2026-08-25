@@ -12,7 +12,7 @@
 	<MutableResource/>
 	<Setup licenseFileName="~natID.SDK/DevEnv/License.txt"
 			categories="Education;Utility"
-			win:programGroup="EminHadziabdic"
+			win:programGroup="Emin_Hadziabdic"
 			win:width="440"
 			win:headerBackColor="#30D5C8"
 			win:headerTxtColor= "#1A1A2E"
