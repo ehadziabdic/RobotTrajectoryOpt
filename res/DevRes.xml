@@ -1,5 +1,13 @@
 <?xml version='1.0'?>
-<DevRes version="2024.08.12" regionals="Common/Regionals">
+<DevRes version="2026.08.25" regionals="Common/Regionals"
+        displayName="Robot Trajectory Optimization"
+        maintainer="Emin Hadziabdic"
+        email="emin.hadziabdic05@gmail.com"
+        homePage="https://github.com/ehadziabdic/RobotTrajectoryOpt"
+        majorVersion="2"
+        minorVersion="0"
+        versionDate="2026-08-25"
+        comment="Real-time 2D robot trajectory optimization using Active-Set QP + SQP with MPC">
 	<Langs>
 		<Lang id="EN" name="English"/>
 		<Lang id="BA" name="Bosanski"/>
