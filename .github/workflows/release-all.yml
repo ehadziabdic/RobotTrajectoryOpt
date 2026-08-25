@@ -130,8 +130,8 @@ jobs:
       - name: Build (Release)
         run: |
           cmake -S . -B $HOME/natID.RAMDisk/build -DCMAKE_BUILD_TYPE=Release
-          cmake --build $HOME/natID.RAMDisk/build -j
-          test -f $HOME/natID.RAMDisk/Out/RobotTrajectoryOpt/Release/RobotTrajectoryOptimization.app/Contents/MacOS/RobotTrajectoryOpt
+          cmake --build $HOME/natID.RAMDisk/build -j$(sysctl -n hw.ncpu)
+          test -f $HOME/natID.RAMDisk/Out/RobotTrajectoryOpt/Release/RobotTrajectoryOpt.app/Contents/MacOS/RobotTrajectoryOpt
 
       - name: Collect installer (SetupCollector)
         run: |
@@ -153,7 +153,7 @@ jobs:
       - name: Create distributable zip (ditto preserves exec permissions)
         run: |
           cd ${{ github.workspace }}/installer-output
-          ditto -c -k --keepParent --sequesterRsrc RobotTrajectoryOptimization.app RobotTrajectoryOpt-macOS-Silicon.zip
+          ditto -c -k --keepParent --sequesterRsrc RobotTrajectoryOpt.app RobotTrajectoryOpt-macOS-Silicon.zip
           ls -la RobotTrajectoryOpt-macOS-Silicon.zip
 
       - uses: actions/upload-artifact@v4
@@ -186,8 +186,8 @@ jobs:
       - name: Build (Release)
         run: |
           cmake -S . -B $HOME/natID.RAMDisk/build -DCMAKE_BUILD_TYPE=Release
-          cmake --build $HOME/natID.RAMDisk/build -j$(nproc)
-          test -f $HOME/natID.RAMDisk/Out/RobotTrajectoryOpt/Release/RobotTrajectoryOptimization.app/Contents/MacOS/RobotTrajectoryOpt
+          cmake --build $HOME/natID.RAMDisk/build -j$(sysctl -n hw.ncpu)
+          test -f $HOME/natID.RAMDisk/Out/RobotTrajectoryOpt/Release/RobotTrajectoryOpt.app/Contents/MacOS/RobotTrajectoryOpt
 
       - name: Collect installer (SetupCollector)
         run: |
@@ -209,7 +209,7 @@ jobs:
       - name: Create distributable zip (ditto preserves exec permissions)
         run: |
           cd ${{ github.workspace }}/installer-output
-          ditto -c -k --keepParent --sequesterRsrc RobotTrajectoryOptimization.app RobotTrajectoryOpt-macOS-Intel.zip
+          ditto -c -k --keepParent --sequesterRsrc RobotTrajectoryOpt.app RobotTrajectoryOpt-macOS-Intel.zip
           ls -la RobotTrajectoryOpt-macOS-Intel.zip
 
       - uses: actions/upload-artifact@v4
