@@ -157,12 +157,27 @@ jobs:
           cp -R "$APP_PATH" ${{ github.workspace }}/installer-output/
           ls -laR ${{ github.workspace }}/installer-output/
 
+      - name: Re-sign app and clear quarantine flags
+        run: |
+          # Re-sign with ad-hoc signature (required for unsigned distribution)
+          codesign --force --deep --sign - "${{ github.workspace }}/installer-output/RobotTrajectoryOptimization.app"
+          # Verify the signature
+          codesign --verify --verbose=4 "${{ github.workspace }}/installer-output/RobotTrajectoryOptimization.app" || true
+          # Remove quarantine extended attributes that Gatekeeper checks
+          xattr -cr "${{ github.workspace }}/installer-output/RobotTrajectoryOptimization.app"
+          # Verify quarantine is cleared (should show no output)
+          echo "=== xattr on .app after clearing ==="
+          xattr -l "${{ github.workspace }}/installer-output/RobotTrajectoryOptimization.app" || echo "No extended attributes (good)"
+
       - name: Create distributable zip (ditto preserves exec permissions)
         run: |
           cd ${{ github.workspace }}/installer-output
-          APP_NAME=$(find . -maxdepth 1 -type d -name "*.app" | head -1 | xargs basename)
-          echo "Zipping $APP_NAME"
-          ditto -c -k --keepParent --sequesterRsrc "$APP_NAME" RobotTrajectoryOpt-macOS-Silicon.zip
+          ditto -c -k --keepParent --sequesterRsrc RobotTrajectoryOptimization.app RobotTrajectoryOpt-macOS-Silicon.zip
+          # Clear quarantine from the zip itself
+          xattr -c RobotTrajectoryOpt-macOS-Silicon.zip
+          # Verify zip has no quarantine
+          echo "=== xattr on zip after clearing ==="
+          xattr -l RobotTrajectoryOpt-macOS-Silicon.zip || echo "No extended attributes (good)"
           ls -la RobotTrajectoryOpt-macOS-Silicon.zip
 
       - uses: actions/upload-artifact@v4
@@ -222,12 +237,27 @@ jobs:
           cp -R "$APP_PATH" ${{ github.workspace }}/installer-output/
           ls -laR ${{ github.workspace }}/installer-output/
 
+      - name: Re-sign app and clear quarantine flags
+        run: |
+          # Re-sign with ad-hoc signature (required for unsigned distribution)
+          codesign --force --deep --sign - "${{ github.workspace }}/installer-output/RobotTrajectoryOptimization.app"
+          # Verify the signature
+          codesign --verify --verbose=4 "${{ github.workspace }}/installer-output/RobotTrajectoryOptimization.app" || true
+          # Remove quarantine extended attributes that Gatekeeper checks
+          xattr -cr "${{ github.workspace }}/installer-output/RobotTrajectoryOptimization.app"
+          # Verify quarantine is cleared (should show no output)
+          echo "=== xattr on .app after clearing ==="
+          xattr -l "${{ github.workspace }}/installer-output/RobotTrajectoryOptimization.app" || echo "No extended attributes (good)"
+
       - name: Create distributable zip (ditto preserves exec permissions)
         run: |
           cd ${{ github.workspace }}/installer-output
-          APP_NAME=$(find . -maxdepth 1 -type d -name "*.app" | head -1 | xargs basename)
-          echo "Zipping $APP_NAME"
-          ditto -c -k --keepParent --sequesterRsrc "$APP_NAME" RobotTrajectoryOpt-macOS-Intel.zip
+          ditto -c -k --keepParent --sequesterRsrc RobotTrajectoryOptimization.app RobotTrajectoryOpt-macOS-Intel.zip
+          # Clear quarantine from the zip itself
+          xattr -c RobotTrajectoryOpt-macOS-Intel.zip
+          # Verify zip has no quarantine
+          echo "=== xattr on zip after clearing ==="
+          xattr -l RobotTrajectoryOpt-macOS-Intel.zip || echo "No extended attributes (good)"
           ls -la RobotTrajectoryOpt-macOS-Intel.zip
 
       - uses: actions/upload-artifact@v4
@@ -364,7 +394,14 @@ jobs:
 
             ### Install notes
             - **Windows**: unzip, run the .exe (or the .msi directly)
-            - **macOS**: unzip, drag to Applications, first launch: right-click → Open
+            - **macOS**: unzip, drag `RobotTrajectoryOptimization.app` to Applications
+              - **⚠️ IMPORTANT**: Safari auto-extracts zips on download. This re-applies the macOS quarantine flag.
+              - **After downloading and moving to Applications, you MUST run this in Terminal:**
+                ```bash
+                xattr -cr /Applications/RobotTrajectoryOptimization.app
+                ```
+                (No output = success. Then launch normally.)
+              - If you see "damaged or incomplete", the quarantine flag wasn't cleared — run the command above.
             - **Linux**: unzip, `sudo apt install ./RobotTrajectoryOpt*.deb`
           files: |
             artifacts/RobotTrajectoryOpt-win/*

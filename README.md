@@ -190,8 +190,13 @@ No compiler, CMake, or natID SDK required.
 1. Download `RobotTrajectoryOpt-macOS-Silicon.zip` from the [latest release](https://github.com/ehadziabdic/RobotTrajectoryOpt/releases/latest)
 2. Unzip it — you get `RobotTrajectoryOptimization.app`
 3. Drag the `.app` into your **Applications** folder
-4. **First launch:** right-click the app → **Open** → confirm **Open** in the dialog
-   (the app is unsigned/ad-hoc signed, so macOS Gatekeeper blocks normal first launch)
+4. **⚠️ CRITICAL — Safari auto-extracts zips on download, which re-applies the macOS quarantine flag.**
+   After downloading and moving to Applications, you **MUST run this in Terminal:**
+   ```bash
+   xattr -cr /Applications/RobotTrajectoryOptimization.app
+   ```
+   (No output = success. Then launch normally.)
+5. If you see "damaged or incomplete", the quarantine flag wasn't cleared — run the command above.
 
 #### 🍎 macOS (Intel, 2016–2020 Macs)
 
