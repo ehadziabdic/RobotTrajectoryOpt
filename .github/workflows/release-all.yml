@@ -159,20 +159,27 @@ jobs:
 
       - name: Re-sign app and clear quarantine flags
         run: |
+          # Get the app name from the staged output
+          APP_PATH=$(find ${{ github.workspace }}/installer-output -maxdepth 1 -type d -name "*.app" | head -1)
+          APP_NAME="${APP_PATH##*/}"
+          echo "Processing app: $APP_NAME"
           # Re-sign with ad-hoc signature (required for unsigned distribution)
-          codesign --force --deep --sign - "${{ github.workspace }}/installer-output/RobotTrajectoryOptimization.app"
+          codesign --force --deep --sign - "${{ github.workspace }}/installer-output/$APP_NAME"
           # Verify the signature
-          codesign --verify --verbose=4 "${{ github.workspace }}/installer-output/RobotTrajectoryOptimization.app" || true
+          codesign --verify --verbose=4 "${{ github.workspace }}/installer-output/$APP_NAME" || true
           # Remove quarantine extended attributes that Gatekeeper checks
-          xattr -cr "${{ github.workspace }}/installer-output/RobotTrajectoryOptimization.app"
+          xattr -cr "${{ github.workspace }}/installer-output/$APP_NAME"
           # Verify quarantine is cleared (should show no output)
           echo "=== xattr on .app after clearing ==="
-          xattr -l "${{ github.workspace }}/installer-output/RobotTrajectoryOptimization.app" || echo "No extended attributes (good)"
+          xattr -l "${{ github.workspace }}/installer-output/$APP_NAME" || echo "No extended attributes (good)"
 
       - name: Create distributable zip (ditto preserves exec permissions)
         run: |
           cd ${{ github.workspace }}/installer-output
-          ditto -c -k --keepParent --sequesterRsrc RobotTrajectoryOptimization.app RobotTrajectoryOpt-macOS-Silicon.zip
+          APP_PATH=$(find . -maxdepth 1 -type d -name "*.app" | head -1)
+          APP_NAME="${APP_PATH##*/}"
+          echo "Zipping $APP_NAME"
+          ditto -c -k --keepParent --sequesterRsrc "$APP_NAME" RobotTrajectoryOpt-macOS-Silicon.zip
           # Clear quarantine from the zip itself
           xattr -c RobotTrajectoryOpt-macOS-Silicon.zip
           # Verify zip has no quarantine
@@ -239,20 +246,27 @@ jobs:
 
       - name: Re-sign app and clear quarantine flags
         run: |
+          # Get the app name from the staged output
+          APP_PATH=$(find ${{ github.workspace }}/installer-output -maxdepth 1 -type d -name "*.app" | head -1)
+          APP_NAME="${APP_PATH##*/}"
+          echo "Processing app: $APP_NAME"
           # Re-sign with ad-hoc signature (required for unsigned distribution)
-          codesign --force --deep --sign - "${{ github.workspace }}/installer-output/RobotTrajectoryOptimization.app"
+          codesign --force --deep --sign - "${{ github.workspace }}/installer-output/$APP_NAME"
           # Verify the signature
-          codesign --verify --verbose=4 "${{ github.workspace }}/installer-output/RobotTrajectoryOptimization.app" || true
+          codesign --verify --verbose=4 "${{ github.workspace }}/installer-output/$APP_NAME" || true
           # Remove quarantine extended attributes that Gatekeeper checks
-          xattr -cr "${{ github.workspace }}/installer-output/RobotTrajectoryOptimization.app"
+          xattr -cr "${{ github.workspace }}/installer-output/$APP_NAME"
           # Verify quarantine is cleared (should show no output)
           echo "=== xattr on .app after clearing ==="
-          xattr -l "${{ github.workspace }}/installer-output/RobotTrajectoryOptimization.app" || echo "No extended attributes (good)"
+          xattr -l "${{ github.workspace }}/installer-output/$APP_NAME" || echo "No extended attributes (good)"
 
       - name: Create distributable zip (ditto preserves exec permissions)
         run: |
           cd ${{ github.workspace }}/installer-output
-          ditto -c -k --keepParent --sequesterRsrc RobotTrajectoryOptimization.app RobotTrajectoryOpt-macOS-Intel.zip
+          APP_PATH=$(find . -maxdepth 1 -type d -name "*.app" | head -1)
+          APP_NAME="${APP_PATH##*/}"
+          echo "Zipping $APP_NAME"
+          ditto -c -k --keepParent --sequesterRsrc "$APP_NAME" RobotTrajectoryOpt-macOS-Intel.zip
           # Clear quarantine from the zip itself
           xattr -c RobotTrajectoryOpt-macOS-Intel.zip
           # Verify zip has no quarantine
