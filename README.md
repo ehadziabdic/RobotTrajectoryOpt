@@ -1,6 +1,6 @@
 <div align="center">
 
-![RobotTrajectoryOpt Icon](Implementation/res/appIcon/lnxApp256.png)
+![RobotTrajectoryOpt Icon](res/appIcon/lnxApp256.png)
 
 # RobotTrajectoryOpt
 
@@ -14,6 +14,7 @@
 ![MPC](https://img.shields.io/badge/Control-Model%20Predictive%20Control-purple)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 ![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgray)
+[![Build All Installers](https://github.com/ehadziabdic/RobotTrajectoryOpt/actions/workflows/release-all.yml/badge.svg)](https://github.com/ehadziabdic/RobotTrajectoryOpt/actions/workflows/release-all.yml)
 
 </div>
 
